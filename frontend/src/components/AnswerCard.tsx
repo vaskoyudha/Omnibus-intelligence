@@ -36,12 +36,14 @@ export default function AnswerCard({ response }: AnswerCardProps) {
         <div className="p-6">
           {/* Metadata */}
           <div className="flex items-center gap-4 mb-4 text-sm">
-            <span className={`px-3 py-1 rounded-full font-medium ${getConfidenceColor(response.confidence)}`}>
-              Keyakinan: {getConfidenceLabel(response.confidence)} ({Math.round(response.confidence * 100)}%)
+            <span className={`px-3 py-1 rounded-full font-medium ${getConfidenceColor(response.confidence ?? 0)}`}>
+              Keyakinan: {getConfidenceLabel(response.confidence ?? 0)} ({Math.round((response.confidence ?? 0) * 100)}%)
             </span>
-            <span className="text-slate-400">
-              Waktu proses: {response.processing_time.toFixed(2)}s
-            </span>
+            {response.processing_time !== undefined && (
+              <span className="text-slate-400">
+                Waktu proses: {response.processing_time.toFixed(2)}s
+              </span>
+            )}
           </div>
 
           {/* Answer Text */}
