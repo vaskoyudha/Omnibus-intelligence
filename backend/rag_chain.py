@@ -1,7 +1,7 @@
 """
 RAG Chain Module for Indonesian Legal Q&A
 
-Uses NVIDIA NIM Llama 3.1 as the LLM with custom retriever for legal documents.
+Uses NVIDIA NIM Kimi K2 as the LLM with custom retriever for legal documents.
 Provides citations and "I don't know" guardrails.
 """
 
@@ -28,7 +28,7 @@ logger = logging.getLogger(__name__)
 # Constants
 NVIDIA_API_KEY = os.getenv("NVIDIA_API_KEY")
 NVIDIA_API_URL = "https://integrate.api.nvidia.com/v1/chat/completions"
-NVIDIA_MODEL = "meta/llama-3.1-8b-instruct"  # Switched from kimi-k2.5 (timeout issues)
+NVIDIA_MODEL = "moonshotai/kimi-k2-instruct"  # Correct model name per NVIDIA docs
 MAX_TOKENS = 4096
 TEMPERATURE = 0.7
 
@@ -77,7 +77,7 @@ class RAGResponse:
 
 
 class NVIDIANimClient:
-    """Client for NVIDIA NIM API with Llama 3.1 model."""
+    """Client for NVIDIA NIM API with Kimi K2 model (moonshotai/kimi-k2-instruct)."""
     
     def __init__(
         self,
