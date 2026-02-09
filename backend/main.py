@@ -89,6 +89,25 @@ class CitationInfo(BaseModel):
     metadata: dict[str, Any] = {}
 
 
+class ConfidenceScoreInfo(BaseModel):
+    """Numeric confidence score with details."""
+
+    numeric: float = Field(description="Skor kepercayaan 0.0 - 1.0")
+    label: str = Field(description="Label: tinggi, sedang, rendah, tidak ada")
+    top_score: float = Field(description="Skor tertinggi dari hasil pencarian")
+    avg_score: float = Field(description="Skor rata-rata hasil pencarian")
+
+
+class ValidationInfo(BaseModel):
+    """Answer validation/self-reflection result."""
+
+    is_valid: bool = Field(description="Apakah jawaban tervalidasi")
+    citation_coverage: float = Field(description="Persentase sitasi yang digunakan (0.0-1.0)")
+    warnings: list[str] = Field(default=[], description="Peringatan validasi")
+    hallucination_risk: str = Field(description="Risiko halusinasi: low, medium, high")
+    missing_citations: list[int] = Field(default=[], description="Nomor sitasi yang tidak valid")
+
+
 class QuestionResponse(BaseModel):
     """Response model for Q&A endpoint."""
 
@@ -97,6 +116,12 @@ class QuestionResponse(BaseModel):
     sources: list[str] = Field(description="Daftar sumber dalam format ringkas")
     confidence: str = Field(
         description="Tingkat kepercayaan: tinggi, sedang, rendah, tidak ada"
+    )
+    confidence_score: ConfidenceScoreInfo | None = Field(
+        default=None, description="Skor kepercayaan numerik dengan detail"
+    )
+    validation: ValidationInfo | None = Field(
+        default=None, description="Hasil validasi jawaban"
     )
     processing_time_ms: float = Field(description="Waktu pemrosesan dalam milidetik")
 
@@ -389,11 +414,34 @@ async def ask_question(request: QuestionRequest):
             for c in response.citations
         ]
 
+        # Build confidence score info
+        confidence_score_info = None
+        if response.confidence_score:
+            confidence_score_info = ConfidenceScoreInfo(
+                numeric=response.confidence_score.numeric,
+                label=response.confidence_score.label,
+                top_score=response.confidence_score.top_score,
+                avg_score=response.confidence_score.avg_score,
+            )
+
+        # Build validation info
+        validation_info = None
+        if response.validation:
+            validation_info = ValidationInfo(
+                is_valid=response.validation.is_valid,
+                citation_coverage=response.validation.citation_coverage,
+                warnings=response.validation.warnings,
+                hallucination_risk=response.validation.hallucination_risk,
+                missing_citations=response.validation.missing_citations,
+            )
+
         return QuestionResponse(
             answer=response.answer,
             citations=citations,
             sources=response.sources,
             confidence=response.confidence,
+            confidence_score=confidence_score_info,
+            validation=validation_info,
             processing_time_ms=round(processing_time, 2),
         )
 
@@ -458,11 +506,34 @@ async def ask_followup(request: FollowUpRequest):
             for c in response.citations
         ]
 
+        # Build confidence score info
+        confidence_score_info = None
+        if response.confidence_score:
+            confidence_score_info = ConfidenceScoreInfo(
+                numeric=response.confidence_score.numeric,
+                label=response.confidence_score.label,
+                top_score=response.confidence_score.top_score,
+                avg_score=response.confidence_score.avg_score,
+            )
+
+        # Build validation info
+        validation_info = None
+        if response.validation:
+            validation_info = ValidationInfo(
+                is_valid=response.validation.is_valid,
+                citation_coverage=response.validation.citation_coverage,
+                warnings=response.validation.warnings,
+                hallucination_risk=response.validation.hallucination_risk,
+                missing_citations=response.validation.missing_citations,
+            )
+
         return QuestionResponse(
             answer=response.answer,
             citations=citations,
             sources=response.sources,
             confidence=response.confidence,
+            confidence_score=confidence_score_info,
+            validation=validation_info,
             processing_time_ms=round(processing_time, 2),
         )
 

@@ -8,17 +8,51 @@ interface AnswerCardProps {
 }
 
 export default function AnswerCard({ response }: AnswerCardProps) {
-  const getConfidenceColor = (confidence: number) => {
-    if (confidence >= 0.7) return 'text-green-600 bg-green-50';
-    if (confidence >= 0.4) return 'text-yellow-600 bg-yellow-50';
+  // Get numeric confidence (0.0-1.0) from confidence_score or fallback to label mapping
+  const getNumericConfidence = (): number => {
+    if (response.confidence_score?.numeric !== undefined) {
+      return response.confidence_score.numeric;
+    }
+    // Fallback: map string label to number
+    const labelMap: Record<string, number> = {
+      'tinggi': 0.8,
+      'sedang': 0.5,
+      'rendah': 0.3,
+      'tidak ada': 0.0,
+    };
+    return labelMap[response.confidence?.toLowerCase() ?? ''] ?? 0.5;
+  };
+
+  const confidence = getNumericConfidence();
+
+  const getConfidenceColor = (conf: number) => {
+    if (conf >= 0.7) return 'text-green-600 bg-green-50 border-green-200';
+    if (conf >= 0.4) return 'text-yellow-600 bg-yellow-50 border-yellow-200';
+    return 'text-red-600 bg-red-50 border-red-200';
+  };
+
+  const getConfidenceLabel = (conf: number) => {
+    if (conf >= 0.7) return 'Tinggi';
+    if (conf >= 0.4) return 'Sedang';
+    return 'Rendah';
+  };
+
+  const getHallucinationRiskColor = (risk: string) => {
+    if (risk === 'low') return 'text-green-600 bg-green-50';
+    if (risk === 'medium') return 'text-yellow-600 bg-yellow-50';
     return 'text-red-600 bg-red-50';
   };
 
-  const getConfidenceLabel = (confidence: number) => {
-    if (confidence >= 0.7) return 'Tinggi';
-    if (confidence >= 0.4) return 'Sedang';
-    return 'Rendah';
+  const getHallucinationRiskLabel = (risk: string) => {
+    if (risk === 'low') return 'Rendah';
+    if (risk === 'medium') return 'Sedang';
+    return 'Tinggi';
   };
+
+  // Processing time in seconds
+  const processingTimeSec = response.processing_time_ms 
+    ? response.processing_time_ms / 1000 
+    : response.processing_time ?? 0;
 
   return (
     <div className="w-full max-w-4xl mx-auto mt-8">
@@ -34,17 +68,65 @@ export default function AnswerCard({ response }: AnswerCardProps) {
         </div>
         
         <div className="p-6">
-          {/* Metadata */}
-          <div className="flex items-center gap-4 mb-4 text-sm">
-            <span className={`px-3 py-1 rounded-full font-medium ${getConfidenceColor(response.confidence ?? 0)}`}>
-              Keyakinan: {getConfidenceLabel(response.confidence ?? 0)} ({Math.round((response.confidence ?? 0) * 100)}%)
+          {/* Metadata Row */}
+          <div className="flex flex-wrap items-center gap-3 mb-4 text-sm">
+            {/* Confidence Badge with Percentage */}
+            <span className={`px-3 py-1.5 rounded-full font-medium border ${getConfidenceColor(confidence)}`}>
+              <span className="flex items-center gap-1.5">
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Keyakinan: {getConfidenceLabel(confidence)} ({Math.round(confidence * 100)}%)
+              </span>
             </span>
-            {response.processing_time !== undefined && (
-              <span className="text-slate-400">
-                Waktu proses: {response.processing_time.toFixed(2)}s
+
+            {/* Hallucination Risk Badge */}
+            {response.validation && (
+              <span className={`px-3 py-1.5 rounded-full font-medium ${getHallucinationRiskColor(response.validation.hallucination_risk)}`}>
+                <span className="flex items-center gap-1.5">
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                  </svg>
+                  Risiko Halusinasi: {getHallucinationRiskLabel(response.validation.hallucination_risk)}
+                </span>
+              </span>
+            )}
+
+            {/* Processing Time */}
+            {processingTimeSec > 0 && (
+              <span className="text-slate-400 flex items-center gap-1">
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                {processingTimeSec.toFixed(2)}s
               </span>
             )}
           </div>
+
+          {/* Confidence Score Details (collapsible) */}
+          {response.confidence_score && (
+            <div className="mb-4 p-3 bg-slate-50 rounded-lg border border-slate-200">
+              <div className="flex items-center gap-4 text-xs text-slate-600">
+                <span>Skor Tertinggi: <strong>{(response.confidence_score.top_score * 100).toFixed(1)}%</strong></span>
+                <span>Rata-rata: <strong>{(response.confidence_score.avg_score * 100).toFixed(1)}%</strong></span>
+                {response.validation && (
+                  <span>Cakupan Sitasi: <strong>{(response.validation.citation_coverage * 100).toFixed(0)}%</strong></span>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Validation Warnings */}
+          {response.validation && response.validation.warnings.length > 0 && (
+            <div className="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-lg">
+              <p className="text-xs font-medium text-amber-800 mb-1">Peringatan Validasi:</p>
+              <ul className="text-xs text-amber-700 list-disc list-inside">
+                {response.validation.warnings.map((warning, idx) => (
+                  <li key={idx}>{warning}</li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           {/* Answer Text */}
           <div className="prose prose-slate max-w-none">

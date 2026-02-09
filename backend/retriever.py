@@ -14,6 +14,7 @@ from qdrant_client import QdrantClient
 from qdrant_client.models import Filter, FieldCondition, MatchValue
 from langchain_huggingface import HuggingFaceEmbeddings
 from rank_bm25 import BM25Okapi
+from sentence_transformers import CrossEncoder
 
 # Constants - must match ingest.py
 COLLECTION_NAME = "indonesian_legal_docs"
@@ -87,6 +88,7 @@ class HybridRetriever:
         qdrant_url: str = QDRANT_URL,
         collection_name: str = COLLECTION_NAME,
         embedding_model: str = EMBEDDING_MODEL,
+        use_reranking: bool = True,
     ):
         """
         Initialize the hybrid retriever.
@@ -95,15 +97,22 @@ class HybridRetriever:
             qdrant_url: Qdrant server URL
             collection_name: Name of the Qdrant collection
             embedding_model: HuggingFace model for embeddings
+            use_reranking: Whether to use cross-encoder re-ranking for improved relevance
         """
         self.collection_name = collection_name
         self.qdrant_url = qdrant_url
+        self.use_reranking = use_reranking
         
         # Initialize Qdrant client
         self.client = QdrantClient(url=qdrant_url)
         
         # Initialize embeddings (same model as ingestion)
         self.embedder = HuggingFaceEmbeddings(model_name=embedding_model)
+        
+        # Initialize cross-encoder for re-ranking (multilingual model for Indonesian)
+        self._reranker: CrossEncoder | None = None
+        if use_reranking:
+            self._reranker = CrossEncoder('jeffwan/mmarco-mMiniLMv2-L12-H384-v1')
         
         # Load corpus for BM25
         self._corpus: list[dict[str, Any]] = []
@@ -301,6 +310,51 @@ class HybridRetriever:
         
         return [(result_map[doc_id], rrf_scores[doc_id]) for doc_id in sorted_ids]
     
+    def _rerank(
+        self,
+        query: str,
+        results: list[SearchResult],
+        top_k: int,
+    ) -> list[SearchResult]:
+        """
+        Re-rank results using cross-encoder for improved relevance.
+        
+        Cross-encoders jointly encode query and document, providing
+        more accurate relevance scores than bi-encoder embeddings.
+        
+        Args:
+            query: Original search query
+            results: Results from RRF fusion
+            top_k: Number of final results to return
+        
+        Returns:
+            Re-ranked list of SearchResult with updated scores
+        """
+        if not results or not self.use_reranking or self._reranker is None:
+            return results[:top_k]
+        
+        # Create query-document pairs for cross-encoder
+        pairs = [[query, r.text] for r in results]
+        
+        # Get cross-encoder scores
+        ce_scores = self._reranker.predict(pairs)
+        
+        # Sort by cross-encoder score
+        ranked = sorted(zip(results, ce_scores), key=lambda x: x[1], reverse=True)
+        
+        # Build re-ranked results with updated scores
+        reranked_results = []
+        for result, ce_score in ranked[:top_k]:
+            reranked_results.append(SearchResult(
+                id=result.id,
+                text=result.text,
+                citation=result.citation,
+                citation_id=result.citation_id,
+                score=float(ce_score),  # Use cross-encoder score
+                metadata=result.metadata,
+            ))
+        return reranked_results
+    
     def hybrid_search(
         self,
         query: str,
@@ -341,10 +395,25 @@ class HybridRetriever:
         # Fuse with RRF
         fused = self._rrf_fusion(dense_results, sparse_results)
         
-        # Return top_k with updated scores
+        # Apply cross-encoder reranking if enabled
+        if self.use_reranking and self._reranker is not None:
+            # Get more candidates for reranking (3x top_k)
+            rerank_candidates = []
+            for result, rrf_score in fused[:top_k * 3]:
+                rerank_candidates.append(SearchResult(
+                    id=result.id,
+                    text=result.text,
+                    citation=result.citation,
+                    citation_id=result.citation_id,
+                    score=rrf_score,
+                    metadata=result.metadata,
+                ))
+            # Rerank and return top_k
+            return self._rerank(query, rerank_candidates, top_k)
+        
+        # Fallback: Return top_k with RRF scores (no reranking)
         results = []
         for result, rrf_score in fused[:top_k]:
-            # Create new result with RRF score
             results.append(SearchResult(
                 id=result.id,
                 text=result.text,

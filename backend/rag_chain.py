@@ -9,9 +9,10 @@ from __future__ import annotations
 
 import asyncio
 import os
+import re
 import json
 import logging
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any
 
 import requests
@@ -39,31 +40,103 @@ COLLECTION_NAME = os.getenv("COLLECTION_NAME", "indonesian_legal_docs")
 EMBEDDING_MODEL = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
 
 
-# Indonesian Legal Q&A System Prompt
-SYSTEM_PROMPT = """Anda adalah asisten hukum Indonesia yang ahli dan terpercaya. Tugas Anda adalah menjawab pertanyaan tentang peraturan perundang-undangan Indonesia berdasarkan dokumen yang diberikan.
+# Chain-of-Thought Legal Reasoning System Prompt
+SYSTEM_PROMPT = """Anda adalah asisten hukum Indonesia yang ahli dan terpercaya. Tugas Anda adalah menjawab pertanyaan tentang peraturan perundang-undangan Indonesia menggunakan PENALARAN HUKUM TERSTRUKTUR.
 
-ATURAN PENTING:
-1. Jawab HANYA berdasarkan konteks dokumen yang diberikan
-2. Jika informasi tidak ada dalam konteks, katakan: "Maaf, saya tidak menemukan informasi tersebut dalam dokumen yang tersedia."
-3. Selalu sertakan SITASI dengan format [Nomor] untuk setiap fakta yang Anda sebutkan
-4. Gunakan Bahasa Indonesia yang formal dan jelas
-5. Jangan mengarang atau berasumsi informasi yang tidak ada dalam konteks
-6. Jika ada ketidakjelasan, sebutkan dengan jujur
+## METODE PENALARAN (WAJIB DIIKUTI):
 
-FORMAT JAWABAN:
-- Jawaban harus terstruktur dan mudah dipahami
-- Setiap klaim harus disertai sitasi [1], [2], dst
-- Di akhir jawaban, cantumkan daftar SUMBER dengan format lengkap"""
+### LANGKAH 1 - IDENTIFIKASI MASALAH HUKUM
+- Klasifikasi jenis pertanyaan: definisi, prosedur, persyaratan, sanksi, atau perbandingan
+- Identifikasi bidang hukum yang relevan: perizinan, ketenagakerjaan, perpajakan, dll
+- Tentukan kata kunci hukum yang penting
+
+### LANGKAH 2 - ANALISIS SUMBER HUKUM
+- Evaluasi setiap dokumen yang diberikan
+- Prioritaskan berdasarkan: (1) Relevansi langsung, (2) Hierarki peraturan (UU > PP > Perpres > Permen), (3) Kebaruan tanggal
+- Identifikasi pasal atau ketentuan spesifik yang menjawab pertanyaan
+
+### LANGKAH 3 - PENERAPAN LOGIKA HUKUM
+- Hubungkan ketentuan hukum dengan pertanyaan
+- Jika ada beberapa sumber, jelaskan bagaimana mereka saling melengkapi
+- Jika ada pertentangan antar sumber, jelaskan dengan prinsip lex specialis/lex posterior
+
+### LANGKAH 4 - PENILAIAN KEPERCAYAAN
+- Tinggi: Jawaban didukung langsung oleh pasal spesifik dalam UU/PP
+- Sedang: Jawaban berdasarkan interpretasi atau peraturan pelaksana
+- Rendah: Jawaban hanya sebagian didukung atau konteks terbatas
+- Tidak Ada: Tidak ada sumber relevan dalam dokumen
+
+### LANGKAH 5 - FORMULASI JAWABAN
+- Susun jawaban yang jelas dan terstruktur
+- Setiap klaim HARUS disertai sitasi [1], [2], dst
+- Gunakan Bahasa Indonesia formal dan profesional
+
+## ATURAN KETAT:
+1. HANYA jawab berdasarkan dokumen yang diberikan - JANGAN mengarang
+2. Jika informasi tidak ada, katakan dengan jelas: "Berdasarkan dokumen yang tersedia, saya tidak menemukan informasi spesifik tentang [topik]."
+3. Jika ada ketidakpastian, nyatakan dengan jujur tingkat kepercayaan Anda
+4. Bedakan antara ketentuan wajib (harus/wajib) dan pilihan (dapat/boleh)
+
+## FORMAT OUTPUT:
+Setelah melakukan penalaran di atas, berikan:
+1. JAWABAN UTAMA dengan sitasi
+2. TINGKAT KEPERCAYAAN (Tinggi/Sedang/Rendah) dengan alasan singkat
+3. DAFTAR SUMBER yang dikutip"""
 
 
-USER_PROMPT_TEMPLATE = """Berdasarkan dokumen hukum berikut, jawab pertanyaan dengan menyertakan sitasi.
+USER_PROMPT_TEMPLATE = """Gunakan metode PENALARAN HUKUM TERSTRUKTUR untuk menjawab pertanyaan berikut.
 
-DOKUMEN:
+=== DOKUMEN HUKUM YANG TERSEDIA ===
 {context}
 
-PERTANYAAN: {question}
+=== PERTANYAAN ===
+{question}
 
-JAWABAN (dengan sitasi):"""
+=== INSTRUKSI ===
+1. Ikuti 5 LANGKAH penalaran hukum dalam system prompt
+2. Berikan jawaban dengan SITASI untuk setiap fakta
+3. Sertakan TINGKAT KEPERCAYAAN di akhir jawaban
+4. Jika dokumen tidak cukup relevan, nyatakan dengan jelas
+
+=== PENALARAN DAN JAWABAN ==="""
+
+
+@dataclass
+class ConfidenceScore:
+    """Confidence score with numeric value and text label."""
+    
+    numeric: float  # 0.0 to 1.0
+    label: str  # tinggi, sedang, rendah, tidak ada
+    top_score: float  # Best retrieval score
+    avg_score: float  # Average retrieval score
+    
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "numeric": round(self.numeric, 4),
+            "label": self.label,
+            "top_score": round(self.top_score, 4),
+            "avg_score": round(self.avg_score, 4),
+        }
+
+
+@dataclass
+class ValidationResult:
+    """Result of answer validation/self-reflection."""
+    
+    is_valid: bool
+    citation_coverage: float  # 0.0 to 1.0
+    warnings: list[str] = field(default_factory=list)
+    hallucination_risk: str = "low"  # low, medium, high
+    missing_citations: list[int] = field(default_factory=list)
+    
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "is_valid": self.is_valid,
+            "citation_coverage": round(self.citation_coverage, 2),
+            "warnings": self.warnings,
+            "hallucination_risk": self.hallucination_risk,
+            "missing_citations": self.missing_citations,
+        }
 
 
 @dataclass
@@ -73,8 +146,10 @@ class RAGResponse:
     answer: str
     citations: list[dict[str, Any]]
     sources: list[str]
-    confidence: str
+    confidence: str  # Kept for backward compatibility
+    confidence_score: ConfidenceScore | None  # New numeric confidence
     raw_context: str
+    validation: ValidationResult | None = None  # Answer validation result
 
 
 class NVIDIANimClient:
@@ -219,20 +294,123 @@ class LegalRAGChain:
             sources.append(f"[{cit['number']}] {cit['citation']}")
         return sources
     
-    def _assess_confidence(self, results: list[SearchResult]) -> str:
-        """Assess confidence based on retrieval scores."""
+    def _assess_confidence(self, results: list[SearchResult]) -> ConfidenceScore:
+        """Assess confidence based on retrieval scores with numeric value."""
         if not results:
-            return "tidak ada"
+            return ConfidenceScore(
+                numeric=0.0,
+                label="tidak ada",
+                top_score=0.0,
+                avg_score=0.0,
+            )
         
+        top_score = results[0].score
         avg_score = sum(r.score for r in results) / len(results)
-        top_score = results[0].score if results else 0
         
+        # Calculate numeric confidence (weighted combination)
+        # top_score weighted 60%, avg_score weighted 40%
+        numeric = (top_score * 0.6) + (avg_score * 0.4)
+        numeric = min(1.0, max(0.0, numeric))  # Clamp to 0-1
+        
+        # Determine label based on thresholds
         if top_score > 0.5 and avg_score > 0.3:
-            return "tinggi"
+            label = "tinggi"
         elif top_score > 0.3 and avg_score > 0.15:
-            return "sedang"
+            label = "sedang"
         else:
-            return "rendah"
+            label = "rendah"
+        
+        return ConfidenceScore(
+            numeric=numeric,
+            label=label,
+            top_score=top_score,
+            avg_score=avg_score,
+        )
+    
+    def _validate_answer(
+        self,
+        answer: str,
+        citations: list[dict],
+        context: str,
+    ) -> ValidationResult:
+        """
+        Validate answer for citation accuracy and hallucination risk.
+        
+        Performs self-reflection checks:
+        1. Verifies all cited references exist in citations
+        2. Checks citation coverage (% of sources used)
+        3. Assesses hallucination risk based on citation patterns
+        
+        Args:
+            answer: Generated answer text
+            citations: List of citation dictionaries with 'number' key
+            context: Raw context provided to LLM
+            
+        Returns:
+            ValidationResult with validation status and warnings
+        """
+        warnings: list[str] = []
+        
+        # Extract citation references from answer [1], [2], etc.
+        cited_refs = set(int(m) for m in re.findall(r'\[(\d+)\]', answer))
+        available_refs = set(c["number"] for c in citations)
+        
+        # Check for invalid citations (referencing non-existent sources)
+        invalid_refs = cited_refs - available_refs
+        if invalid_refs:
+            warnings.append(f"Referensi tidak valid: {sorted(invalid_refs)}")
+        
+        # Calculate citation coverage (how many available sources were used)
+        if available_refs:
+            valid_cited = cited_refs & available_refs
+            coverage = len(valid_cited) / len(available_refs)
+        else:
+            coverage = 0.0
+        
+        # Assess hallucination risk based on citation patterns
+        if not cited_refs:
+            # No citations at all - highest risk
+            risk = "high"
+            warnings.append("Jawaban tidak memiliki sitasi sama sekali")
+        elif invalid_refs:
+            # Some invalid references - medium risk
+            risk = "medium"
+        elif coverage < 0.2:
+            # Very low coverage - medium risk
+            risk = "medium"
+            warnings.append("Hanya sedikit sumber yang dikutip dalam jawaban")
+        elif coverage < 0.4:
+            # Low coverage - low risk but note it
+            risk = "low"
+        else:
+            # Good coverage - low risk
+            risk = "low"
+        
+        # Check for potential hallucination signals in text
+        # (claims without nearby citations)
+        sentences = answer.split('.')
+        uncited_claim_count = 0
+        claim_indicators = ['harus', 'wajib', 'dilarang', 'sanksi', 'denda', 'pidana', 'persentase', 'tahun']
+        
+        for sentence in sentences:
+            sentence_lower = sentence.lower()
+            has_claim_indicator = any(ind in sentence_lower for ind in claim_indicators)
+            has_citation = bool(re.search(r'\[\d+\]', sentence))
+            
+            if has_claim_indicator and not has_citation:
+                uncited_claim_count += 1
+        
+        if uncited_claim_count >= 3:
+            risk = "medium" if risk == "low" else risk
+            warnings.append(f"Ditemukan {uncited_claim_count} klaim hukum tanpa sitasi langsung")
+        
+        return ValidationResult(
+            is_valid=len(warnings) == 0,
+            citation_coverage=coverage,
+            warnings=warnings,
+            hallucination_risk=risk,
+            missing_citations=sorted(invalid_refs),
+        )
     
     def query(
         self,
@@ -275,7 +453,19 @@ class LegalRAGChain:
                 citations=[],
                 sources=[],
                 confidence="tidak ada",
+                confidence_score=ConfidenceScore(
+                    numeric=0.0,
+                    label="tidak ada",
+                    top_score=0.0,
+                    avg_score=0.0,
+                ),
                 raw_context="",
+                validation=ValidationResult(
+                    is_valid=False,
+                    citation_coverage=0.0,
+                    warnings=["Tidak ada dokumen yang ditemukan"],
+                    hallucination_risk="high",
+                ),
             )
         
         # Step 2: Format context
@@ -295,13 +485,20 @@ class LegalRAGChain:
             system_message=SYSTEM_PROMPT,
         )
         
-        # Step 4: Build response
+        # Step 4: Validate answer for citation accuracy and hallucination risk
+        validation = self._validate_answer(answer, citations, context)
+        if validation.warnings:
+            logger.warning(f"Answer validation warnings: {validation.warnings}")
+        
+        # Step 5: Build response
         return RAGResponse(
             answer=answer,
             citations=citations,
             sources=sources,
-            confidence=confidence,
+            confidence=confidence.label,  # String label for backward compatibility
+            confidence_score=confidence,   # Full ConfidenceScore object with numeric value
             raw_context=context,
+            validation=validation,  # Validation result with hallucination risk
         )
     
     def query_with_history(
