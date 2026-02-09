@@ -85,3 +85,54 @@ export async function checkCompliance(
 
   return response.json();
 }
+
+// Guidance Types
+export interface GuidanceRequest {
+  business_type: string;
+  location?: string;
+  industry?: string;
+}
+
+export interface GuidanceStep {
+  step_number: number;
+  title: string;
+  description: string;
+  required_documents: string[];
+  estimated_time: string;
+  responsible_agency: string;
+  notes: string;
+}
+
+export interface GuidanceCitation {
+  number: number;
+  citation_id: string;
+  citation: string;
+  score: number;
+  metadata: Record<string, unknown>;
+}
+
+export interface GuidanceResponse {
+  business_type: string;
+  business_type_name: string;
+  summary: string;
+  steps: GuidanceStep[];
+  total_estimated_time: string;
+  required_permits: string[];
+  citations: GuidanceCitation[];
+  processing_time_ms: number;
+}
+
+export async function getGuidance(request: GuidanceRequest): Promise<GuidanceResponse> {
+  const response = await fetch(`${API_URL}/api/guidance`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(request),
+  });
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ detail: 'Gagal mendapatkan panduan' }));
+    throw new Error(error.detail || 'Terjadi kesalahan pada server');
+  }
+
+  return response.json();
+}

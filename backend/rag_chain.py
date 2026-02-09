@@ -7,6 +7,7 @@ Provides citations and "I don't know" guardrails.
 
 from __future__ import annotations
 
+import asyncio
 import os
 import json
 import logging
@@ -331,6 +332,30 @@ class LegalRAGChain:
             enhanced_question = question
         
         return self.query(enhanced_question, **kwargs)
+    
+    async def aquery(
+        self,
+        question: str,
+        filter_jenis_dokumen: str | None = None,
+        top_k: int | None = None,
+    ) -> RAGResponse:
+        """
+        Async version of query() for use with FastAPI async endpoints.
+        
+        Args:
+            question: User question in Indonesian
+            filter_jenis_dokumen: Optional filter by document type
+            top_k: Number of documents to retrieve
+        
+        Returns:
+            RAGResponse with answer, citations, and sources
+        """
+        # Run synchronous query in executor to avoid blocking
+        loop = asyncio.get_event_loop()
+        return await loop.run_in_executor(
+            None,
+            lambda: self.query(question, filter_jenis_dokumen, top_k)
+        )
 
 
 def main():

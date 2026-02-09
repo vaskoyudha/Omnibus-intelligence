@@ -155,6 +155,52 @@ class ComplianceResponse(BaseModel):
     processing_time_ms: float = Field(description="Waktu pemrosesan dalam milidetik")
 
 
+class GuidanceRequest(BaseModel):
+    """Request model for business formation guidance."""
+
+    business_type: str = Field(
+        ...,
+        description="Jenis badan usaha: PT, CV, UMKM, Koperasi, Yayasan, Firma, Perorangan",
+        examples=["PT", "CV", "UMKM"],
+    )
+    industry: str | None = Field(
+        default=None,
+        description="Sektor industri: F&B, Retail, Teknologi, Manufaktur, Jasa, dll",
+        examples=["F&B", "Retail", "Teknologi"],
+    )
+    location: str | None = Field(
+        default=None,
+        description="Lokasi usaha (provinsi/kota)",
+        examples=["Jakarta", "Surabaya", "Bandung"],
+    )
+
+
+class GuidanceStep(BaseModel):
+    """Single step in business formation guidance."""
+
+    step_number: int = Field(description="Nomor langkah")
+    title: str = Field(description="Judul langkah")
+    description: str = Field(description="Deskripsi detail langkah")
+    requirements: list[str] = Field(default=[], description="Dokumen/syarat yang diperlukan")
+    estimated_time: str = Field(description="Estimasi waktu penyelesaian")
+    fees: str | None = Field(default=None, description="Estimasi biaya jika ada")
+
+
+class GuidanceResponse(BaseModel):
+    """Response for business formation guidance."""
+
+    business_type: str = Field(description="Jenis badan usaha yang diminta")
+    business_type_name: str = Field(description="Nama lengkap jenis badan usaha")
+    summary: str = Field(description="Ringkasan panduan pendirian")
+    steps: list[GuidanceStep] = Field(description="Langkah-langkah pendirian usaha")
+    total_estimated_time: str = Field(description="Total estimasi waktu seluruh proses")
+    required_permits: list[str] = Field(description="Daftar izin yang diperlukan")
+    citations: list[CitationInfo] = Field(
+        default=[], description="Sitasi peraturan terkait"
+    )
+    processing_time_ms: float = Field(description="Waktu pemrosesan dalam milidetik")
+
+
 # =============================================================================
 # Lifespan Event Handler
 # =============================================================================
@@ -638,6 +684,241 @@ Selalu kutip sumber peraturan yang relevan."""
         raise HTTPException(
             status_code=500,
             detail=f"Gagal memproses pemeriksaan kepatuhan: {str(e)}",
+        )
+
+
+# =============================================================================
+# Guidance Endpoint - Business Formation Guide
+# =============================================================================
+
+# Business type mappings
+BUSINESS_TYPE_NAMES = {
+    "PT": "Perseroan Terbatas",
+    "CV": "Commanditaire Vennootschap (Persekutuan Komanditer)",
+    "UMKM": "Usaha Mikro, Kecil, dan Menengah",
+    "Koperasi": "Koperasi",
+    "Yayasan": "Yayasan",
+    "Firma": "Persekutuan Firma",
+    "Perorangan": "Usaha Perorangan / UD",
+}
+
+
+def parse_guidance_steps(answer: str) -> list[GuidanceStep]:
+    """Parse LLM response into structured guidance steps."""
+    steps = []
+    lines = answer.split("\n")
+    current_step = None
+    step_number = 0
+
+    for line in lines:
+        line = line.strip()
+        if not line:
+            continue
+
+        # Detect step headers (numbered items or "Langkah X")
+        is_step_header = False
+        if line.startswith(("1.", "2.", "3.", "4.", "5.", "6.", "7.", "8.", "9.")):
+            is_step_header = True
+        elif "langkah" in line.lower() and any(c.isdigit() for c in line[:20]):
+            is_step_header = True
+        elif line.startswith("**") and any(c.isdigit() for c in line[:10]):
+            is_step_header = True
+
+        if is_step_header:
+            # Save previous step if exists
+            if current_step:
+                steps.append(current_step)
+
+            step_number += 1
+            # Clean up the title
+            title = line.lstrip("0123456789.-) ").strip()
+            title = title.replace("**", "").strip()
+            if title.lower().startswith("langkah"):
+                title = title.split(":", 1)[-1].strip() if ":" in title else title
+
+            current_step = GuidanceStep(
+                step_number=step_number,
+                title=title[:100] if title else f"Langkah {step_number}",
+                description="",
+                requirements=[],
+                estimated_time="1-2 minggu",
+                fees=None,
+            )
+        elif current_step:
+            # Add content to current step
+            if "waktu" in line.lower() or "hari" in line.lower() or "minggu" in line.lower():
+                # Extract time estimate
+                current_step.estimated_time = line[:50]
+            elif "biaya" in line.lower() or "rp" in line.lower():
+                # Extract fee info
+                current_step.fees = line[:100]
+            elif line.startswith("-") or line.startswith("•"):
+                # Requirement item
+                req = line.lstrip("-• ").strip()
+                if req and len(req) > 3:
+                    current_step.requirements.append(req[:150])
+            else:
+                # Add to description
+                current_step.description += " " + line
+                current_step.description = current_step.description.strip()[:500]
+
+    # Add last step
+    if current_step:
+        steps.append(current_step)
+
+    # Ensure at least one step exists
+    if not steps:
+        steps.append(
+            GuidanceStep(
+                step_number=1,
+                title="Konsultasi Awal",
+                description="Konsultasikan rencana pendirian usaha dengan notaris atau konsultan hukum untuk mendapatkan panduan yang sesuai dengan kondisi Anda.",
+                requirements=["KTP", "NPWP", "Dokumen identitas lainnya"],
+                estimated_time="1-2 minggu",
+                fees="Bervariasi tergantung notaris",
+            )
+        )
+
+    return steps
+
+
+def extract_permits(answer: str) -> list[str]:
+    """Extract required permits from the answer."""
+    permits = []
+    permit_keywords = [
+        "NIB", "SIUP", "TDP", "NPWP", "SKT", "SKDP", "IMB", "Izin Usaha",
+        "Izin Lokasi", "Izin Lingkungan", "AMDAL", "UKL-UPL", "Sertifikat",
+        "OSS", "Akta Pendirian", "SK Kemenkumham", "Izin Prinsip",
+    ]
+
+    for keyword in permit_keywords:
+        if keyword.lower() in answer.lower():
+            permits.append(keyword)
+
+    # Add mandatory permits based on common requirements
+    if "NIB" not in permits:
+        permits.insert(0, "NIB (Nomor Induk Berusaha)")
+
+    return list(set(permits))[:10]  # Limit to 10 unique permits
+
+
+@app.post("/api/guidance", response_model=GuidanceResponse, tags=["Guidance"])
+async def get_business_guidance(request: GuidanceRequest):
+    """
+    Panduan pendirian usaha berdasarkan jenis badan usaha.
+
+    Endpoint ini memberikan panduan langkah demi langkah untuk mendirikan
+    berbagai jenis badan usaha di Indonesia, termasuk persyaratan dokumen,
+    estimasi waktu, dan biaya yang diperlukan.
+
+    **Jenis Badan Usaha yang Didukung:**
+    - PT (Perseroan Terbatas)
+    - CV (Commanditaire Vennootschap)
+    - UMKM (Usaha Mikro, Kecil, dan Menengah)
+    - Koperasi
+    - Yayasan
+    - Firma (Persekutuan Firma)
+    - Perorangan (Usaha Perorangan / UD)
+
+    Returns:
+        GuidanceResponse dengan langkah-langkah pendirian dan sitasi peraturan
+    """
+    import time
+
+    start_time = time.time()
+
+    if rag_chain is None:
+        raise HTTPException(
+            status_code=503,
+            detail="RAG chain belum diinisialisasi. Silakan coba lagi nanti.",
+        )
+
+    # Validate business type
+    business_type = request.business_type.upper()
+    if business_type not in BUSINESS_TYPE_NAMES and request.business_type not in BUSINESS_TYPE_NAMES:
+        # Try to match common variations
+        type_mapping = {
+            "PERSEROAN": "PT",
+            "PERSEROAN TERBATAS": "PT",
+            "KOMANDITER": "CV",
+            "PERSEKUTUAN": "Firma",
+            "USAHA PERORANGAN": "Perorangan",
+            "UD": "Perorangan",
+        }
+        business_type = type_mapping.get(business_type, request.business_type)
+
+    business_type_name = BUSINESS_TYPE_NAMES.get(
+        business_type, BUSINESS_TYPE_NAMES.get(request.business_type, request.business_type)
+    )
+
+    # Build the query for RAG
+    industry_context = f" di sektor {request.industry}" if request.industry else ""
+    location_context = f" di {request.location}" if request.location else ""
+
+    query = f"""Berikan panduan lengkap langkah demi langkah untuk mendirikan {business_type_name} ({business_type}){industry_context}{location_context}.
+
+Jelaskan secara detail:
+1. Langkah-langkah pendirian dari awal sampai selesai
+2. Dokumen yang diperlukan untuk setiap langkah
+3. Estimasi waktu untuk setiap langkah
+4. Estimasi biaya jika ada
+5. Izin-izin yang diperlukan
+6. Dasar hukum dan peraturan yang berlaku
+
+Gunakan format bernomor untuk setiap langkah."""
+
+    try:
+        # Query the RAG chain
+        response = await rag_chain.aquery(query)
+
+        # Parse the response into structured steps
+        steps = parse_guidance_steps(response.answer)
+
+        # Extract required permits
+        required_permits = extract_permits(response.answer)
+
+        # Calculate total estimated time
+        total_weeks = len(steps) * 2  # Rough estimate: 2 weeks per step
+        if total_weeks <= 4:
+            total_estimated_time = f"{total_weeks} minggu"
+        else:
+            total_estimated_time = f"{total_weeks // 4}-{(total_weeks // 4) + 1} bulan"
+
+        # Build citations (matching CitationInfo model structure)
+        citations = [
+            CitationInfo(
+                number=c["number"],
+                citation_id=c["citation_id"],
+                citation=c["citation"],
+                score=c["score"],
+                metadata=c.get("metadata", {}),
+            )
+            for c in response.citations[:5]  # Limit to 5 citations
+        ]
+
+        # Build summary
+        summary = response.answer[:400] + "..." if len(response.answer) > 400 else response.answer
+        # Clean up summary
+        summary = summary.split("\n")[0] if "\n" in summary[:200] else summary
+
+        processing_time = (time.time() - start_time) * 1000
+
+        return GuidanceResponse(
+            business_type=business_type,
+            business_type_name=business_type_name,
+            summary=summary,
+            steps=steps,
+            total_estimated_time=total_estimated_time,
+            required_permits=required_permits,
+            citations=citations,
+            processing_time_ms=round(processing_time, 2),
+        )
+
+    except Exception as e:
+        logger.error(f"Error processing guidance request: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=500,
+            detail=f"Gagal memproses permintaan panduan: {str(e)}",
         )
 
 

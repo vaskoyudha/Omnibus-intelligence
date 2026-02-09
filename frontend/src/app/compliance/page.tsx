@@ -86,12 +86,22 @@ export default function CompliancePage() {
       {/* Header */}
       <div className="bg-gradient-to-r from-emerald-700 to-emerald-800 text-white py-12 px-4">
         <div className="max-w-4xl mx-auto">
-          <Link href="/" className="inline-flex items-center gap-2 text-emerald-200 hover:text-white mb-4 transition-colors">
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
-            Kembali ke Beranda
-          </Link>
+          <div className="flex items-center justify-between mb-4">
+            <Link href="/" className="inline-flex items-center gap-2 text-emerald-200 hover:text-white transition-colors">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+              Kembali ke Beranda
+            </Link>
+            <div className="flex gap-3">
+              <Link 
+                href="/guidance" 
+                className="text-sm px-3 py-1.5 bg-emerald-600/50 rounded-lg hover:bg-emerald-500 transition-colors"
+              >
+                Panduan Usaha
+              </Link>
+            </div>
+          </div>
           <h1 className="text-4xl font-bold mb-2">Pemeriksa Kepatuhan</h1>
           <p className="text-emerald-200 text-lg">Compliance Checker untuk Kegiatan Usaha</p>
           <p className="text-emerald-300 text-sm mt-2">

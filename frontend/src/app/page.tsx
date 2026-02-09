@@ -49,6 +49,12 @@ export default function Home() {
             >
               Pemeriksa Kepatuhan
             </Link>
+            <Link 
+              href="/guidance" 
+              className="text-sm px-3 py-1.5 bg-blue-700/50 rounded-lg hover:bg-blue-600 transition-colors"
+            >
+              Panduan Usaha
+            </Link>
           </div>
         </nav>
         
