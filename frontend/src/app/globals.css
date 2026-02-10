@@ -4,70 +4,219 @@
 /* Highlight.js GitHub Dark theme for code blocks */
 @import "highlight.js/styles/github-dark.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* ============================================
+   DESIGN SYSTEM: Light Luxurious Theme
+   ============================================ */
 
-.dark {
-  --background: #0f172a;
-  --foreground: #e2e8f0;
+:root {
+  /* Background */
+  --background: #FFFFFF;
+  --foreground: #0F172A;
+  --bg-secondary: #F8FAFC;
+  --bg-tertiary: #F1F5F9;
+  --bg-glass: rgba(255, 255, 255, 0.8);
+
+  /* Accent - Blue */
+  --accent-primary: #2563EB;
+  --accent-secondary: #1E40AF;
+  --accent-light: #DBEAFE;
+  --accent-lighter: #EFF6FF;
+
+  /* Text */
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --text-muted: #94A3B8;
+
+  /* Borders */
+  --border-default: #E2E8F0;
+  --border-accent: #BFDBFE;
+
+  /* Status */
+  --color-success: #059669;
+  --color-warning: #D97706;
+  --color-error: #DC2626;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.06), 0 2px 4px -2px rgba(0,0,0,0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -4px rgba(0,0,0,0.04);
+  --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.08), 0 8px 10px -6px rgba(0,0,0,0.04);
+  --shadow-glow: 0 0 40px rgba(37,99,235,0.15);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --color-bg-secondary: var(--bg-secondary);
+  --color-bg-tertiary: var(--bg-tertiary);
+
+  --color-accent: var(--accent-primary);
+  --color-accent-dark: var(--accent-secondary);
+  --color-accent-light: var(--accent-light);
+  --color-accent-lighter: var(--accent-lighter);
+
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+
+  --color-border: var(--border-default);
+  --color-border-accent: var(--border-accent);
+
+  --color-success: var(--color-success);
+  --color-warning: var(--color-warning);
+  --color-error: var(--color-error);
+
+  --font-sans: 'Plus Jakarta Sans Variable', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   --font-mono: var(--font-geist-mono);
+}
+
+/* ============================================
+   BASE STYLES
+   ============================================ */
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Plus Jakarta Sans Variable', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   transition: background-color 0.2s ease, color 0.2s ease;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Dark mode card styles */
-.dark .bg-white {
-  background-color: #1e293b !important;
+::selection {
+  background: var(--accent-light);
+  color: var(--accent-secondary);
 }
 
-.dark .bg-slate-50 {
-  background-color: #0f172a !important;
+/* ============================================
+   CUSTOM SCROLLBAR
+   ============================================ */
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
 }
 
-.dark .border-slate-200 {
-  border-color: #334155 !important;
+::-webkit-scrollbar-track {
+  background: transparent;
 }
 
-.dark .text-slate-800 {
-  color: #e2e8f0 !important;
+::-webkit-scrollbar-thumb {
+  background: var(--border-default);
+  border-radius: 9999px;
 }
 
-.dark .text-slate-700 {
-  color: #cbd5e1 !important;
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
 }
 
-.dark .text-slate-600 {
-  color: #94a3b8 !important;
+/* ============================================
+   GLASS MORPHISM
+   ============================================ */
+
+.glass {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-.dark .text-slate-500 {
-  color: #64748b !important;
+.glass-strong {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
-/* Dark mode prose styling */
-.dark .prose {
-  --tw-prose-body: theme('colors.slate.300');
-  --tw-prose-headings: theme('colors.slate.100');
-  --tw-prose-links: theme('colors.blue.400');
-  --tw-prose-bold: theme('colors.slate.100');
-  --tw-prose-counters: theme('colors.slate.400');
-  --tw-prose-bullets: theme('colors.slate.500');
+/* ============================================
+   AMBIENT BACKGROUND ANIMATIONS
+   ============================================ */
+
+@keyframes gradient-shift {
+  0%, 100% { transform: translate(0%, 0%) scale(1); }
+  25% { transform: translate(5%, -5%) scale(1.05); }
+  50% { transform: translate(-3%, 8%) scale(0.95); }
+  75% { transform: translate(-5%, -3%) scale(1.02); }
 }
 
-/* Light mode prose styling */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-gradient-shift {
+  animation: gradient-shift 15s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 4s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, var(--bg-tertiary) 25%, var(--bg-secondary) 50%, var(--bg-tertiary) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/* ============================================
+   FOCUS & INTERACTIVE STATES
+   ============================================ */
+
+.focus-ring {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3);
+  border-color: var(--accent-primary);
+}
+
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+button:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-glow);
+  border-color: var(--accent-primary);
+}
+
+/* ============================================
+   TYPOGRAPHY
+   ============================================ */
+
+.text-hero {
+  font-size: 3rem;
+  line-height: 3.25rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, #2563EB, #7C3AED);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ============================================
+   PROSE (Legal Content)
+   ============================================ */
+
 .prose {
   --tw-prose-body: theme('colors.slate.700');
   --tw-prose-headings: theme('colors.slate.800');
@@ -98,37 +247,28 @@ body {
   text-decoration: none;
 }
 
-.dark .prose a[href^="["], .dark .legal-citation {
-  color: theme('colors.blue.400');
+/* ============================================
+   TYPING CURSOR ANIMATION
+   ============================================ */
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 }
 
-/* Dark mode gradient overrides */
-.dark .bg-gradient-to-r.from-blue-600 {
-  --tw-gradient-from: #1e40af !important;
+.typing-cursor::after {
+  content: '|';
+  display: inline;
+  color: var(--accent-primary);
+  font-weight: 300;
+  animation: blink 0.8s step-end infinite;
+  margin-left: 1px;
 }
 
-.dark .bg-gradient-to-r.to-indigo-700 {
-  --tw-gradient-to: #4338ca !important;
-}
+/* ============================================
+   PRINT STYLES
+   ============================================ */
 
-/* Dark mode for amber/warning elements */
-.dark .bg-amber-50 {
-  background-color: #422006 !important;
-}
-
-.dark .border-amber-200 {
-  border-color: #854d0e !important;
-}
-
-.dark .text-amber-800 {
-  color: #fcd34d !important;
-}
-
-.dark .text-amber-900 {
-  color: #fef3c7 !important;
-}
-
-/* Print styles */
 @media print {
   .no-print {
     display: none !important;
@@ -144,13 +284,8 @@ body {
     line-height: 1.5;
   }
   
-  /* Force light mode for printing */
   body {
     background: white !important;
     color: black !important;
-  }
-  
-  .dark .bg-white {
-    background-color: white !important;
   }
 }

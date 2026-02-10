@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist_Mono } from "next/font/google";
+import "@fontsource-variable/plus-jakarta-sans";
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+import Navbar from "@/components/Navbar";
+import PageTransition from "@/components/PageTransition";
+import AmbientBackground from "@/components/AmbientBackground";
+import { Toaster } from "sonner";
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -32,10 +32,27 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="id" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+      <body className={`${geistMono.variable} antialiased`}>
+        <AmbientBackground />
+        <Navbar />
+        <main className="pt-16 min-h-screen">
+          <PageTransition>
+            {children}
+          </PageTransition>
+        </main>
+        <Toaster
+          position="bottom-right"
+          toastOptions={{
+            style: {
+              background: 'rgba(255, 255, 255, 0.92)',
+              backdropFilter: 'blur(20px)',
+              border: '1px solid rgba(255, 255, 255, 0.5)',
+              boxShadow: '0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -4px rgba(0,0,0,0.04)',
+            },
+          }}
+          richColors
+          closeButton
+        />
       </body>
     </html>
   );
