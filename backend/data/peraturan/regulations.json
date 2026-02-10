@@ -1391,5 +1391,670 @@
     "pasal": "26",
     "text": "Penyimpanan Data Elektronik sebagaimana dimaksud pada ayat (1) dapat dilakukan: a. di dalam negeri; dan/atau b. di luar negeri.",
     "ayat": "2"
+  },
+  {
+    "jenis_dokumen": "UU",
+    "nomor": "36",
+    "tahun": 2009,
+    "judul": "Kesehatan",
+    "tentang": "Kesehatan",
+    "bab": "I",
+    "pasal": "1",
+    "text": "Dalam Undang-Undang ini yang dimaksud dengan: 1. Kesehatan adalah keadaan sehat, baik secara fisik, mental, spiritual maupun sosial yang memungkinkan setiap orang untuk hidup produktif secara sosial dan ekonomis. 2. Sumber daya di bidang kesehatan adalah segala bentuk dana, tenaga, perbekalan kesehatan, sediaan farmasi dan alat kesehatan serta fasilitas pelayanan kesehatan dan teknologi yang dimanfaatkan untuk menyelenggarakan upaya kesehatan yang dilakukan oleh Pemerintah, pemerintah daerah, dan/atau masyarakat. 3. Tenaga kesehatan adalah setiap orang yang mengabdikan diri dalam bidang kesehatan serta memiliki pengetahuan dan/atau keterampilan melalui pendidikan di bidang kesehatan."
+  },
+  {
+    "jenis_dokumen": "UU",
+    "nomor": "36",
+    "tahun": 2009,
+    "judul": "Kesehatan",
+    "tentang": "Kesehatan",
+    "bab": "II",
+    "pasal": "2",
+    "text": "Pembangunan kesehatan diselenggarakan dengan berasaskan perikemanusiaan, keseimbangan, manfaat, pelindungan, penghormatan terhadap hak dan kewajiban, keadilan, gender dan nondiskriminatif dan norma-norma agama."
+  },
+  {
+    "jenis_dokumen": "UU",
+    "nomor": "36",
+    "tahun": 2009,
+    "judul": "Kesehatan",
+    "tentang": "Kesehatan",
+    "bab": "II",
+    "pasal": "3",
+    "text": "Pembangunan kesehatan bertujuan untuk meningkatkan kesadaran, kemauan, dan kemampuan hidup sehat bagi setiap orang agar terwujud derajat kesehatan masyarakat yang setinggi-tingginya, sebagai investasi bagi pembangunan sumber daya manusia yang produktif secara sosial dan ekonomis."
+  },
+  {
+    "jenis_dokumen": "UU",
+    "nomor": "36",
+    "tahun": 2009,
+    "judul": "Kesehatan",
+    "tentang": "Kesehatan",
+    "bab": "III",
+    "pasal": "4",
+    "text": "Setiap orang berhak atas kesehatan."
+  },
+  {
+    "jenis_dokumen": "UU",
+    "nomor": "36",
+    "tahun": 2009,
+    "judul": "Kesehatan",
+    "tentang": "Kesehatan",
+    "bab": "III",
+    "pasal": "5",
+    "text": "Setiap orang mempunyai hak yang sama dalam memperoleh akses atas sumber daya di bidang kesehatan.",
+    "ayat": "1"
+  },
+  {
+    "jenis_dokumen": "UU",
+    "nomor": "36",
+    "tahun": 2009,
+    "judul": "Kesehatan",
+    "tentang": "Kesehatan",
+    "bab": "III",
+    "pasal": "5",
+    "text": "Setiap orang mempunyai hak dalam memperoleh pelayanan kesehatan yang aman, bermutu, dan terjangkau.",
+    "ayat": "2"
+  },
+  {
+    "jenis_dokumen": "UU",
+    "nomor": "36",
+    "tahun": 2009,
+    "judul": "Kesehatan",
+    "tentang": "Kesehatan",
+    "bab": "III",
+    "pasal": "5",
+    "text": "Setiap orang berhak secara mandiri dan bertanggung jawab menentukan sendiri pelayanan kesehatan yang diperlukan bagi dirinya.",
+    "ayat": "3"
+  },
+  {
+    "jenis_dokumen": "UU",
+    "nomor": "36",
+    "tahun": 2009,
+    "judul": "Kesehatan",
+    "tentang": "Kesehatan",
+    "bab": "V",
+    "pasal": "30",
+    "text": "Fasilitas pelayanan kesehatan menurut jenis pelayanannya terdiri atas: a. pelayanan kesehatan perseorangan; dan b. pelayanan kesehatan masyarakat.",
+    "ayat": "1"
+  },
+  {
+    "jenis_dokumen": "UU",
+    "nomor": "36",
+    "tahun": 2009,
+    "judul": "Kesehatan",
+    "tentang": "Kesehatan",
+    "bab": "V",
+    "pasal": "30",
+    "text": "Fasilitas pelayanan kesehatan sebagaimana dimaksud pada ayat (1) meliputi: a. pelayanan kesehatan tingkat pertama; b. pelayanan kesehatan tingkat kedua; dan c. pelayanan kesehatan tingkat ketiga.",
+    "ayat": "2"
+  },
+  {
+    "jenis_dokumen": "UU",
+    "nomor": "36",
+    "tahun": 2009,
+    "judul": "Kesehatan",
+    "tentang": "Kesehatan",
+    "bab": "V",
+    "pasal": "36",
+    "text": "Setiap tenaga kesehatan yang melakukan praktik di bidang pelayanan kesehatan wajib memiliki izin praktik sesuai dengan ketentuan peraturan perundang-undangan.",
+    "ayat": "1"
+  },
+  {
+    "jenis_dokumen": "UU",
+    "nomor": "32",
+    "tahun": 2009,
+    "judul": "Perlindungan dan Pengelolaan Lingkungan Hidup",
+    "tentang": "Perlindungan dan Pengelolaan Lingkungan Hidup",
+    "bab": "I",
+    "pasal": "1",
+    "text": "Dalam Undang-Undang ini yang dimaksud dengan: 1. Lingkungan hidup adalah kesatuan ruang dengan semua benda, daya, keadaan, dan makhluk hidup, termasuk manusia dan perilakunya, yang mempengaruhi alam itu sendiri, kelangsungan perikehidupan, dan kesejahteraan manusia serta makhluk hidup lain. 2. Perlindungan dan pengelolaan lingkungan hidup adalah upaya sistematis dan terpadu yang dilakukan untuk melestarikan fungsi lingkungan hidup dan mencegah terjadinya pencemaran dan/atau kerusakan lingkungan hidup. 3. Pembangunan berkelanjutan adalah upaya sadar dan terencana yang memadukan aspek lingkungan hidup, sosial, dan ekonomi ke dalam strategi pembangunan."
+  },
+  {
+    "jenis_dokumen": "UU",
+    "nomor": "32",
+    "tahun": 2009,
+    "judul": "Perlindungan dan Pengelolaan Lingkungan Hidup",
+    "tentang": "Perlindungan dan Pengelolaan Lingkungan Hidup",
+    "bab": "I",
+    "pasal": "1",
+    "text": "Analisis mengenai dampak lingkungan hidup, yang selanjutnya disebut Amdal, adalah kajian mengenai dampak penting suatu usaha dan/atau kegiatan yang direncanakan pada lingkungan hidup yang diperlukan bagi proses pengambilan keputusan tentang penyelenggaraan usaha dan/atau kegiatan.",
+    "ayat": "11"
+  },
+  {
+    "jenis_dokumen": "UU",
+    "nomor": "32",
+    "tahun": 2009,
+    "judul": "Perlindungan dan Pengelolaan Lingkungan Hidup",
+    "tentang": "Perlindungan dan Pengelolaan Lingkungan Hidup",
+    "bab": "III",
+    "pasal": "22",
+    "text": "Setiap usaha dan/atau kegiatan yang berdampak penting terhadap lingkungan hidup wajib memiliki Amdal.",
+    "ayat": "1"
+  },
+  {
+    "jenis_dokumen": "UU",
+    "nomor": "32",
+    "tahun": 2009,
+    "judul": "Perlindungan dan Pengelolaan Lingkungan Hidup",
+    "tentang": "Perlindungan dan Pengelolaan Lingkungan Hidup",
+    "bab": "III",
+    "pasal": "22",
+    "text": "Dampak penting ditentukan berdasarkan kriteria: a. besarnya jumlah penduduk yang akan terkena dampak rencana usaha dan/atau kegiatan; b. luas wilayah penyebaran dampak; c. intensitas dan lamanya dampak berlangsung; d. banyaknya komponen lingkungan hidup lain yang akan terkena dampak; e. sifat kumulatif dampak; f. berbalik atau tidak berbaliknya dampak; dan/atau g. kriteria lain sesuai dengan perkembangan ilmu pengetahuan dan teknologi.",
+    "ayat": "2"
+  },
+  {
+    "jenis_dokumen": "UU",
+    "nomor": "32",
+    "tahun": 2009,
+    "judul": "Perlindungan dan Pengelolaan Lingkungan Hidup",
+    "tentang": "Perlindungan dan Pengelolaan Lingkungan Hidup",
+    "bab": "III",
+    "pasal": "34",
+    "text": "Setiap usaha dan/atau kegiatan yang tidak termasuk dalam kriteria wajib Amdal wajib memiliki upaya pengelolaan lingkungan hidup dan upaya pemantauan lingkungan hidup (UKL-UPL).",
+    "ayat": "1"
+  },
+  {
+    "jenis_dokumen": "UU",
+    "nomor": "32",
+    "tahun": 2009,
+    "judul": "Perlindungan dan Pengelolaan Lingkungan Hidup",
+    "tentang": "Perlindungan dan Pengelolaan Lingkungan Hidup",
+    "bab": "V",
+    "pasal": "36",
+    "text": "Setiap usaha dan/atau kegiatan yang wajib memiliki Amdal atau UKL-UPL wajib memiliki izin lingkungan.",
+    "ayat": "1"
+  },
+  {
+    "jenis_dokumen": "UU",
+    "nomor": "32",
+    "tahun": 2009,
+    "judul": "Perlindungan dan Pengelolaan Lingkungan Hidup",
+    "tentang": "Perlindungan dan Pengelolaan Lingkungan Hidup",
+    "bab": "V",
+    "pasal": "36",
+    "text": "Izin lingkungan sebagaimana dimaksud pada ayat (1) diterbitkan berdasarkan keputusan kelayakan lingkungan hidup atau rekomendasi UKL-UPL.",
+    "ayat": "2"
+  },
+  {
+    "jenis_dokumen": "UU",
+    "nomor": "32",
+    "tahun": 2009,
+    "judul": "Perlindungan dan Pengelolaan Lingkungan Hidup",
+    "tentang": "Perlindungan dan Pengelolaan Lingkungan Hidup",
+    "bab": "X",
+    "pasal": "65",
+    "text": "Setiap orang berhak atas lingkungan hidup yang baik dan sehat sebagai bagian dari hak asasi manusia.",
+    "ayat": "1"
+  },
+  {
+    "jenis_dokumen": "UU",
+    "nomor": "32",
+    "tahun": 2009,
+    "judul": "Perlindungan dan Pengelolaan Lingkungan Hidup",
+    "tentang": "Perlindungan dan Pengelolaan Lingkungan Hidup",
+    "bab": "XII",
+    "pasal": "87",
+    "text": "Setiap penanggung jawab usaha dan/atau kegiatan yang melakukan perbuatan melanggar hukum berupa pencemaran dan/atau perusakan lingkungan hidup yang menimbulkan kerugian pada orang lain atau lingkungan hidup wajib membayar ganti rugi dan/atau melakukan tindakan tertentu.",
+    "ayat": "1"
+  },
+  {
+    "jenis_dokumen": "UU",
+    "nomor": "32",
+    "tahun": 2009,
+    "judul": "Perlindungan dan Pengelolaan Lingkungan Hidup",
+    "tentang": "Perlindungan dan Pengelolaan Lingkungan Hidup",
+    "bab": "XV",
+    "pasal": "98",
+    "text": "Setiap orang yang dengan sengaja melakukan perbuatan yang mengakibatkan dilampauinya baku mutu udara ambien, baku mutu air, baku mutu air laut, atau kriteria baku kerusakan lingkungan hidup, dipidana dengan pidana penjara paling singkat 3 (tiga) tahun dan paling lama 10 (sepuluh) tahun dan denda paling sedikit Rp3.000.000.000,00 (tiga miliar rupiah) dan paling banyak Rp10.000.000.000,00 (sepuluh miliar rupiah).",
+    "ayat": "1"
+  },
+  {
+    "jenis_dokumen": "UU",
+    "nomor": "5",
+    "tahun": 1960,
+    "judul": "Peraturan Dasar Pokok-Pokok Agraria",
+    "tentang": "Peraturan Dasar Pokok-Pokok Agraria",
+    "bab": "I",
+    "pasal": "2",
+    "text": "Atas dasar ketentuan dalam pasal 33 ayat (3) Undang-undang Dasar dan hal-hal sebagai yang dimaksud dalam pasal 1, bumi, air dan ruang angkasa, termasuk kekayaan alam yang terkandung didalamnya itu pada tingkatan tertinggi dikuasai oleh Negara, sebagai organisasi kekuasaan seluruh rakyat.",
+    "ayat": "1"
+  },
+  {
+    "jenis_dokumen": "UU",
+    "nomor": "5",
+    "tahun": 1960,
+    "judul": "Peraturan Dasar Pokok-Pokok Agraria",
+    "tentang": "Peraturan Dasar Pokok-Pokok Agraria",
+    "bab": "I",
+    "pasal": "4",
+    "text": "Atas dasar hak menguasai dari Negara sebagai yang dimaksud dalam pasal 2 ditentukan adanya macam-macam hak atas permukaan bumi, yang disebut tanah, yang dapat diberikan kepada dan dipunyai oleh orang-orang baik sendiri maupun bersama-sama dengan orang lain serta badan-badan hukum.",
+    "ayat": "1"
+  },
+  {
+    "jenis_dokumen": "UU",
+    "nomor": "5",
+    "tahun": 1960,
+    "judul": "Peraturan Dasar Pokok-Pokok Agraria",
+    "tentang": "Peraturan Dasar Pokok-Pokok Agraria",
+    "bab": "II",
+    "pasal": "16",
+    "text": "Hak-hak atas tanah sebagai yang dimaksud dalam pasal 4 ayat (1) ialah: a. hak milik; b. hak guna-usaha; c. hak guna-bangunan; d. hak pakai; e. hak sewa; f. hak membuka tanah; g. hak memungut-hasil hutan; h. hak-hak lain yang tidak termasuk dalam hak-hak tersebut diatas yang akan ditetapkan dengan undang-undang serta hak-hak yang sifatnya sementara sebagai yang disebutkan dalam pasal 53.",
+    "ayat": "1"
+  },
+  {
+    "jenis_dokumen": "UU",
+    "nomor": "5",
+    "tahun": 1960,
+    "judul": "Peraturan Dasar Pokok-Pokok Agraria",
+    "tentang": "Peraturan Dasar Pokok-Pokok Agraria",
+    "bab": "II",
+    "pasal": "20",
+    "text": "Hak milik adalah hak turun-temurun, terkuat dan terpenuh yang dapat dipunyai orang atas tanah, dengan mengingat ketentuan dalam pasal 6.",
+    "ayat": "1"
+  },
+  {
+    "jenis_dokumen": "UU",
+    "nomor": "5",
+    "tahun": 1960,
+    "judul": "Peraturan Dasar Pokok-Pokok Agraria",
+    "tentang": "Peraturan Dasar Pokok-Pokok Agraria",
+    "bab": "II",
+    "pasal": "20",
+    "text": "Hak milik dapat beralih dan dialihkan kepada pihak lain.",
+    "ayat": "2"
+  },
+  {
+    "jenis_dokumen": "UU",
+    "nomor": "5",
+    "tahun": 1960,
+    "judul": "Peraturan Dasar Pokok-Pokok Agraria",
+    "tentang": "Peraturan Dasar Pokok-Pokok Agraria",
+    "bab": "II",
+    "pasal": "28",
+    "text": "Hak guna-usaha adalah hak untuk mengusahakan tanah yang dikuasai langsung oleh Negara, dalam jangka waktu sebagaimana tersebut dalam pasal 29, guna perusahaan pertanian, perikanan atau peternakan.",
+    "ayat": "1"
+  },
+  {
+    "jenis_dokumen": "UU",
+    "nomor": "5",
+    "tahun": 1960,
+    "judul": "Peraturan Dasar Pokok-Pokok Agraria",
+    "tentang": "Peraturan Dasar Pokok-Pokok Agraria",
+    "bab": "II",
+    "pasal": "35",
+    "text": "Hak guna-bangunan adalah hak untuk mendirikan dan mempunyai bangunan-bangunan atas tanah yang bukan miliknya sendiri, dengan jangka waktu paling lama 30 tahun.",
+    "ayat": "1"
+  },
+  {
+    "jenis_dokumen": "UU",
+    "nomor": "5",
+    "tahun": 1960,
+    "judul": "Peraturan Dasar Pokok-Pokok Agraria",
+    "tentang": "Peraturan Dasar Pokok-Pokok Agraria",
+    "bab": "II",
+    "pasal": "41",
+    "text": "Hak pakai adalah hak untuk menggunakan dan/atau memungut hasil dari tanah yang dikuasai langsung oleh Negara atau tanah milik orang lain, yang memberi wewenang dan kewajiban yang ditentukan dalam keputusan pemberiannya oleh pejabat yang berwenang memberikannya atau dalam perjanjian dengan pemilik tanahnya.",
+    "ayat": "1"
+  },
+  {
+    "jenis_dokumen": "UU",
+    "nomor": "28",
+    "tahun": 2007,
+    "judul": "Ketentuan Umum dan Tata Cara Perpajakan",
+    "tentang": "Perubahan Ketiga atas UU 6/1983 tentang Ketentuan Umum dan Tata Cara Perpajakan",
+    "pasal": "1",
+    "text": "Dalam Undang-Undang ini yang dimaksud dengan: 1. Pajak adalah kontribusi wajib kepada negara yang terutang oleh orang pribadi atau badan yang bersifat memaksa berdasarkan Undang-Undang, dengan tidak mendapatkan imbalan secara langsung dan digunakan untuk keperluan negara bagi sebesar-besarnya kemakmuran rakyat. 2. Wajib Pajak adalah orang pribadi atau badan, meliputi pembayar pajak, pemotong pajak, dan pemungut pajak, yang mempunyai hak dan kewajiban perpajakan sesuai dengan ketentuan peraturan perundang-undangan perpajakan."
+  },
+  {
+    "jenis_dokumen": "UU",
+    "nomor": "28",
+    "tahun": 2007,
+    "judul": "Ketentuan Umum dan Tata Cara Perpajakan",
+    "tentang": "Perubahan Ketiga atas UU 6/1983 tentang Ketentuan Umum dan Tata Cara Perpajakan",
+    "pasal": "2",
+    "text": "Setiap Wajib Pajak yang telah memenuhi persyaratan subjektif dan objektif sesuai dengan ketentuan peraturan perundang-undangan perpajakan wajib mendaftarkan diri pada kantor Direktorat Jenderal Pajak yang wilayah kerjanya meliputi tempat tinggal atau tempat kedudukan Wajib Pajak dan kepadanya diberikan Nomor Pokok Wajib Pajak (NPWP).",
+    "ayat": "1"
+  },
+  {
+    "jenis_dokumen": "UU",
+    "nomor": "28",
+    "tahun": 2007,
+    "judul": "Ketentuan Umum dan Tata Cara Perpajakan",
+    "tentang": "Perubahan Ketiga atas UU 6/1983 tentang Ketentuan Umum dan Tata Cara Perpajakan",
+    "pasal": "2",
+    "text": "Setiap Wajib Pajak sebagai Pengusaha yang dikenai pajak berdasarkan Undang-Undang Pajak Pertambahan Nilai 1984 dan perubahannya, wajib melaporkan usahanya pada kantor Direktorat Jenderal Pajak untuk dikukuhkan sebagai Pengusaha Kena Pajak (PKP).",
+    "ayat": "2"
+  },
+  {
+    "jenis_dokumen": "UU",
+    "nomor": "28",
+    "tahun": 2007,
+    "judul": "Ketentuan Umum dan Tata Cara Perpajakan",
+    "tentang": "Perubahan Ketiga atas UU 6/1983 tentang Ketentuan Umum dan Tata Cara Perpajakan",
+    "pasal": "3",
+    "text": "Setiap Wajib Pajak wajib mengisi Surat Pemberitahuan (SPT) dengan benar, lengkap, dan jelas, dalam bahasa Indonesia dengan menggunakan huruf Latin, angka Arab, satuan mata uang Rupiah, dan menandatangani serta menyampaikannya ke kantor Direktorat Jenderal Pajak tempat Wajib Pajak terdaftar atau dikukuhkan.",
+    "ayat": "1"
+  },
+  {
+    "jenis_dokumen": "UU",
+    "nomor": "28",
+    "tahun": 2007,
+    "judul": "Ketentuan Umum dan Tata Cara Perpajakan",
+    "tentang": "Perubahan Ketiga atas UU 6/1983 tentang Ketentuan Umum dan Tata Cara Perpajakan",
+    "pasal": "3",
+    "text": "Batas waktu penyampaian Surat Pemberitahuan adalah: a. untuk Surat Pemberitahuan Masa, paling lama 20 (dua puluh) hari setelah akhir Masa Pajak; b. untuk Surat Pemberitahuan Tahunan Pajak Penghasilan Wajib Pajak orang pribadi, paling lama 3 (tiga) bulan setelah akhir Tahun Pajak; c. untuk Surat Pemberitahuan Tahunan Pajak Penghasilan Wajib Pajak badan, paling lama 4 (empat) bulan setelah akhir Tahun Pajak.",
+    "ayat": "3"
+  },
+  {
+    "jenis_dokumen": "UU",
+    "nomor": "28",
+    "tahun": 2007,
+    "judul": "Ketentuan Umum dan Tata Cara Perpajakan",
+    "tentang": "Perubahan Ketiga atas UU 6/1983 tentang Ketentuan Umum dan Tata Cara Perpajakan",
+    "pasal": "7",
+    "text": "Apabila Surat Pemberitahuan tidak disampaikan dalam jangka waktu sebagaimana dimaksud dalam Pasal 3 ayat (3) atau batas waktu perpanjangan penyampaian Surat Pemberitahuan, dikenai sanksi administrasi berupa denda sebesar Rp500.000,00 (lima ratus ribu rupiah) untuk Surat Pemberitahuan Masa Pajak Pertambahan Nilai, Rp100.000,00 (seratus ribu rupiah) untuk Surat Pemberitahuan Masa lainnya, dan Rp1.000.000,00 (satu juta rupiah) untuk Surat Pemberitahuan Tahunan Pajak Penghasilan Wajib Pajak badan serta Rp100.000,00 (seratus ribu rupiah) untuk Surat Pemberitahuan Tahunan Pajak Penghasilan Wajib Pajak orang pribadi.",
+    "ayat": "1"
+  },
+  {
+    "jenis_dokumen": "UU",
+    "nomor": "28",
+    "tahun": 2007,
+    "judul": "Ketentuan Umum dan Tata Cara Perpajakan",
+    "tentang": "Perubahan Ketiga atas UU 6/1983 tentang Ketentuan Umum dan Tata Cara Perpajakan",
+    "pasal": "9",
+    "text": "Menteri Keuangan menentukan tanggal jatuh tempo pembayaran dan penyetoran pajak yang terutang untuk suatu saat atau Masa Pajak bagi masing-masing jenis pajak, paling lama 15 (lima belas) hari setelah saat terutangnya pajak atau berakhirnya Masa Pajak.",
+    "ayat": "1"
+  },
+  {
+    "jenis_dokumen": "UU",
+    "nomor": "28",
+    "tahun": 2007,
+    "judul": "Ketentuan Umum dan Tata Cara Perpajakan",
+    "tentang": "Perubahan Ketiga atas UU 6/1983 tentang Ketentuan Umum dan Tata Cara Perpajakan",
+    "pasal": "9",
+    "text": "Pembayaran atau penyetoran pajak yang dilakukan setelah tanggal jatuh tempo pembayaran atau penyetoran pajak, dikenai sanksi administrasi berupa bunga sebesar 2% (dua persen) per bulan yang dihitung dari tanggal jatuh tempo pembayaran sampai dengan tanggal pembayaran.",
+    "ayat": "2a"
+  },
+  {
+    "jenis_dokumen": "UU",
+    "nomor": "28",
+    "tahun": 2007,
+    "judul": "Ketentuan Umum dan Tata Cara Perpajakan",
+    "tentang": "Perubahan Ketiga atas UU 6/1983 tentang Ketentuan Umum dan Tata Cara Perpajakan",
+    "pasal": "13",
+    "text": "Dalam jangka waktu 5 (lima) tahun setelah saat terutangnya pajak atau berakhirnya Masa Pajak, bagian Tahun Pajak, atau Tahun Pajak, Direktur Jenderal Pajak dapat menerbitkan Surat Ketetapan Pajak Kurang Bayar.",
+    "ayat": "1"
+  },
+  {
+    "jenis_dokumen": "UU",
+    "nomor": "28",
+    "tahun": 2007,
+    "judul": "Ketentuan Umum dan Tata Cara Perpajakan",
+    "tentang": "Perubahan Ketiga atas UU 6/1983 tentang Ketentuan Umum dan Tata Cara Perpajakan",
+    "pasal": "38",
+    "text": "Setiap orang yang karena kealpaannya tidak menyampaikan Surat Pemberitahuan atau menyampaikan Surat Pemberitahuan, tetapi isinya tidak benar atau tidak lengkap, atau melampirkan keterangan yang isinya tidak benar sehingga dapat menimbulkan kerugian pada pendapatan negara dan perbuatan tersebut merupakan perbuatan setelah perbuatan yang pertama kali, dipidana dengan pidana denda paling sedikit 1 (satu) kali jumlah pajak terutang yang tidak atau kurang dibayar dan paling banyak 2 (dua) kali jumlah pajak terutang yang tidak atau kurang dibayar, atau dipidana kurungan paling singkat 3 (tiga) bulan atau paling lama 1 (satu) tahun."
+  },
+  {
+    "jenis_dokumen": "UU",
+    "nomor": "7",
+    "tahun": 2021,
+    "judul": "Harmonisasi Peraturan Perpajakan",
+    "tentang": "Harmonisasi Peraturan Perpajakan",
+    "pasal": "2",
+    "text": "Undang-Undang ini mengatur mengenai: a. Pajak Penghasilan; b. Pajak Pertambahan Nilai; c. Ketentuan Umum dan Tata Cara Perpajakan; d. Program Pengungkapan Sukarela Wajib Pajak; e. Pajak Karbon; dan f. Cukai."
+  },
+  {
+    "jenis_dokumen": "UU",
+    "nomor": "7",
+    "tahun": 2021,
+    "judul": "Harmonisasi Peraturan Perpajakan",
+    "tentang": "Harmonisasi Peraturan Perpajakan",
+    "pasal": "3",
+    "text": "Nomor Induk Kependudukan (NIK) bagi Wajib Pajak orang pribadi yang merupakan penduduk Indonesia dan Nomor Pokok Wajib Pajak bagi Wajib Pajak orang pribadi bukan penduduk, Wajib Pajak badan, dan Wajib Pajak instansi pemerintah digunakan sebagai Nomor Pokok Wajib Pajak (NPWP).",
+    "ayat": "1"
+  },
+  {
+    "jenis_dokumen": "UU",
+    "nomor": "7",
+    "tahun": 2021,
+    "judul": "Harmonisasi Peraturan Perpajakan",
+    "tentang": "Harmonisasi Peraturan Perpajakan",
+    "pasal": "7",
+    "text": "Tarif Pajak Penghasilan yang diterapkan atas Penghasilan Kena Pajak bagi Wajib Pajak orang pribadi dalam negeri adalah sebagai berikut: a. sampai dengan Rp60.000.000,00 (enam puluh juta rupiah) dikenai tarif sebesar 5% (lima persen); b. di atas Rp60.000.000,00 (enam puluh juta rupiah) sampai dengan Rp250.000.000,00 (dua ratus lima puluh juta rupiah) dikenai tarif sebesar 15% (lima belas persen); c. di atas Rp250.000.000,00 sampai dengan Rp500.000.000,00 dikenai tarif sebesar 25%; d. di atas Rp500.000.000,00 sampai dengan Rp5.000.000.000,00 dikenai tarif sebesar 30%; e. di atas Rp5.000.000.000,00 dikenai tarif sebesar 35%.",
+    "ayat": "1"
+  },
+  {
+    "jenis_dokumen": "UU",
+    "nomor": "7",
+    "tahun": 2021,
+    "judul": "Harmonisasi Peraturan Perpajakan",
+    "tentang": "Harmonisasi Peraturan Perpajakan",
+    "pasal": "7",
+    "text": "Tarif sebagaimana dimaksud pada ayat (1) diterapkan terhadap Penghasilan Kena Pajak yang dihitung dari penghasilan bruto dikurangi Penghasilan Tidak Kena Pajak (PTKP) dan biaya-biaya yang diperkenankan.",
+    "ayat": "1a"
+  },
+  {
+    "jenis_dokumen": "UU",
+    "nomor": "7",
+    "tahun": 2021,
+    "judul": "Harmonisasi Peraturan Perpajakan",
+    "tentang": "Harmonisasi Peraturan Perpajakan",
+    "pasal": "7",
+    "text": "Wajib Pajak badan dalam negeri dan bentuk usaha tetap dikenai tarif sebesar 22% (dua puluh dua persen) yang mulai berlaku pada Tahun Pajak 2022.",
+    "ayat": "1b"
+  },
+  {
+    "jenis_dokumen": "UU",
+    "nomor": "7",
+    "tahun": 2021,
+    "judul": "Harmonisasi Peraturan Perpajakan",
+    "tentang": "Harmonisasi Peraturan Perpajakan",
+    "pasal": "13",
+    "text": "Tarif Pajak Pertambahan Nilai (PPN) yaitu: a. sebesar 11% (sebelas persen) yang mulai berlaku pada tanggal 1 April 2022; b. sebesar 12% (dua belas persen) yang mulai berlaku paling lambat pada tanggal 1 Januari 2025.",
+    "ayat": "1"
+  },
+  {
+    "jenis_dokumen": "UU",
+    "nomor": "7",
+    "tahun": 2021,
+    "judul": "Harmonisasi Peraturan Perpajakan",
+    "tentang": "Harmonisasi Peraturan Perpajakan",
+    "pasal": "13",
+    "text": "Tarif Pajak Pertambahan Nilai sebesar 0% (nol persen) diterapkan atas: a. ekspor Barang Kena Pajak Berwujud; b. ekspor Barang Kena Pajak Tidak Berwujud; dan c. ekspor Jasa Kena Pajak.",
+    "ayat": "2"
+  },
+  {
+    "jenis_dokumen": "UU",
+    "nomor": "7",
+    "tahun": 2021,
+    "judul": "Harmonisasi Peraturan Perpajakan",
+    "tentang": "Harmonisasi Peraturan Perpajakan",
+    "pasal": "44",
+    "text": "Pajak karbon dikenakan atas emisi karbon yang memberikan dampak negatif bagi lingkungan hidup.",
+    "ayat": "1"
+  },
+  {
+    "jenis_dokumen": "UU",
+    "nomor": "7",
+    "tahun": 2021,
+    "judul": "Harmonisasi Peraturan Perpajakan",
+    "tentang": "Harmonisasi Peraturan Perpajakan",
+    "pasal": "44",
+    "text": "Pajak karbon terutang atas pembelian barang yang mengandung karbon dan/atau aktivitas yang menghasilkan emisi karbon dalam jumlah tertentu pada periode tertentu.",
+    "ayat": "2"
+  },
+  {
+    "jenis_dokumen": "PP",
+    "nomor": "35",
+    "tahun": 2021,
+    "judul": "PKWT, Alih Daya, Waktu Kerja, dan PHK",
+    "tentang": "Perjanjian Kerja Waktu Tertentu, Alih Daya, Waktu Kerja dan Waktu Istirahat, dan Pemutusan Hubungan Kerja",
+    "pasal": "1",
+    "text": "Dalam Peraturan Pemerintah ini yang dimaksud dengan: 1. Perjanjian Kerja Waktu Tertentu yang selanjutnya disingkat PKWT adalah perjanjian kerja antara pekerja/buruh dengan pengusaha untuk mengadakan hubungan kerja dalam waktu tertentu atau untuk pekerjaan tertentu. 2. Perjanjian Kerja Waktu Tidak Tertentu yang selanjutnya disingkat PKWTT adalah perjanjian kerja antara pekerja/buruh dengan pengusaha untuk mengadakan hubungan kerja yang bersifat tetap. 3. Alih Daya adalah penyerahan sebagian pelaksanaan pekerjaan kepada perusahaan lain melalui perjanjian pemborongan pekerjaan atau penyediaan jasa pekerja/buruh."
+  },
+  {
+    "jenis_dokumen": "PP",
+    "nomor": "35",
+    "tahun": 2021,
+    "judul": "PKWT, Alih Daya, Waktu Kerja, dan PHK",
+    "tentang": "Perjanjian Kerja Waktu Tertentu, Alih Daya, Waktu Kerja dan Waktu Istirahat, dan Pemutusan Hubungan Kerja",
+    "pasal": "4",
+    "text": "PKWT didasarkan atas: a. jangka waktu; atau b. selesainya suatu pekerjaan tertentu.",
+    "ayat": "1"
+  },
+  {
+    "jenis_dokumen": "PP",
+    "nomor": "35",
+    "tahun": 2021,
+    "judul": "PKWT, Alih Daya, Waktu Kerja, dan PHK",
+    "tentang": "Perjanjian Kerja Waktu Tertentu, Alih Daya, Waktu Kerja dan Waktu Istirahat, dan Pemutusan Hubungan Kerja",
+    "pasal": "5",
+    "text": "PKWT berdasarkan jangka waktu sebagaimana dimaksud dalam Pasal 4 ayat (1) huruf a dibuat untuk pekerjaan yang diperkirakan penyelesaiannya dalam waktu yang tidak terlalu lama.",
+    "ayat": "1"
+  },
+  {
+    "jenis_dokumen": "PP",
+    "nomor": "35",
+    "tahun": 2021,
+    "judul": "PKWT, Alih Daya, Waktu Kerja, dan PHK",
+    "tentang": "Perjanjian Kerja Waktu Tertentu, Alih Daya, Waktu Kerja dan Waktu Istirahat, dan Pemutusan Hubungan Kerja",
+    "pasal": "8",
+    "text": "Jangka waktu atau selesainya pekerjaan tertentu dalam PKWT berdasarkan jangka waktu paling lama 5 (lima) tahun termasuk jika terdapat perpanjangan."
+  },
+  {
+    "jenis_dokumen": "PP",
+    "nomor": "35",
+    "tahun": 2021,
+    "judul": "PKWT, Alih Daya, Waktu Kerja, dan PHK",
+    "tentang": "Perjanjian Kerja Waktu Tertentu, Alih Daya, Waktu Kerja dan Waktu Istirahat, dan Pemutusan Hubungan Kerja",
+    "pasal": "15",
+    "text": "Pengusaha yang mengakhiri hubungan kerja terhadap pekerja/buruh PKWT wajib memberikan uang kompensasi.",
+    "ayat": "1"
+  },
+  {
+    "jenis_dokumen": "PP",
+    "nomor": "35",
+    "tahun": 2021,
+    "judul": "PKWT, Alih Daya, Waktu Kerja, dan PHK",
+    "tentang": "Perjanjian Kerja Waktu Tertentu, Alih Daya, Waktu Kerja dan Waktu Istirahat, dan Pemutusan Hubungan Kerja",
+    "pasal": "15",
+    "text": "Uang kompensasi sebagaimana dimaksud pada ayat (1) diberikan kepada pekerja/buruh yang telah mempunyai masa kerja paling sedikit 1 (satu) bulan secara terus menerus.",
+    "ayat": "2"
+  },
+  {
+    "jenis_dokumen": "PP",
+    "nomor": "35",
+    "tahun": 2021,
+    "judul": "PKWT, Alih Daya, Waktu Kerja, dan PHK",
+    "tentang": "Perjanjian Kerja Waktu Tertentu, Alih Daya, Waktu Kerja dan Waktu Istirahat, dan Pemutusan Hubungan Kerja",
+    "pasal": "15",
+    "text": "Besaran uang kompensasi dihitung berdasarkan masa kerja pekerja/buruh dan diberikan proporsional sesuai dengan masa kerja.",
+    "ayat": "3"
+  },
+  {
+    "jenis_dokumen": "PP",
+    "nomor": "35",
+    "tahun": 2021,
+    "judul": "PKWT, Alih Daya, Waktu Kerja, dan PHK",
+    "tentang": "Perjanjian Kerja Waktu Tertentu, Alih Daya, Waktu Kerja dan Waktu Istirahat, dan Pemutusan Hubungan Kerja",
+    "pasal": "18",
+    "text": "Hubungan kerja dalam alih daya dilaksanakan berdasarkan PKWT atau PKWTT yang dibuat secara tertulis dan didaftarkan pada instansi yang bertanggung jawab di bidang ketenagakerjaan.",
+    "ayat": "1"
+  },
+  {
+    "jenis_dokumen": "PP",
+    "nomor": "35",
+    "tahun": 2021,
+    "judul": "PKWT, Alih Daya, Waktu Kerja, dan PHK",
+    "tentang": "Perjanjian Kerja Waktu Tertentu, Alih Daya, Waktu Kerja dan Waktu Istirahat, dan Pemutusan Hubungan Kerja",
+    "pasal": "21",
+    "text": "Waktu kerja sebagaimana dimaksud dalam Pasal 20 meliputi: a. 7 (tujuh) jam 1 (satu) hari dan 40 (empat puluh) jam 1 (satu) minggu untuk 6 (enam) hari kerja dalam 1 (satu) minggu; atau b. 8 (delapan) jam 1 (satu) hari dan 40 (empat puluh) jam 1 (satu) minggu untuk 5 (lima) hari kerja dalam 1 (satu) minggu.",
+    "ayat": "1"
+  },
+  {
+    "jenis_dokumen": "PP",
+    "nomor": "35",
+    "tahun": 2021,
+    "judul": "PKWT, Alih Daya, Waktu Kerja, dan PHK",
+    "tentang": "Perjanjian Kerja Waktu Tertentu, Alih Daya, Waktu Kerja dan Waktu Istirahat, dan Pemutusan Hubungan Kerja",
+    "pasal": "40",
+    "text": "Dalam hal terjadi pemutusan hubungan kerja, pengusaha wajib membayar uang pesangon dan/atau uang penghargaan masa kerja dan uang penggantian hak yang seharusnya diterima.",
+    "ayat": "1"
+  },
+  {
+    "jenis_dokumen": "PP",
+    "nomor": "35",
+    "tahun": 2021,
+    "judul": "PKWT, Alih Daya, Waktu Kerja, dan PHK",
+    "tentang": "Perjanjian Kerja Waktu Tertentu, Alih Daya, Waktu Kerja dan Waktu Istirahat, dan Pemutusan Hubungan Kerja",
+    "pasal": "40",
+    "text": "Uang pesangon sebagaimana dimaksud pada ayat (1) diberikan dengan ketentuan: a. masa kerja kurang dari 1 tahun: 1 bulan upah; b. masa kerja 1 tahun atau lebih tetapi kurang dari 2 tahun: 2 bulan upah; c. masa kerja 2 tahun atau lebih tetapi kurang dari 3 tahun: 3 bulan upah; d. masa kerja 3 tahun atau lebih tetapi kurang dari 4 tahun: 4 bulan upah; e. masa kerja 4 tahun atau lebih tetapi kurang dari 5 tahun: 5 bulan upah; f. masa kerja 5 tahun atau lebih tetapi kurang dari 6 tahun: 6 bulan upah; g. masa kerja 6 tahun atau lebih tetapi kurang dari 7 tahun: 7 bulan upah; h. masa kerja 7 tahun atau lebih tetapi kurang dari 8 tahun: 8 bulan upah; i. masa kerja 8 tahun atau lebih: 9 bulan upah.",
+    "ayat": "2"
+  },
+  {
+    "jenis_dokumen": "Perpres",
+    "nomor": "12",
+    "tahun": 2021,
+    "judul": "Pengadaan Barang/Jasa Pemerintah",
+    "tentang": "Perubahan atas Perpres 16/2018 tentang Pengadaan Barang/Jasa Pemerintah",
+    "pasal": "1",
+    "text": "Dalam Peraturan Presiden ini yang dimaksud dengan: 1. Pengadaan Barang/Jasa Pemerintah yang selanjutnya disebut Pengadaan Barang/Jasa adalah kegiatan Pengadaan Barang/Jasa oleh Kementerian/Lembaga/Perangkat Daerah yang dibiayai oleh APBN/APBD yang prosesnya sejak identifikasi kebutuhan, sampai dengan serah terima hasil pekerjaan. 2. Pengguna Anggaran yang selanjutnya disingkat PA adalah pejabat pemegang kewenangan penggunaan anggaran Kementerian/Lembaga/Perangkat Daerah."
+  },
+  {
+    "jenis_dokumen": "Perpres",
+    "nomor": "12",
+    "tahun": 2021,
+    "judul": "Pengadaan Barang/Jasa Pemerintah",
+    "tentang": "Perubahan atas Perpres 16/2018 tentang Pengadaan Barang/Jasa Pemerintah",
+    "pasal": "3",
+    "text": "Pengadaan Barang/Jasa dilaksanakan dengan prinsip: a. efisien; b. efektif; c. transparan; d. terbuka; e. bersaing; f. adil; dan g. akuntabel.",
+    "ayat": "1"
+  },
+  {
+    "jenis_dokumen": "Perpres",
+    "nomor": "12",
+    "tahun": 2021,
+    "judul": "Pengadaan Barang/Jasa Pemerintah",
+    "tentang": "Perubahan atas Perpres 16/2018 tentang Pengadaan Barang/Jasa Pemerintah",
+    "pasal": "4",
+    "text": "Pengadaan Barang/Jasa bertujuan untuk: a. menghasilkan barang/jasa yang tepat dari setiap uang yang dibelanjakan, diukur dari aspek kualitas, jumlah, waktu, biaya, lokasi, dan penyedia; b. meningkatkan penggunaan produksi dalam negeri; c. meningkatkan peran serta Usaha Mikro, Usaha Kecil, dan Usaha Menengah; d. meningkatkan peran pelaku usaha nasional; e. mendukung pelaksanaan penelitian dan pemanfaatan barang/jasa hasil penelitian."
+  },
+  {
+    "jenis_dokumen": "Perpres",
+    "nomor": "12",
+    "tahun": 2021,
+    "judul": "Pengadaan Barang/Jasa Pemerintah",
+    "tentang": "Perubahan atas Perpres 16/2018 tentang Pengadaan Barang/Jasa Pemerintah",
+    "pasal": "38",
+    "text": "Metode pemilihan Penyedia Barang/Pekerjaan Konstruksi/Jasa Lainnya terdiri atas: a. Tender; b. Seleksi; c. Penunjukan Langsung; d. Pengadaan Langsung; dan e. e-purchasing.",
+    "ayat": "1"
+  },
+  {
+    "jenis_dokumen": "Perpres",
+    "nomor": "12",
+    "tahun": 2021,
+    "judul": "Pengadaan Barang/Jasa Pemerintah",
+    "tentang": "Perubahan atas Perpres 16/2018 tentang Pengadaan Barang/Jasa Pemerintah",
+    "pasal": "44",
+    "text": "Pengadaan Langsung dilaksanakan untuk Barang/Pekerjaan Konstruksi/Jasa Lainnya yang bernilai paling banyak Rp200.000.000,00 (dua ratus juta rupiah) dan untuk Jasa Konsultansi yang bernilai paling banyak Rp100.000.000,00 (seratus juta rupiah)."
+  },
+  {
+    "jenis_dokumen": "Perpres",
+    "nomor": "12",
+    "tahun": 2021,
+    "judul": "Pengadaan Barang/Jasa Pemerintah",
+    "tentang": "Perubahan atas Perpres 16/2018 tentang Pengadaan Barang/Jasa Pemerintah",
+    "pasal": "65",
+    "text": "Kementerian/Lembaga/Perangkat Daerah mengumumkan rencana Pengadaan Barang/Jasa pada tahun anggaran berjalan melalui aplikasi Sistem Informasi Rencana Umum Pengadaan (SiRUP).",
+    "ayat": "1"
+  },
+  {
+    "jenis_dokumen": "Perpres",
+    "nomor": "12",
+    "tahun": 2021,
+    "judul": "Pengadaan Barang/Jasa Pemerintah",
+    "tentang": "Perubahan atas Perpres 16/2018 tentang Pengadaan Barang/Jasa Pemerintah",
+    "pasal": "70",
+    "text": "Pelaku Usaha yang akan menjadi Penyedia wajib melakukan registrasi pada aplikasi Sistem Pengadaan Secara Elektronik (SPSE) dan memenuhi kualifikasi sesuai dengan barang/jasa yang diadakan.",
+    "ayat": "1"
   }
 ]

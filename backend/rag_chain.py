@@ -527,6 +527,7 @@ class LegalRAGChain:
             results = self.retriever.hybrid_search(
                 query=question,
                 top_k=k,
+                expand_queries=True,
             )
         
         # Handle no results
@@ -667,6 +668,7 @@ class LegalRAGChain:
             results = self.retriever.hybrid_search(
                 query=question,
                 top_k=k,
+                expand_queries=True,
             )
         
         # Handle no results

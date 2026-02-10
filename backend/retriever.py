@@ -8,6 +8,7 @@ Uses Reciprocal Rank Fusion (RRF) to merge results:
     score = sum(1 / (k + rank)) where k=60 (standard constant)
 """
 import os
+import re
 from typing import Any
 from dataclasses import dataclass
 import logging
@@ -182,6 +183,90 @@ class HybridRetriever:
         # Initialize BM25 index
         if tokenized_corpus:
             self._bm25 = BM25Okapi(tokenized_corpus)
+    
+    # Indonesian legal term synonym groups for query expansion
+    _SYNONYM_GROUPS: list[list[str]] = [
+        ["PT", "Perseroan Terbatas", "perusahaan"],
+        ["NIB", "Nomor Induk Berusaha", "izin berusaha"],
+        ["UMKM", "Usaha Mikro Kecil Menengah", "usaha kecil"],
+        ["PHK", "Pemutusan Hubungan Kerja", "pemberhentian kerja"],
+        ["pajak", "perpajakan", "fiskal"],
+        ["gaji", "upah", "penghasilan"],
+        ["karyawan", "pekerja", "buruh", "tenaga kerja"],
+        ["izin", "perizinan", "lisensi"],
+        ["modal", "investasi", "penanaman modal"],
+        ["tanah", "agraria", "pertanahan"],
+        ["lingkungan", "lingkungan hidup", "ekologi"],
+        ["data pribadi", "privasi", "PDP", "pelindungan data"],
+        ["kontrak", "perjanjian"],
+        ["OSS", "Online Single Submission", "perizinan daring"],
+        ["Cipta Kerja", "Omnibus Law", "UU 11/2020"],
+        ["Amdal", "Analisis Mengenai Dampak Lingkungan"],
+        ["NPWP", "Nomor Pokok Wajib Pajak"],
+        ["PPN", "Pajak Pertambahan Nilai", "VAT"],
+        ["PPh", "Pajak Penghasilan", "income tax"],
+        ["TDP", "Tanda Daftar Perusahaan"],
+        ["RUPS", "Rapat Umum Pemegang Saham"],
+        ["direksi", "direktur", "pengurus perseroan"],
+        ["komisaris", "dewan komisaris", "pengawas"],
+        ["CSR", "Tanggung Jawab Sosial", "tanggung jawab sosial dan lingkungan"],
+        ["PKWT", "Perjanjian Kerja Waktu Tertentu", "kontrak kerja"],
+        ["PKWTT", "Perjanjian Kerja Waktu Tidak Tertentu", "karyawan tetap"],
+        ["pesangon", "uang pesangon", "kompensasi PHK"],
+        ["UMR", "UMK", "upah minimum", "upah minimum regional"],
+        ["lembur", "kerja lembur", "waktu kerja tambahan"],
+        ["cuti", "cuti tahunan", "istirahat kerja"],
+    ]
+    
+    def expand_query(self, query: str) -> list[str]:
+        """
+        Generate query variants using rule-based synonym expansion.
+        
+        Returns the original query plus up to 2 expanded variants:
+        1. Original query (always)
+        2. Synonym-expanded variant (if synonyms found)
+        3. Abbreviation-expanded variant (if abbreviations found)
+        
+        Args:
+            query: Original search query
+        
+        Returns:
+            List of unique query strings (1-3 items)
+        """
+        queries = [query]
+        query_lower = query.lower()
+        
+        # Find matching synonym groups
+        expanded_terms = []
+        for group in self._SYNONYM_GROUPS:
+            for term in group:
+                if term.lower() in query_lower:
+                    # Add other terms from the same group
+                    alternatives = [t for t in group if t.lower() != term.lower()]
+                    if alternatives:
+                        expanded_terms.append((term, alternatives))
+                    break  # Only match first term per group
+        
+        if expanded_terms:
+            # Variant 1: Replace first matched term with its primary synonym
+            variant1 = query
+            for original_term, alternatives in expanded_terms[:2]:
+                # Case-insensitive replacement with first alternative
+                pattern = re.compile(re.escape(original_term), re.IGNORECASE)
+                variant1 = pattern.sub(alternatives[0], variant1, count=1)
+            if variant1 != query and variant1 not in queries:
+                queries.append(variant1)
+            
+            # Variant 2: Append additional synonym terms as keywords
+            extra_keywords = []
+            for _, alternatives in expanded_terms:
+                extra_keywords.extend(alternatives[:1])
+            if extra_keywords:
+                variant2 = query + " " + " ".join(extra_keywords[:3])
+                if variant2 not in queries:
+                    queries.append(variant2)
+        
+        return queries[:3]  # Max 3 variants
     
     def dense_search(
         self,
@@ -389,17 +474,21 @@ class HybridRetriever:
         self,
         query: str,
         top_k: int = 5,
-        dense_weight: float = 0.5,
+        dense_weight: float = 0.6,
         dense_top_k: int | None = None,
         sparse_top_k: int | None = None,
         filter_conditions: dict[str, Any] | None = None,
         use_reranking: bool = True,
+        expand_queries: bool = True,
     ) -> list[SearchResult]:
         """
         Perform hybrid search combining dense and sparse retrieval.
         
         Uses Reciprocal Rank Fusion (RRF) to merge results from both methods,
         optionally followed by CrossEncoder re-ranking for improved relevance.
+        
+        Supports query expansion: generates synonym variants of the query
+        to improve recall for Indonesian legal abbreviations.
         
         Args:
             query: Search query in natural language
@@ -409,6 +498,7 @@ class HybridRetriever:
             sparse_top_k: Number of sparse results to retrieve (default: 2 * top_k)
             filter_conditions: Optional filter for dense search
             use_reranking: Whether to apply CrossEncoder re-ranking (default: True)
+            expand_queries: Whether to expand query with synonyms (default: True)
         
         Returns:
             List of SearchResult objects with RRF-fused (and optionally re-ranked) scores
@@ -420,14 +510,38 @@ class HybridRetriever:
         if sparse_top_k is None:
             sparse_top_k = top_k * rerank_multiplier
         
-        # Perform both searches
-        dense_results = self.dense_search(
-            query, top_k=dense_top_k, filter_conditions=filter_conditions
-        )
-        sparse_results = self.sparse_search(query, top_k=sparse_top_k)
+        # Get query variants
+        if expand_queries:
+            queries = self.expand_query(query)
+            logger.debug(f"Expanded query into {len(queries)} variants: {queries}")
+        else:
+            queries = [query]
+        
+        # Collect results from all query variants
+        all_dense_results: list[SearchResult] = []
+        all_sparse_results: list[SearchResult] = []
+        
+        for q in queries:
+            dense_results = self.dense_search(
+                q, top_k=dense_top_k, filter_conditions=filter_conditions
+            )
+            sparse_results = self.sparse_search(q, top_k=sparse_top_k)
+            all_dense_results.extend(dense_results)
+            all_sparse_results.extend(sparse_results)
+        
+        # Deduplicate by ID, keeping highest score per source
+        def dedup(results: list[SearchResult]) -> list[SearchResult]:
+            best: dict[int, SearchResult] = {}
+            for r in results:
+                if r.id not in best or r.score > best[r.id].score:
+                    best[r.id] = r
+            return sorted(best.values(), key=lambda x: x.score, reverse=True)
+        
+        dense_deduped = dedup(all_dense_results)
+        sparse_deduped = dedup(all_sparse_results)
         
         # Fuse with RRF
-        fused = self._rrf_fusion(dense_results, sparse_results)
+        fused = self._rrf_fusion(dense_deduped, sparse_deduped)
         
         # Get candidates for potential re-ranking
         candidates = []
@@ -441,7 +555,7 @@ class HybridRetriever:
                 metadata=result.metadata,
             ))
         
-        # Apply CrossEncoder re-ranking if enabled
+        # Apply CrossEncoder re-ranking if enabled (always re-rank against original query)
         if use_reranking and self.reranker:
             return self._rerank(query, candidates, top_k)
         

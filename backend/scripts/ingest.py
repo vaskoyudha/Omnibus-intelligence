@@ -94,11 +94,75 @@ def generate_citation_id(metadata: dict[str, Any]) -> str:
     return "_".join(parts)
 
 
+def chunk_text(
+    text: str,
+    chunk_size: int = 500,
+    overlap: int = 100,
+) -> list[str]:
+    """
+    Split long text into overlapping chunks by sentence boundaries.
+    
+    Args:
+        text: Input text to split
+        chunk_size: Target chunk size in characters
+        overlap: Overlap between consecutive chunks in characters
+    
+    Returns:
+        List of text chunks (single-element list if text is short enough)
+    """
+    if len(text) <= chunk_size:
+        return [text]
+    
+    import re
+    
+    # Split by sentence boundaries common in Indonesian legal text
+    # Handles ". ", "; ", and newlines
+    sentences = re.split(r'(?<=[.;])\s+|\n+', text)
+    sentences = [s.strip() for s in sentences if s.strip()]
+    
+    if not sentences:
+        return [text]
+    
+    chunks = []
+    current_chunk = ""
+    
+    for sentence in sentences:
+        candidate = (current_chunk + " " + sentence).strip() if current_chunk else sentence
+        
+        if len(candidate) <= chunk_size:
+            current_chunk = candidate
+        else:
+            # Save current chunk if it has content
+            if current_chunk:
+                chunks.append(current_chunk)
+                # Start new chunk with overlap from end of previous
+                if overlap > 0 and len(current_chunk) > overlap:
+                    overlap_text = current_chunk[-overlap:]
+                    # Find word boundary in overlap region
+                    space_idx = overlap_text.find(" ")
+                    if space_idx > 0:
+                        overlap_text = overlap_text[space_idx + 1:]
+                    current_chunk = (overlap_text + " " + sentence).strip()
+                else:
+                    current_chunk = sentence
+            else:
+                # Single sentence exceeds chunk_size — keep it as-is
+                chunks.append(sentence)
+                current_chunk = ""
+    
+    # Don't forget the last chunk
+    if current_chunk:
+        chunks.append(current_chunk)
+    
+    return chunks
+
+
 def create_document_chunks(documents: list[dict[str, Any]]) -> list[dict[str, Any]]:
     """
     Create chunks from legal documents with metadata for citations.
     
     For legal documents, each article/ayat is typically a natural chunk.
+    Long articles (>500 chars) are split into overlapping sub-chunks.
     We preserve the full metadata for citation generation.
     """
     chunks = []
@@ -123,18 +187,30 @@ def create_document_chunks(documents: list[dict[str, Any]]) -> list[dict[str, An
             if field in doc:
                 metadata[field] = doc[field]
         
-        # Generate citation ID
-        citation_id = generate_citation_id(metadata)
+        # Generate base citation ID and citation string
+        base_citation_id = generate_citation_id(metadata)
+        base_citation = format_citation(metadata)
         
-        # Format full citation
-        citation = format_citation(metadata)
+        # Split long articles into overlapping chunks
+        text_chunks = chunk_text(text, chunk_size=500, overlap=100)
         
-        chunks.append({
-            "text": text,
-            "citation_id": citation_id,
-            "citation": citation,
-            "metadata": metadata,
-        })
+        for chunk_idx, chunk_text_piece in enumerate(text_chunks):
+            if len(text_chunks) == 1:
+                # Single chunk — use original citation
+                cid = base_citation_id
+                cit = base_citation
+            else:
+                # Multi-chunk — append part number
+                part_num = chunk_idx + 1
+                cid = f"{base_citation_id}_chunk{part_num}"
+                cit = f"{base_citation} (bagian {part_num})"
+            
+            chunks.append({
+                "text": chunk_text_piece,
+                "citation_id": cid,
+                "citation": cit,
+                "metadata": metadata,
+            })
     
     return chunks
 
@@ -269,7 +345,7 @@ def main():
     parser = argparse.ArgumentParser(description="Ingest legal documents to Qdrant")
     parser.add_argument(
         "--json-path",
-        default="data/peraturan/sample.json",
+        default="data/peraturan/regulations.json",
         help="Path to JSON file with documents"
     )
     parser.add_argument(
