@@ -25,13 +25,13 @@ export default function SearchBar({ onSearch, isLoading }: SearchBarProps) {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Ketik pertanyaan hukum Anda..."
-          className="w-full px-6 py-4 text-lg border-2 border-slate-300 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-200 outline-none transition-all duration-200 bg-white shadow-sm"
+          className="w-full px-6 py-4 text-lg rounded-xl border border-border bg-white/60 backdrop-blur-sm focus:border-accent focus:shadow-glow outline-none transition-all text-text-primary placeholder-text-muted"
           disabled={isLoading}
         />
         <button
           type="submit"
           disabled={isLoading || !query.trim()}
-          className="absolute right-2 px-6 py-2 bg-blue-700 text-white font-semibold rounded-lg hover:bg-blue-800 disabled:bg-slate-400 disabled:cursor-not-allowed transition-colors duration-200"
+          className="absolute right-2 px-6 py-2 bg-gradient-to-r from-accent to-accent-dark text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-accent/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
         >
           {isLoading ? (
             <span className="flex items-center gap-2">
@@ -46,7 +46,7 @@ export default function SearchBar({ onSearch, isLoading }: SearchBarProps) {
           )}
         </button>
       </div>
-      <p className="mt-2 text-sm text-slate-500 text-center">
+      <p className="mt-2 text-sm text-text-muted text-center">
         Contoh: &quot;Apa saja hak pekerja menurut UU Cipta Kerja?&quot; atau &quot;Bagaimana prosedur perizinan usaha?&quot;
       </p>
     </form>

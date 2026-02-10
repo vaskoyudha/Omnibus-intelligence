@@ -6,29 +6,38 @@ export default function AmbientBackground() {
     >
       {/* Blue orb — top right */}
       <div
-        className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full blur-3xl animate-gradient-shift"
-        style={{ background: 'rgba(219, 234, 254, 0.4)' }}
+        className="absolute -top-32 -right-32 w-[700px] h-[700px] rounded-full blur-3xl animate-gradient-shift"
+        style={{ background: 'rgba(59, 130, 246, 0.15)' }}
       />
 
       {/* Violet orb — bottom left */}
       <div
-        className="absolute -bottom-40 -left-40 w-[400px] h-[400px] rounded-full blur-3xl animate-gradient-shift"
+        className="absolute -bottom-32 -left-32 w-[600px] h-[600px] rounded-full blur-3xl animate-gradient-shift"
         style={{
-          background: 'rgba(237, 233, 254, 0.3)',
+          background: 'rgba(139, 92, 246, 0.12)',
           animationDelay: '-5s',
         }}
       />
 
       {/* Cyan orb — center */}
       <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-3xl animate-pulse-glow"
-        style={{ background: 'rgba(236, 254, 255, 0.2)' }}
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full blur-3xl animate-pulse-glow"
+        style={{ background: 'rgba(34, 211, 238, 0.08)' }}
       />
 
-      {/* Small accent orb — top left */}
+      {/* Accent orb — top left */}
       <div
-        className="absolute top-1/4 left-1/4 w-[200px] h-[200px] rounded-full blur-3xl animate-float"
-        style={{ background: 'rgba(191, 219, 254, 0.15)' }}
+        className="absolute top-1/4 left-1/4 w-[350px] h-[350px] rounded-full blur-3xl animate-float"
+        style={{ background: 'rgba(37, 99, 235, 0.1)' }}
+      />
+
+      {/* Extra warm orb — bottom right for depth */}
+      <div
+        className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full blur-3xl animate-gradient-shift"
+        style={{
+          background: 'rgba(168, 85, 247, 0.07)',
+          animationDelay: '-10s',
+        }}
       />
     </div>
   );

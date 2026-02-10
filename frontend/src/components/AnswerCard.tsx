@@ -110,10 +110,10 @@ export default function AnswerCard({ response }: AnswerCardProps) {
   return (
     <div className="w-full max-w-4xl mx-auto mt-8 print:mt-0 print:max-w-none">
       {/* Main Answer Card */}
-      <div className="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden print:shadow-none print:border-slate-300">
+      <div className="glass-strong rounded-2xl shadow-lg overflow-hidden print:shadow-none print:border-border">
         
         {/* Header with Confidence Badge & Actions */}
-        <div className="bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 px-6 py-4">
+        <div className="bg-gradient-to-r from-accent to-accent-dark px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-white/10 rounded-lg">
@@ -124,7 +124,7 @@ export default function AnswerCard({ response }: AnswerCardProps) {
               <div>
                 <h2 className="text-white font-semibold text-lg">Jawaban Legal</h2>
                 {processingTimeSec > 0 && (
-                  <p className="text-blue-100 text-sm">Diproses dalam {processingTimeSec.toFixed(2)} detik</p>
+                  <p className="text-white/70 text-sm">Diproses dalam {processingTimeSec.toFixed(2)} detik</p>
                 )}
               </div>
             </div>
@@ -180,7 +180,7 @@ export default function AnswerCard({ response }: AnswerCardProps) {
             
             {/* Citation Coverage */}
             {response.validation && (
-              <div className="flex items-center gap-2 text-slate-600 text-sm border-l border-slate-300 pl-4">
+              <div className="flex items-center gap-2 text-text-secondary text-sm border-l border-border pl-4">
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
@@ -200,7 +200,7 @@ export default function AnswerCard({ response }: AnswerCardProps) {
           {/* Toggle Details */}
           <button
             onClick={() => setShowMetrics(!showMetrics)}
-            className="text-sm text-slate-500 hover:text-slate-700 flex items-center gap-1 no-print"
+            className="text-sm text-text-muted hover:text-text-primary flex items-center gap-1 no-print"
           >
             {showMetrics ? 'Sembunyikan' : 'Detail'}
             <svg className={`w-4 h-4 transition-transform ${showMetrics ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -211,28 +211,28 @@ export default function AnswerCard({ response }: AnswerCardProps) {
         
         {/* Expandable Metrics Panel */}
         {showMetrics && (
-          <div className="px-6 py-4 bg-slate-50 border-b border-slate-200 grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-            <div className="bg-white p-3 rounded-lg border border-slate-200">
-              <div className="text-slate-500 text-xs uppercase tracking-wide mb-1">Skor Tertinggi</div>
-              <div className="font-bold text-lg text-slate-800">
+          <div className="px-6 py-4 bg-bg-secondary border-b border-border grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+            <div className="glass p-3 rounded-lg">
+              <div className="text-text-muted text-xs uppercase tracking-wide mb-1">Skor Tertinggi</div>
+              <div className="font-bold text-lg text-text-primary">
                 {response.confidence_score ? (response.confidence_score.top_score * 100).toFixed(1) : 0}%
               </div>
             </div>
-            <div className="bg-white p-3 rounded-lg border border-slate-200">
-              <div className="text-slate-500 text-xs uppercase tracking-wide mb-1">Rata-rata Skor</div>
-              <div className="font-bold text-lg text-slate-800">
+            <div className="glass p-3 rounded-lg">
+              <div className="text-text-muted text-xs uppercase tracking-wide mb-1">Rata-rata Skor</div>
+              <div className="font-bold text-lg text-text-primary">
                 {response.confidence_score ? (response.confidence_score.avg_score * 100).toFixed(1) : 0}%
               </div>
             </div>
-            <div className="bg-white p-3 rounded-lg border border-slate-200">
-              <div className="text-slate-500 text-xs uppercase tracking-wide mb-1">Jumlah Sumber</div>
-              <div className="font-bold text-lg text-slate-800">
+            <div className="glass p-3 rounded-lg">
+              <div className="text-text-muted text-xs uppercase tracking-wide mb-1">Jumlah Sumber</div>
+              <div className="font-bold text-lg text-text-primary">
                 {response.citations?.length || 0}
               </div>
             </div>
-            <div className="bg-white p-3 rounded-lg border border-slate-200">
-              <div className="text-slate-500 text-xs uppercase tracking-wide mb-1">Waktu Proses</div>
-              <div className="font-bold text-lg text-slate-800">
+            <div className="glass p-3 rounded-lg">
+              <div className="text-text-muted text-xs uppercase tracking-wide mb-1">Waktu Proses</div>
+              <div className="font-bold text-lg text-text-primary">
                 {processingTimeSec.toFixed(2)}s
               </div>
             </div>
@@ -280,7 +280,7 @@ export default function AnswerCard({ response }: AnswerCardProps) {
         </div>
 
         {/* Citations Section */}
-        <div className="border-t border-slate-200">
+        <div className="border-t border-border">
           <CitationList citations={response.citations} />
         </div>
       </div>

@@ -126,10 +126,10 @@ export default function StreamingAnswerCard({
   return (
     <div className="w-full max-w-4xl mx-auto mt-8 print:mt-0 print:max-w-none">
       {/* Main Answer Card */}
-      <div className="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden print:shadow-none print:border-slate-300">
+      <div className="glass-strong rounded-2xl shadow-lg overflow-hidden print:shadow-none print:border-border">
         
         {/* Header with Confidence Badge & Actions */}
-        <div className="bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 px-6 py-4">
+        <div className="bg-gradient-to-r from-accent to-accent-dark px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-white/10 rounded-lg">
@@ -153,7 +153,7 @@ export default function StreamingAnswerCard({
                   )}
                 </h2>
                 {processingTimeSec > 0 && !isStreaming && (
-                  <p className="text-blue-100 text-sm">Diproses dalam {processingTimeSec.toFixed(2)} detik</p>
+                  <p className="text-white/70 text-sm">Diproses dalam {processingTimeSec.toFixed(2)} detik</p>
                 )}
               </div>
             </div>
@@ -211,7 +211,7 @@ export default function StreamingAnswerCard({
               </div>
               
               {validation && (
-                <div className="flex items-center gap-2 text-slate-600 text-sm border-l border-slate-300 pl-4">
+                <div className="flex items-center gap-2 text-text-secondary text-sm border-l border-border pl-4">
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                   </svg>
@@ -227,12 +227,12 @@ export default function StreamingAnswerCard({
               )}
               
               {validation?.grounding_score != null && (
-                <div className="flex items-center gap-2 text-sm border-l border-slate-300 pl-4">
-                  <svg className="w-4 h-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div className="flex items-center gap-2 text-sm border-l border-border pl-4">
+                  <svg className="w-4 h-4 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                   </svg>
-                  <span className="text-slate-600">Grounding:</span>
-                  <div className="w-16 bg-slate-200 rounded-full h-1.5">
+                  <span className="text-text-secondary">Grounding:</span>
+                  <div className="w-16 bg-bg-tertiary rounded-full h-1.5">
                     <div
                       className={`h-1.5 rounded-full ${
                         validation.grounding_score >= 0.7 ? 'bg-emerald-500' :
@@ -253,7 +253,7 @@ export default function StreamingAnswerCard({
             
             <button
               onClick={() => setShowMetrics(!showMetrics)}
-              className="text-sm text-slate-500 hover:text-slate-700 flex items-center gap-1 no-print"
+              className="text-sm text-text-muted hover:text-text-primary flex items-center gap-1 no-print"
             >
               {showMetrics ? 'Sembunyikan' : 'Detail'}
               <svg className={`w-4 h-4 transition-transform ${showMetrics ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -265,28 +265,28 @@ export default function StreamingAnswerCard({
         
         {/* Expandable Metrics Panel */}
         {showMetrics && confidenceScore && (
-          <div className="px-6 py-4 bg-slate-50 border-b border-slate-200 grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-            <div className="bg-white p-3 rounded-lg border border-slate-200">
-              <div className="text-slate-500 text-xs uppercase tracking-wide mb-1">Skor Tertinggi</div>
-              <div className="font-bold text-lg text-slate-800">
+          <div className="px-6 py-4 bg-bg-secondary border-b border-border grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+            <div className="glass p-3 rounded-lg">
+              <div className="text-text-muted text-xs uppercase tracking-wide mb-1">Skor Tertinggi</div>
+              <div className="font-bold text-lg text-text-primary">
                 {(confidenceScore.top_score * 100).toFixed(1)}%
               </div>
             </div>
-            <div className="bg-white p-3 rounded-lg border border-slate-200">
-              <div className="text-slate-500 text-xs uppercase tracking-wide mb-1">Rata-rata Skor</div>
-              <div className="font-bold text-lg text-slate-800">
+            <div className="glass p-3 rounded-lg">
+              <div className="text-text-muted text-xs uppercase tracking-wide mb-1">Rata-rata Skor</div>
+              <div className="font-bold text-lg text-text-primary">
                 {(confidenceScore.avg_score * 100).toFixed(1)}%
               </div>
             </div>
-            <div className="bg-white p-3 rounded-lg border border-slate-200">
-              <div className="text-slate-500 text-xs uppercase tracking-wide mb-1">Jumlah Sumber</div>
-              <div className="font-bold text-lg text-slate-800">
+            <div className="glass p-3 rounded-lg">
+              <div className="text-text-muted text-xs uppercase tracking-wide mb-1">Jumlah Sumber</div>
+              <div className="font-bold text-lg text-text-primary">
                 {citations?.length || 0}
               </div>
             </div>
-            <div className="bg-white p-3 rounded-lg border border-slate-200">
-              <div className="text-slate-500 text-xs uppercase tracking-wide mb-1">Waktu Proses</div>
-              <div className="font-bold text-lg text-slate-800">
+            <div className="glass p-3 rounded-lg">
+              <div className="text-text-muted text-xs uppercase tracking-wide mb-1">Waktu Proses</div>
+              <div className="font-bold text-lg text-text-primary">
                 {processingTimeSec.toFixed(2)}s
               </div>
             </div>
@@ -355,14 +355,14 @@ export default function StreamingAnswerCard({
               {answer || (isStreaming ? '...' : '')}
             </ReactMarkdown>
             {isStreaming && (
-              <span className="inline-block w-2 h-5 bg-blue-500 animate-pulse ml-1" />
+              <span className="inline-block w-2 h-5 bg-accent animate-pulse ml-1" />
             )}
           </div>
         </div>
 
         {/* Citations Section */}
         {citations.length > 0 && (
-          <div className="border-t border-slate-200">
+          <div className="border-t border-border">
             <CitationList citations={citations} />
           </div>
         )}
