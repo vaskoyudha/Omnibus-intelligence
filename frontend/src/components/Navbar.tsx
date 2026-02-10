@@ -24,12 +24,12 @@ export default function Navbar() {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2.5 group">
           <motion.div
-            className="w-9 h-9 rounded-xl bg-gradient-to-br from-accent to-accent-dark flex items-center justify-center shadow-md"
+            className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#AAFF00] to-[#88CC00] flex items-center justify-center shadow-md shadow-[#AAFF00]/20"
             whileHover={{ scale: 1.05, rotate: -3 }}
             whileTap={{ scale: 0.95 }}
             transition={{ type: 'spring', stiffness: 400, damping: 15 }}
           >
-            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-5 h-5 text-[#0A0A0F]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
             </svg>
           </motion.div>
@@ -45,16 +45,15 @@ export default function Navbar() {
             return (
               <Link key={link.href} href={link.href}>
                 <motion.div
-                  className={`relative px-4 py-2 rounded-xl text-sm font-medium transition-colors flex items-center gap-2 ${
-                    isActive
-                      ? 'text-accent'
+                  className={`relative px-4 py-2 rounded-xl text-sm font-medium transition-colors flex items-center gap-2 ${isActive
+                      ? 'text-[#AAFF00]'
                       : 'text-text-secondary hover:text-text-primary'
-                  }`}
+                    }`}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
                   <svg
-                    className={`w-4 h-4 hidden sm:block ${isActive ? 'text-accent' : 'text-text-muted'}`}
+                    className={`w-4 h-4 hidden sm:block ${isActive ? 'text-[#AAFF00]' : 'text-text-muted'}`}
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -65,7 +64,7 @@ export default function Navbar() {
                   {isActive && (
                     <motion.div
                       layoutId="nav-indicator"
-                      className="absolute inset-0 bg-accent-lighter rounded-xl -z-10"
+                      className="absolute inset-0 bg-[#AAFF00]/10 border border-[#AAFF00]/20 rounded-xl -z-10"
                       transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
                     />
                   )}
@@ -77,7 +76,7 @@ export default function Navbar() {
       </div>
 
       {/* Bottom border with subtle gradient */}
-      <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+      <div className="h-px bg-gradient-to-r from-transparent via-[rgba(255,255,255,0.08)] to-transparent" />
     </motion.header>
   );
 }

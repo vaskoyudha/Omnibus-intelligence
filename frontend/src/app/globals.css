@@ -5,43 +5,43 @@
 @import "highlight.js/styles/github-dark.css";
 
 /* ============================================
-   DESIGN SYSTEM: Light Luxurious Theme
+   DESIGN SYSTEM: Dark Premium Theme (FlowFunds)
    ============================================ */
 
 :root {
   /* Background */
-  --background: #F8FAFC;
-  --foreground: #0F172A;
-  --bg-secondary: #F1F5F9;
-  --bg-tertiary: #E2E8F0;
-  --bg-glass: rgba(255, 255, 255, 0.75);
+  --background: #0A0A0F;
+  --foreground: #F1F5F9;
+  --bg-secondary: #111118;
+  --bg-tertiary: #1A1A24;
+  --bg-glass: rgba(255, 255, 255, 0.04);
 
-  /* Accent - Blue */
-  --accent-primary: #2563EB;
-  --accent-secondary: #1E40AF;
-  --accent-light: #DBEAFE;
-  --accent-lighter: #EFF6FF;
+  /* Accent — Green-Lime (FlowFunds) */
+  --accent-primary: #AAFF00;
+  --accent-secondary: #88CC00;
+  --accent-light: rgba(170, 255, 0, 0.15);
+  --accent-lighter: rgba(170, 255, 0, 0.08);
 
   /* Text */
-  --text-primary: #0F172A;
-  --text-secondary: #475569;
-  --text-muted: #94A3B8;
+  --text-primary: #F1F5F9;
+  --text-secondary: #94A3B8;
+  --text-muted: #64748B;
 
   /* Borders */
-  --border-default: #E2E8F0;
-  --border-accent: #BFDBFE;
+  --border-default: rgba(255, 255, 255, 0.08);
+  --border-accent: rgba(170, 255, 0, 0.25);
 
   /* Status */
-  --color-success: #059669;
-  --color-warning: #D97706;
-  --color-error: #DC2626;
+  --color-success: #34D399;
+  --color-warning: #FBBF24;
+  --color-error: #F87171;
 
   /* Shadows */
-  --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
-  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.06), 0 2px 4px -2px rgba(0,0,0,0.06);
-  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -4px rgba(0,0,0,0.04);
-  --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.08), 0 8px 10px -6px rgba(0,0,0,0.04);
-  --shadow-glow: 0 0 40px rgba(37,99,235,0.15);
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.4), 0 2px 4px -2px rgba(0,0,0,0.3);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.5), 0 4px 6px -4px rgba(0,0,0,0.3);
+  --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.5), 0 8px 10px -6px rgba(0,0,0,0.3);
+  --shadow-glow: 0 0 40px rgba(170, 255, 0, 0.15);
 }
 
 @theme inline {
@@ -79,7 +79,7 @@ html {
 }
 
 body {
-  background: linear-gradient(135deg, #F8FAFC 0%, #EEF2FF 40%, #F5F3FF 70%, #F0F9FF 100%);
+  background: #0A0A0F;
   background-attachment: fixed;
   color: var(--foreground);
   font-family: 'Plus Jakarta Sans Variable', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
@@ -89,8 +89,8 @@ body {
 }
 
 ::selection {
-  background: var(--accent-light);
-  color: var(--accent-secondary);
+  background: rgba(170, 255, 0, 0.3);
+  color: #FFFFFF;
 }
 
 /* ============================================
@@ -107,32 +107,32 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--border-default);
+  background: rgba(255, 255, 255, 0.12);
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--text-muted);
+  background: rgba(255, 255, 255, 0.2);
 }
 
 /* ============================================
-   GLASS MORPHISM
+   GLASS MORPHISM — DARK
    ============================================ */
 
 .glass {
-  background: rgba(255, 255, 255, 0.65);
+  background: rgba(255, 255, 255, 0.04);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(226, 232, 240, 0.7);
-  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.06);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3), 0 1px 3px rgba(0,0,0,0.2);
 }
 
 .glass-strong {
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.06);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(226, 232, 240, 0.9);
-  box-shadow: 0 8px 25px -5px rgba(0,0,0,0.07), 0 4px 10px rgba(0,0,0,0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 25px -5px rgba(0,0,0,0.4), 0 4px 10px rgba(0,0,0,0.3);
 }
 
 /* ============================================
@@ -152,8 +152,8 @@ body {
 }
 
 @keyframes pulse-glow {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 0.7; }
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.6; }
 }
 
 @keyframes shimmer {
@@ -174,7 +174,7 @@ body {
 }
 
 .animate-shimmer {
-  background: linear-gradient(90deg, var(--bg-tertiary) 25%, var(--bg-secondary) 50%, var(--bg-tertiary) 75%);
+  background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.03) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s ease-in-out infinite;
 }
@@ -185,7 +185,7 @@ body {
 
 .focus-ring {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3);
+  box-shadow: 0 0 0 3px rgba(170, 255, 0, 0.3);
   border-color: var(--accent-primary);
 }
 
@@ -203,30 +203,67 @@ button:focus-visible {
    ============================================ */
 
 .text-hero {
-  font-size: 3rem;
-  line-height: 3.25rem;
+  font-size: 3.5rem;
+  line-height: 3.75rem;
   font-weight: 800;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
 }
 
 .text-gradient {
-  background: linear-gradient(135deg, #2563EB, #7C3AED);
+  background: linear-gradient(135deg, #FFFFFF 30%, #AAFF00 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 /* ============================================
-   PROSE (Legal Content)
+   AI BADGE
+   ============================================ */
+
+.ai-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  border-radius: 9999px;
+  background: rgba(170, 255, 0, 0.1);
+  border: 1px solid rgba(170, 255, 0, 0.25);
+  color: #AAFF00;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* ============================================
+   FEATURE CARDS (FlowFunds style)
+   ============================================ */
+
+.feature-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 1.25rem;
+  padding: 1.75rem;
+  transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(170, 255, 0, 0.2);
+  box-shadow: 0 0 30px rgba(170, 255, 0, 0.05);
+  transform: translateY(-2px);
+}
+
+/* ============================================
+   PROSE (Legal Content) — DARK MODE
    ============================================ */
 
 .prose {
-  --tw-prose-body: theme('colors.slate.700');
-  --tw-prose-headings: theme('colors.slate.800');
-  --tw-prose-links: theme('colors.blue.600');
-  --tw-prose-bold: theme('colors.slate.800');
-  --tw-prose-counters: theme('colors.slate.500');
-  --tw-prose-bullets: theme('colors.slate.400');
+  --tw-prose-body: #CBD5E1;
+  --tw-prose-headings: #F1F5F9;
+  --tw-prose-links: #AAFF00;
+  --tw-prose-bold: #F1F5F9;
+  --tw-prose-counters: #94A3B8;
+  --tw-prose-bullets: #64748B;
 }
 
 .prose p {
@@ -245,7 +282,7 @@ button:focus-visible {
 
 /* Legal citation styling */
 .prose a[href^="["], .legal-citation {
-  color: theme('colors.blue.600');
+  color: #AAFF00;
   font-weight: 500;
   text-decoration: none;
 }
@@ -267,6 +304,45 @@ button:focus-visible {
   animation: blink 0.8s step-end infinite;
   margin-left: 1px;
 }
+
+/* ============================================
+   DARK INPUT STYLES
+   ============================================ */
+
+.dark-input {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #F1F5F9;
+  transition: all 0.2s ease;
+}
+
+.dark-input:focus {
+  border-color: rgba(170, 255, 0, 0.4);
+  box-shadow: 0 0 20px rgba(170, 255, 0, 0.1);
+}
+
+.dark-input::placeholder {
+  color: #64748B;
+}
+
+/* ============================================
+   STAT CARDS — DARK INNER GLOW
+   ============================================ */
+
+.stat-card {
+  background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 1rem;
+  padding: 1rem;
+}
+
+/* ============================================
+   DARK STATUS COLORS
+   ============================================ */
+
+.dark-success-bg { background: rgba(52, 211, 153, 0.1); border-color: rgba(52, 211, 153, 0.2); }
+.dark-warning-bg { background: rgba(251, 191, 36, 0.1); border-color: rgba(251, 191, 36, 0.2); }
+.dark-error-bg { background: rgba(248, 113, 113, 0.1); border-color: rgba(248, 113, 113, 0.2); }
 
 /* ============================================
    PRINT STYLES

@@ -44,10 +44,11 @@ export default function RootLayout({
           position="bottom-right"
           toastOptions={{
             style: {
-              background: 'rgba(255, 255, 255, 0.92)',
+              background: 'rgba(17, 17, 24, 0.95)',
               backdropFilter: 'blur(20px)',
-              border: '1px solid rgba(255, 255, 255, 0.5)',
-              boxShadow: '0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -4px rgba(0,0,0,0.04)',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
+              boxShadow: '0 10px 15px -3px rgba(0,0,0,0.4), 0 4px 6px -4px rgba(0,0,0,0.3)',
+              color: '#F1F5F9',
             },
           }}
           richColors

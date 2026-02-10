@@ -10,9 +10,8 @@ export default function SkeletonLoader({ variant = 'card', lines = 3 }: Skeleton
         {Array.from({ length: lines }).map((_, i) => (
           <div
             key={i}
-            className={`h-4 rounded-lg animate-shimmer ${
-              i === lines - 1 ? 'w-3/4' : 'w-full'
-            }`}
+            className={`h-4 rounded-lg animate-shimmer ${i === lines - 1 ? 'w-3/4' : 'w-full'
+              }`}
           />
         ))}
         <span className="sr-only">Memuat...</span>
@@ -28,9 +27,8 @@ export default function SkeletonLoader({ variant = 'card', lines = 3 }: Skeleton
           {Array.from({ length: lines }).map((_, i) => (
             <div
               key={i}
-              className={`h-4 rounded-lg animate-shimmer ${
-                i === lines - 1 ? 'w-2/3' : 'w-full'
-              }`}
+              className={`h-4 rounded-lg animate-shimmer ${i === lines - 1 ? 'w-2/3' : 'w-full'
+                }`}
               style={{ animationDelay: `${i * 0.1}s` }}
             />
           ))}
@@ -54,9 +52,8 @@ export default function SkeletonLoader({ variant = 'card', lines = 3 }: Skeleton
         {Array.from({ length: lines }).map((_, i) => (
           <div
             key={i}
-            className={`h-4 rounded-lg animate-shimmer ${
-              i === lines - 1 ? 'w-3/4' : 'w-full'
-            }`}
+            className={`h-4 rounded-lg animate-shimmer ${i === lines - 1 ? 'w-3/4' : 'w-full'
+              }`}
             style={{ animationDelay: `${i * 0.15}s` }}
           />
         ))}

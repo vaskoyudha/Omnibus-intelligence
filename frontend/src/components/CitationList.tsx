@@ -9,7 +9,7 @@ interface CitationListProps {
 
 export default function CitationList({ citations }: CitationListProps) {
   const [expandedCitations, setExpandedCitations] = useState<Set<number>>(new Set());
-  
+
   if (!citations || citations.length === 0) {
     return null;
   }
@@ -36,19 +36,19 @@ export default function CitationList({ citations }: CitationListProps) {
 
   const getTypeConfig = (type: string) => {
     const configs: Record<string, { bg: string; text: string; border: string; icon: string }> = {
-      'UU': { bg: 'bg-blue-100', text: 'text-blue-800', border: 'border-blue-200', icon: '📜' },
-      'PP': { bg: 'bg-emerald-100', text: 'text-emerald-800', border: 'border-emerald-200', icon: '📋' },
-      'Perpres': { bg: 'bg-purple-100', text: 'text-purple-800', border: 'border-purple-200', icon: '🏛️' },
-      'Permen': { bg: 'bg-orange-100', text: 'text-orange-800', border: 'border-orange-200', icon: '📑' },
-      'Perda': { bg: 'bg-teal-100', text: 'text-teal-800', border: 'border-teal-200', icon: '🏢' },
+      'UU': { bg: 'bg-blue-500/15', text: 'text-blue-300', border: 'border-blue-500/20', icon: '📜' },
+      'PP': { bg: 'bg-emerald-500/15', text: 'text-emerald-300', border: 'border-emerald-500/20', icon: '📋' },
+      'Perpres': { bg: 'bg-purple-500/15', text: 'text-purple-300', border: 'border-purple-500/20', icon: '🏛️' },
+      'Permen': { bg: 'bg-orange-500/15', text: 'text-orange-300', border: 'border-orange-500/20', icon: '📑' },
+      'Perda': { bg: 'bg-teal-500/15', text: 'text-teal-300', border: 'border-teal-500/20', icon: '🏢' },
     };
-    return configs[type] || { bg: 'bg-bg-tertiary', text: 'text-text-primary', border: 'border-border', icon: '📄' };
+    return configs[type] || { bg: 'bg-white/5', text: 'text-text-primary', border: 'border-border', icon: '📄' };
   };
 
   const getScoreColor = (score: number) => {
-    if (score >= 0.7) return 'text-emerald-600 bg-emerald-50';
-    if (score >= 0.4) return 'text-amber-600 bg-amber-50';
-    return 'text-text-muted bg-bg-secondary';
+    if (score >= 0.7) return 'text-emerald-400 bg-emerald-500/10';
+    if (score >= 0.4) return 'text-amber-400 bg-amber-500/10';
+    return 'text-text-muted bg-white/5';
   };
 
   const formatScore = (score: number) => {
@@ -58,34 +58,27 @@ export default function CitationList({ citations }: CitationListProps) {
 
   return (
     <div className="p-6">
-      {/* Header with expand/collapse controls */}
+      {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-lg font-semibold text-text-primary flex items-center gap-2">
-          <svg className="w-5 h-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg className="w-5 h-5 text-[#AAFF00]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
           Sumber Referensi
-          <span className="ml-1 px-2 py-0.5 text-sm bg-accent-lighter text-accent rounded-full font-medium">
+          <span className="ml-1 px-2 py-0.5 text-sm bg-[#AAFF00]/10 text-[#AAFF00] rounded-full font-medium">
             {citations.length}
           </span>
         </h3>
-        
-        {/* Expand/Collapse buttons */}
+
         <div className="flex items-center gap-2 text-sm no-print">
-          <button
-            onClick={expandAll}
-            className="text-text-muted hover:text-accent flex items-center gap-1 transition-colors"
-          >
+          <button onClick={expandAll} className="text-text-muted hover:text-[#AAFF00] flex items-center gap-1 transition-colors">
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
             </svg>
             Buka Semua
           </button>
           <span className="text-border">|</span>
-          <button
-            onClick={collapseAll}
-            className="text-text-muted hover:text-accent flex items-center gap-1 transition-colors"
-          >
+          <button onClick={collapseAll} className="text-text-muted hover:text-[#AAFF00] flex items-center gap-1 transition-colors">
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
             </svg>
@@ -93,7 +86,7 @@ export default function CitationList({ citations }: CitationListProps) {
           </button>
         </div>
       </div>
-      
+
       {/* Citation Cards */}
       <div className="space-y-3">
         {citations.map((citationInfo, index) => {
@@ -101,29 +94,25 @@ export default function CitationList({ citations }: CitationListProps) {
           const typeConfig = getTypeConfig(citation.document_type);
           const isExpanded = expandedCitations.has(index);
           const scorePercent = formatScore(citation.relevance_score);
-          
+
           return (
             <div
               key={index}
-              className={`glass border rounded-xl overflow-hidden transition-all duration-200 ${
-                isExpanded 
-                  ? 'border-accent shadow-md' 
-                  : 'border-border hover:border-border-accent hover:shadow-sm'
-              }`}
+              className={`glass border rounded-xl overflow-hidden transition-all duration-200 ${isExpanded
+                  ? 'border-[#AAFF00]/30 shadow-md shadow-[#AAFF00]/5'
+                  : 'border-border hover:border-[#AAFF00]/15 hover:shadow-sm'
+                }`}
             >
-              {/* Citation Header - Always Visible */}
+              {/* Citation Header */}
               <button
                 onClick={() => toggleExpand(index)}
-                className="w-full p-4 flex items-center gap-4 text-left focus:outline-none focus:ring-2 focus:ring-accent focus:ring-inset"
+                className="w-full p-4 flex items-center gap-4 text-left focus:outline-none focus:ring-2 focus:ring-[#AAFF00]/30 focus:ring-inset"
               >
-                {/* Number Badge */}
-                <div className={`flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center font-bold text-sm ${
-                  isExpanded ? 'bg-accent text-white' : 'bg-accent-lighter text-accent'
-                }`}>
+                <div className={`flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center font-bold text-sm ${isExpanded ? 'bg-[#AAFF00] text-[#0A0A0F]' : 'bg-[#AAFF00]/10 text-[#AAFF00]'
+                  }`}>
                   {index + 1}
                 </div>
-                
-                {/* Main Content */}
+
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
                     <span className={`px-2 py-0.5 text-xs font-medium rounded-md ${typeConfig.bg} ${typeConfig.text}`}>
@@ -137,25 +126,22 @@ export default function CitationList({ citations }: CitationListProps) {
                     {citation.document_title}
                   </h4>
                   {citation.pasal && (
-                    <p className="text-sm text-accent font-medium mt-0.5">
+                    <p className="text-sm text-[#AAFF00] font-medium mt-0.5">
                       {citation.pasal}
                     </p>
                   )}
                 </div>
-                
-                {/* Expand Icon */}
+
                 <div className="flex-shrink-0">
-                  <svg 
-                    className={`w-5 h-5 text-text-muted transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`} 
-                    fill="none" 
-                    viewBox="0 0 24 24" 
-                    stroke="currentColor"
+                  <svg
+                    className={`w-5 h-5 text-text-muted transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}
+                    fill="none" viewBox="0 0 24 24" stroke="currentColor"
                   >
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </div>
               </button>
-              
+
               {/* Expandable Content */}
               {isExpanded && citation.content_snippet && (
                 <div className="px-4 pb-4 border-t border-border">
@@ -168,16 +154,15 @@ export default function CitationList({ citations }: CitationListProps) {
                         {citation.content_snippet}
                       </p>
                     </div>
-                    
+
                     {/* Relevance Bar */}
                     <div className="mt-3 flex items-center gap-3">
                       <span className="text-xs text-text-muted">Relevansi:</span>
                       <div className="flex-1 h-2 bg-bg-tertiary rounded-full overflow-hidden">
-                        <div 
-                          className={`h-full rounded-full transition-all duration-500 ${
-                            scorePercent >= 70 ? 'bg-emerald-500' :
-                            scorePercent >= 40 ? 'bg-amber-500' : 'bg-text-muted'
-                          }`}
+                        <div
+                          className={`h-full rounded-full transition-all duration-500 ${scorePercent >= 70 ? 'bg-emerald-500' :
+                              scorePercent >= 40 ? 'bg-amber-500' : 'bg-text-muted'
+                            }`}
                           style={{ width: `${scorePercent}%` }}
                         />
                       </div>
