@@ -3,6 +3,7 @@ import { Geist_Mono } from "next/font/google";
 import "@fontsource-variable/plus-jakarta-sans";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import PageTransition from "@/components/PageTransition";
 import AmbientBackground from "@/components/AmbientBackground";
 import { Toaster } from "sonner";
@@ -13,12 +14,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Omnibus Legal Compass - Sistem Tanya Jawab Hukum Indonesia",
-  description: "Sistem RAG (Retrieval-Augmented Generation) untuk menjawab pertanyaan tentang peraturan perundang-undangan Indonesia dengan kutipan sumber yang akurat.",
-  keywords: ["hukum indonesia", "peraturan", "undang-undang", "legal", "omnibus", "tanya jawab hukum"],
-  authors: [{ name: "Omnibus Legal Compass Team" }],
+  title: "OMNIBUS - The Whole Law, Harmonized",
+  description: "Sistem RAG (Retrieval-Augmented Generation) tercanggih untuk harmonisasi dan analisis peraturan perundang-undangan Indonesia.",
+  keywords: ["hukum indonesia", "peraturan", "undang-undang", "legal", "omnibus", "ai legal", "regulatory harmonization"],
+  authors: [{ name: "OMNIBUS Team" }],
   openGraph: {
-    title: "Omnibus Legal Compass",
+    title: "OMNIBUS - Legal Intelligence",
     description: "Sistem Tanya Jawab Hukum Indonesia dengan AI",
     type: "website",
     locale: "id_ID",
@@ -40,6 +41,7 @@ export default function RootLayout({
             {children}
           </PageTransition>
         </main>
+        <Footer />
         <Toaster
           position="bottom-right"
           toastOptions={{

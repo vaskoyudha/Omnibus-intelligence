@@ -27,9 +27,25 @@ export default function AnswerCard({ response }: AnswerCardProps) {
     }
   }, [response.answer]);
 
+  const handleDownload = useCallback(() => {
+    const element = document.getElementById('answer-content');
+    if (element) {
+      const opt = {
+        margin: 1,
+        filename: 'jawaban-hukum-OMNIBUS.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+      };
+
+      // @ts-ignore
+      html2pdf().set(opt).from(element).save();
+    }
+  }, []);
+
   const handleShare = useCallback(async () => {
     const shareData = {
-      title: 'Jawaban Hukum - Omnibus Legal Compass',
+      title: 'Jawaban Hukum - OMNIBUS',
       text: response.answer.slice(0, 300) + '...',
       url: window.location.href,
     };

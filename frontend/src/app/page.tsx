@@ -6,6 +6,9 @@ import SearchBar from '@/components/SearchBar';
 import AnswerCard from '@/components/AnswerCard';
 import StreamingAnswerCard from '@/components/StreamingAnswerCard';
 import SkeletonLoader from '@/components/SkeletonLoader';
+import DecryptedText from '@/components/reactbits/DecryptedText';
+import CountUp from '@/components/reactbits/CountUp';
+import SpotlightCard from '@/components/reactbits/SpotlightCard';
 import {
   askQuestion,
   askQuestionStream,
@@ -52,6 +55,19 @@ const featureCards = [
   },
 ];
 
+const stats = [
+  { value: 10000, suffix: '+', label: 'Pertanyaan Dijawab' },
+  { value: 500, suffix: '+', label: 'Regulasi Tercakup' },
+  { value: 99.2, suffix: '%', label: 'Akurasi Jawaban' },
+];
+
+const trustBadges = [
+  { icon: '🔒', label: 'Bank-grade Security' },
+  { icon: '⚡', label: '24/7 Available' },
+  { icon: '✅', label: 'Verified Sources' },
+  { icon: '🇮🇩', label: 'Indonesian Law' },
+];
+
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -71,7 +87,7 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
 
   // Streaming state
-  const [useStreaming, setUseStreaming] = useState(true);
+  const [useStreaming] = useState(true);
   const [isStreaming, setIsStreaming] = useState(false);
   const [streamingAnswer, setStreamingAnswer] = useState('');
   const [streamingCitations, setStreamingCitations] = useState<CitationInfo[]>([]);
@@ -137,7 +153,7 @@ export default function Home() {
     <div className="min-h-screen">
       {/* Hero Section */}
       <motion.div
-        className="py-16 px-4"
+        className="pt-20 pb-6 px-4"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -150,32 +166,79 @@ export default function Home() {
             </span>
           </motion.div>
 
+          {/* Hero Title with DecryptedText */}
           <motion.h1
             className="text-hero text-gradient mb-4"
             variants={itemVariants}
           >
-            Tanya Jawab ⚡ Hukum
-            <br />
-            Indonesia
+            <DecryptedText
+              text="OMNIBUS ⚡ Intelligence"
+              animateOn="view"
+              speed={40}
+              sequential
+              revealDirection="center"
+              className="text-gradient"
+              encryptedClassName="text-text-muted"
+            />
           </motion.h1>
+
           <motion.p
-            className="text-lg text-text-secondary mb-1"
+            className="text-lg text-text-secondary mb-2"
             variants={itemVariants}
           >
-            Sistem Tanya Jawab Hukum Indonesia
+            Sistem Harmonisasi & Intelijen Hukum Terpadu
           </motion.p>
           <motion.p
-            className="text-sm text-text-muted"
+            className="text-sm text-text-muted mb-8"
             variants={itemVariants}
           >
             Didukung oleh AI untuk membantu Anda memahami peraturan perundang-undangan
           </motion.p>
+
+          {/* Animated Stats */}
+          <motion.div
+            className="flex items-center justify-center gap-6 sm:gap-10 mb-8"
+            variants={itemVariants}
+          >
+            {stats.map((stat, i) => (
+              <div key={stat.label} className="text-center">
+                <div className="text-2xl sm:text-3xl font-bold text-[#AAFF00]">
+                  <CountUp
+                    to={stat.value}
+                    from={0}
+                    duration={2}
+                    delay={0.3 + i * 0.2}
+                    separator=","
+                    className="text-2xl sm:text-3xl font-bold"
+                  />
+                  <span className="text-[#AAFF00]">{stat.suffix}</span>
+                </div>
+                <div className="text-xs text-text-muted mt-1">{stat.label}</div>
+              </div>
+            ))}
+          </motion.div>
+
+          {/* Trust Badges */}
+          <motion.div
+            className="flex items-center justify-center gap-3 sm:gap-5 flex-wrap"
+            variants={itemVariants}
+          >
+            {trustBadges.map((badge) => (
+              <div
+                key={badge.label}
+                className="flex items-center gap-1.5 px-3 py-1.5 glass rounded-full text-xs text-text-muted"
+              >
+                <span>{badge.icon}</span>
+                <span>{badge.label}</span>
+              </div>
+            ))}
+          </motion.div>
         </div>
       </motion.div>
 
       {/* Search Section */}
       <motion.div
-        className="max-w-4xl mx-auto px-4 -mt-4"
+        className="max-w-4xl mx-auto px-4 mt-6"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3, duration: 0.5, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
@@ -183,51 +246,33 @@ export default function Home() {
         <div className="glass-strong rounded-2xl shadow-lg p-6">
           <SearchBar onSearch={handleSearch} isLoading={isLoading || isStreaming} />
 
-          {/* Options Row */}
-          <div className="mt-4 pt-4 border-t border-border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div className="flex-1">
-              <p className="text-sm text-text-muted mb-2.5">Contoh pertanyaan:</p>
-              <div className="flex flex-wrap gap-2">
-                {exampleQuestions.map((question, i) => (
-                  <motion.button
-                    key={question}
-                    onClick={() => handleSearch(question)}
-                    disabled={isLoading || isStreaming}
-                    className="text-sm px-4 py-2 glass rounded-full text-text-secondary hover:text-[#AAFF00] hover:border-[#AAFF00]/30 border border-transparent transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4 + i * 0.05, duration: 0.4 }}
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.97 }}
-                  >
-                    {question}
-                  </motion.button>
-                ))}
-              </div>
-            </div>
-
-            {/* Streaming Toggle */}
-            <div className="flex items-center gap-2.5 no-print flex-shrink-0">
-              <label className="relative inline-flex items-center cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={useStreaming}
-                  onChange={(e) => setUseStreaming(e.target.checked)}
-                  className="sr-only peer"
-                />
-                <div className="w-10 h-5.5 bg-bg-tertiary peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-[#AAFF00]/30 rounded-full peer peer-checked:after:translate-x-[18px] after:content-[''] after:absolute after:top-[3px] after:start-[3px] after:bg-white after:shadow-sm after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#AAFF00]" />
-              </label>
-              <span className="text-xs font-medium text-text-muted">
-                Streaming {useStreaming ? 'On' : 'Off'}
-              </span>
+          {/* Example Questions */}
+          <div className="mt-4 pt-4 border-t border-border">
+            <p className="text-sm text-text-muted mb-2.5">Contoh pertanyaan:</p>
+            <div className="flex flex-wrap gap-2">
+              {exampleQuestions.map((question, i) => (
+                <motion.button
+                  key={question}
+                  onClick={() => handleSearch(question)}
+                  disabled={isLoading || isStreaming}
+                  className="text-sm px-4 py-2 glass rounded-full text-text-secondary hover:text-[#AAFF00] hover:border-[#AAFF00]/30 border border-transparent transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 + i * 0.05, duration: 0.4 }}
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                >
+                  {question}
+                </motion.button>
+              ))}
             </div>
           </div>
         </div>
       </motion.div>
 
-      {/* Feature Cards — FlowFunds Style */}
+      {/* Feature Cards with SpotlightCard */}
       <motion.div
-        className="max-w-4xl mx-auto px-4 mt-8"
+        className="max-w-4xl mx-auto px-4 mt-10"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5, duration: 0.5 }}
@@ -236,18 +281,54 @@ export default function Home() {
           {featureCards.map((card, i) => (
             <motion.div
               key={card.title}
-              className="feature-card"
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 + i * 0.1, duration: 0.4 }}
             >
-              <div className="w-12 h-12 rounded-xl bg-[#AAFF00]/10 flex items-center justify-center text-[#AAFF00] mb-4">
-                {card.icon}
-              </div>
-              <h3 className="text-text-primary font-semibold mb-1.5">{card.title}</h3>
-              <p className="text-sm text-text-muted leading-relaxed">{card.description}</p>
+              <SpotlightCard className="h-full" spotlightColor="rgba(170, 255, 0, 0.12)">
+                <div className="p-6">
+                  <div className="w-12 h-12 rounded-xl bg-[#AAFF00]/10 flex items-center justify-center text-[#AAFF00] mb-4">
+                    {card.icon}
+                  </div>
+                  <h3 className="text-text-primary font-semibold mb-1.5">{card.title}</h3>
+                  <p className="text-sm text-text-muted leading-relaxed">{card.description}</p>
+                </div>
+              </SpotlightCard>
             </motion.div>
           ))}
+        </div>
+      </motion.div>
+
+      {/* Social Proof / Trusted By */}
+      <motion.div
+        className="max-w-4xl mx-auto px-4 mt-12"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.8, duration: 0.6 }}
+      >
+        <div className="text-center mb-6">
+          <p className="text-xs uppercase tracking-widest text-text-muted">Dipercaya oleh profesional hukum</p>
+        </div>
+        <div className="flex items-center justify-center gap-6 sm:gap-10 opacity-40">
+          {['Universitas Indonesia', 'Fakultas Hukum', 'BKPM', 'OJK', 'Kemenkumham'].map((name) => (
+            <div key={name} className="text-sm font-semibold text-text-muted tracking-wide whitespace-nowrap">
+              {name}
+            </div>
+          ))}
+        </div>
+
+        {/* Testimonial */}
+        <div className="mt-8 glass-strong rounded-2xl p-6 max-w-2xl mx-auto text-center">
+          <svg className="w-8 h-8 text-[#AAFF00]/30 mx-auto mb-3" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+          </svg>
+          <p className="text-text-secondary text-sm leading-relaxed italic mb-4">
+            &quot;OMNIBUS membantu tim kami menganalisis ribuan dokumen hukum dalam hitungan menit. Akurasi dan kecepatan yang luar biasa.&quot;
+          </p>
+          <div>
+            <p className="text-sm font-semibold text-text-primary">Dr. Sari Wulandari</p>
+            <p className="text-xs text-text-muted">Head of Legal Affairs, Jakarta</p>
+          </div>
         </div>
       </motion.div>
 
@@ -315,7 +396,7 @@ export default function Home() {
         {/* Empty State */}
         {!response && !isLoading && !error && !showStreamingResult && (
           <motion.div
-            className="text-center py-16"
+            className="text-center py-12"
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 0.5 }}
@@ -335,18 +416,6 @@ export default function Home() {
           </motion.div>
         )}
       </div>
-
-      {/* Footer */}
-      <footer className="border-t border-border mt-auto">
-        <div className="max-w-4xl mx-auto px-4 py-6">
-          <p className="text-center text-sm text-text-muted">
-            Omnibus Legal Compass - Sistem RAG untuk Dokumen Hukum Indonesia
-          </p>
-          <p className="text-center text-xs text-text-muted/60 mt-1">
-            Jawaban yang diberikan bersifat informatif dan bukan merupakan nasihat hukum resmi
-          </p>
-        </div>
-      </footer>
     </div>
   );
 }

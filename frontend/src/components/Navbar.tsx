@@ -2,7 +2,9 @@
 
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
+import ShinyText from '@/components/reactbits/ShinyText';
 
 const navLinks = [
   { href: '/', label: 'Tanya Jawab', icon: 'M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z' },
@@ -24,17 +26,27 @@ export default function Navbar() {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2.5 group">
           <motion.div
-            className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#AAFF00] to-[#88CC00] flex items-center justify-center shadow-md shadow-[#AAFF00]/20"
+            className="w-9 h-9 rounded-xl overflow-hidden flex items-center justify-center shadow-md shadow-[#AAFF00]/20"
             whileHover={{ scale: 1.05, rotate: -3 }}
             whileTap={{ scale: 0.95 }}
             transition={{ type: 'spring', stiffness: 400, damping: 15 }}
           >
-            <svg className="w-5 h-5 text-[#0A0A0F]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-            </svg>
+            <Image
+              src="/logo.png"
+              alt="OMNIBUS Logo"
+              width={36}
+              height={36}
+              className="w-full h-full object-cover"
+            />
           </motion.div>
-          <span className="font-bold text-lg text-text-primary tracking-tight hidden sm:block">
-            Legal Compass
+          <span className="hidden sm:block">
+            <ShinyText
+              text="OMNIBUS"
+              speed={4}
+              color="#F1F5F9"
+              shineColor="#AAFF00"
+              className="font-bold text-lg tracking-tight"
+            />
           </span>
         </Link>
 
@@ -46,8 +58,8 @@ export default function Navbar() {
               <Link key={link.href} href={link.href}>
                 <motion.div
                   className={`relative px-4 py-2 rounded-xl text-sm font-medium transition-colors flex items-center gap-2 ${isActive
-                      ? 'text-[#AAFF00]'
-                      : 'text-text-secondary hover:text-text-primary'
+                    ? 'text-[#AAFF00]'
+                    : 'text-text-secondary hover:text-text-primary'
                     }`}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
@@ -72,6 +84,21 @@ export default function Navbar() {
               </Link>
             );
           })}
+
+          {/* Status Dot + CTA */}
+          <div className="hidden sm:flex items-center gap-3 ml-3 pl-3 border-l border-border">
+            <div className="flex items-center gap-1.5">
+              <div className="w-2 h-2 rounded-full bg-[#4ADE80] animate-pulse-online" />
+              <span className="text-[10px] text-text-muted">Online</span>
+            </div>
+            <motion.button
+              className="px-4 py-1.5 bg-gradient-to-r from-[#AAFF00] to-[#88CC00] text-[#0A0A0F] text-xs font-semibold rounded-lg hover:shadow-lg hover:shadow-[#AAFF00]/20 transition-all"
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+            >
+              Mulai Gratis
+            </motion.button>
+          </div>
         </nav>
       </div>
 

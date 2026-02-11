@@ -2,9 +2,11 @@
 
 import { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 import { getGuidance, GuidanceResponse } from '@/lib/api';
 import CitationList from '@/components/CitationList';
 import SkeletonLoader from '@/components/SkeletonLoader';
+import SpotlightCard from '@/components/reactbits/SpotlightCard';
 import { toast } from 'sonner';
 
 const BUSINESS_TYPES = [
@@ -61,9 +63,18 @@ export default function GuidancePage() {
 
   return (
     <div className="min-h-screen">
+      {/* Breadcrumb */}
+      <div className="max-w-4xl mx-auto px-4 pt-6">
+        <nav className="flex items-center gap-2 text-xs text-text-muted">
+          <Link href="/" className="hover:text-[#AAFF00] transition-colors">Beranda</Link>
+          <span>/</span>
+          <span className="text-text-primary">Panduan Usaha</span>
+        </nav>
+      </div>
+
       {/* Hero Section */}
       <motion.div
-        className="py-12 px-4"
+        className="py-8 px-4"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -361,14 +372,6 @@ export default function GuidancePage() {
         )}
       </div>
 
-      {/* Footer */}
-      <footer className="border-t border-border mt-auto">
-        <div className="max-w-4xl mx-auto px-4 py-6">
-          <p className="text-center text-sm text-text-muted">
-            Omnibus Legal Compass - Panduan Pendirian Badan Usaha
-          </p>
-        </div>
-      </footer>
     </div>
   );
 }

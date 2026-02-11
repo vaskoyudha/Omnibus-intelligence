@@ -37,10 +37,10 @@
   --color-error: #F87171;
 
   /* Shadows */
-  --shadow-sm: 0 1px 2px rgba(0,0,0,0.3);
-  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.4), 0 2px 4px -2px rgba(0,0,0,0.3);
-  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.5), 0 4px 6px -4px rgba(0,0,0,0.3);
-  --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.5), 0 8px 10px -6px rgba(0,0,0,0.3);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
   --shadow-glow: 0 0 40px rgba(170, 255, 0, 0.15);
 }
 
@@ -124,7 +124,7 @@ body {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3), 0 1px 3px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 .glass-strong {
@@ -132,7 +132,7 @@ body {
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 8px 25px -5px rgba(0,0,0,0.4), 0 4px 10px rgba(0,0,0,0.3);
+  box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.4), 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 /* ============================================
@@ -140,25 +140,57 @@ body {
    ============================================ */
 
 @keyframes gradient-shift {
-  0%, 100% { transform: translate(0%, 0%) scale(1); }
-  25% { transform: translate(5%, -5%) scale(1.05); }
-  50% { transform: translate(-3%, 8%) scale(0.95); }
-  75% { transform: translate(-5%, -3%) scale(1.02); }
+
+  0%,
+  100% {
+    transform: translate(0%, 0%) scale(1);
+  }
+
+  25% {
+    transform: translate(5%, -5%) scale(1.05);
+  }
+
+  50% {
+    transform: translate(-3%, 8%) scale(0.95);
+  }
+
+  75% {
+    transform: translate(-5%, -3%) scale(1.02);
+  }
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
 }
 
 @keyframes pulse-glow {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 0.6; }
+
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+
+  50% {
+    opacity: 0.6;
+  }
 }
 
 @keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 .animate-gradient-shift {
@@ -174,9 +206,55 @@ body {
 }
 
 .animate-shimmer {
-  background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.03) 75%);
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.03) 25%, rgba(255, 255, 255, 0.08) 50%, rgba(255, 255, 255, 0.03) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/* StarBorder orbit animations */
+@keyframes star-movement-bottom {
+  0% {
+    transform: translateX(0%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes star-movement-top {
+  0% {
+    transform: translateX(0%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-star-movement-bottom {
+  animation: star-movement-bottom linear infinite alternate;
+}
+
+.animate-star-movement-top {
+  animation: star-movement-top linear infinite alternate;
+}
+
+/* Online pulse for status dot */
+@keyframes pulse-online {
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.5);
+  }
+
+  50% {
+    box-shadow: 0 0 0 6px rgba(74, 222, 128, 0);
+  }
+}
+
+.animate-pulse-online {
+  animation: pulse-online 2s ease-in-out infinite;
 }
 
 /* ============================================
@@ -271,7 +349,8 @@ button:focus-visible {
   line-height: 1.75;
 }
 
-.prose ul, .prose ol {
+.prose ul,
+.prose ol {
   margin-top: 0.75rem;
   margin-bottom: 0.75rem;
 }
@@ -281,7 +360,8 @@ button:focus-visible {
 }
 
 /* Legal citation styling */
-.prose a[href^="["], .legal-citation {
+.prose a[href^="["],
+.legal-citation {
   color: #AAFF00;
   font-weight: 500;
   text-decoration: none;
@@ -292,8 +372,15 @@ button:focus-visible {
    ============================================ */
 
 @keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
 }
 
 .typing-cursor::after {
@@ -330,7 +417,7 @@ button:focus-visible {
    ============================================ */
 
 .stat-card {
-  background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 1rem;
   padding: 1rem;
@@ -340,9 +427,20 @@ button:focus-visible {
    DARK STATUS COLORS
    ============================================ */
 
-.dark-success-bg { background: rgba(52, 211, 153, 0.1); border-color: rgba(52, 211, 153, 0.2); }
-.dark-warning-bg { background: rgba(251, 191, 36, 0.1); border-color: rgba(251, 191, 36, 0.2); }
-.dark-error-bg { background: rgba(248, 113, 113, 0.1); border-color: rgba(248, 113, 113, 0.2); }
+.dark-success-bg {
+  background: rgba(52, 211, 153, 0.1);
+  border-color: rgba(52, 211, 153, 0.2);
+}
+
+.dark-warning-bg {
+  background: rgba(251, 191, 36, 0.1);
+  border-color: rgba(251, 191, 36, 0.2);
+}
+
+.dark-error-bg {
+  background: rgba(248, 113, 113, 0.1);
+  border-color: rgba(248, 113, 113, 0.2);
+}
 
 /* ============================================
    PRINT STYLES
@@ -352,17 +450,17 @@ button:focus-visible {
   .no-print {
     display: none !important;
   }
-  
+
   .print-only {
     display: block !important;
   }
-  
+
   .prose {
     max-width: 100%;
     font-size: 12pt;
     line-height: 1.5;
   }
-  
+
   body {
     background: white !important;
     color: black !important;

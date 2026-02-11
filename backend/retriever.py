@@ -18,7 +18,6 @@ from qdrant_client import QdrantClient
 from qdrant_client.models import Filter, FieldCondition, MatchValue
 from langchain_huggingface import HuggingFaceEmbeddings
 from rank_bm25 import BM25Okapi
-from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
 
 # Load environment variables
 load_dotenv()
@@ -28,8 +27,8 @@ logger = logging.getLogger(__name__)
 
 # Constants - must match ingest.py
 COLLECTION_NAME = "indonesian_legal_docs"
-EMBEDDING_MODEL = "intfloat/multilingual-e5-base"
-EMBEDDING_DIM = 768
+EMBEDDING_MODEL = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+EMBEDDING_DIM = 384
 QDRANT_URL = os.getenv("QDRANT_URL", "http://localhost:6333")
 QDRANT_API_KEY = os.getenv("QDRANT_API_KEY")  # For Qdrant Cloud
 RRF_K = 60  # Standard RRF constant
@@ -58,37 +57,19 @@ class SearchResult:
         }
 
 
-class E5Embeddings:
-    """Wrapper for E5 models that adds required query:/passage: prefixes."""
-    
-    def __init__(self, model_name: str):
-        self._embedder = HuggingFaceEmbeddings(model_name=model_name)
-    
-    def embed_query(self, text: str) -> list[float]:
-        return self._embedder.embed_query(f"query: {text}")
-    
-    def embed_documents(self, texts: list[str]) -> list[list[float]]:
-        prefixed = [f"passage: {t}" for t in texts]
-        return self._embedder.embed_documents(prefixed)
-
-
-# Initialize Sastrawi stemmer (module-level singleton, thread-safe)
-_stemmer_factory = StemmerFactory()
-_stemmer = _stemmer_factory.create_stemmer()
-
-
 def tokenize_indonesian(text: str) -> list[str]:
     """
-    Tokenizer for Indonesian text with Sastrawi stemming.
+    Simple tokenizer for Indonesian text.
     
-    Handles preprocessing:
+    Handles basic preprocessing:
     - Lowercase
     - Split on whitespace and punctuation
     - Remove common Indonesian stopwords (minimal set)
-    - Apply Indonesian stemming (Sastrawi)
     
-    Example: "mempekerjakan" -> "kerja"
+    For production, consider using Sastrawi or similar.
     """
+    import re
+    
     # Lowercase and extract words
     text = text.lower()
     tokens = re.findall(r'\b[a-zA-Z0-9]+\b', text)
@@ -101,9 +82,7 @@ def tokenize_indonesian(text: str) -> list[str]:
         "tersebut", "bahwa", "jika", "maka", "atas", "setiap",
     }
     
-    # Filter stopwords and apply stemming
-    filtered = [t for t in tokens if t not in stopwords and len(t) > 1]
-    return [_stemmer.stem(t) for t in filtered]
+    return [t for t in tokens if t not in stopwords and len(t) > 1]
 
 
 class HybridRetriever:
@@ -143,11 +122,8 @@ class HybridRetriever:
         else:
             self.client = QdrantClient(url=qdrant_url)
         
-        # Initialize embeddings (E5 wrapper for query:/passage: prefixes, or plain HF)
-        if "e5" in embedding_model.lower():
-            self.embedder = E5Embeddings(model_name=embedding_model)
-        else:
-            self.embedder = HuggingFaceEmbeddings(model_name=embedding_model)
+        # Initialize embeddings (same model as ingestion)
+        self.embedder = HuggingFaceEmbeddings(model_name=embedding_model)
         
         # Initialize CrossEncoder for re-ranking (optional but recommended)
         self.reranker = None

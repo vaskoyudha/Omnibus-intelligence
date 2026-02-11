@@ -48,7 +48,7 @@ export default function StreamingAnswerCard({
 
   const handleShare = useCallback(async () => {
     const shareData = {
-      title: 'Jawaban Hukum - Omnibus Legal Compass',
+      title: 'Jawaban Hukum - OMNIBUS',
       text: answer.slice(0, 300) + '...',
       url: window.location.href,
     };
@@ -228,13 +228,13 @@ export default function StreamingAnswerCard({
                   <div className="w-16 bg-bg-tertiary rounded-full h-1.5">
                     <div
                       className={`h-1.5 rounded-full ${validation.grounding_score >= 0.7 ? 'bg-emerald-500' :
-                          validation.grounding_score >= 0.5 ? 'bg-amber-500' : 'bg-red-500'
+                        validation.grounding_score >= 0.5 ? 'bg-amber-500' : 'bg-red-500'
                         }`}
                       style={{ width: `${validation.grounding_score * 100}%` }}
                     />
                   </div>
                   <span className={`font-medium ${validation.grounding_score >= 0.7 ? 'text-emerald-400' :
-                      validation.grounding_score >= 0.5 ? 'text-amber-400' : 'text-red-400'
+                    validation.grounding_score >= 0.5 ? 'text-amber-400' : 'text-red-400'
                     }`}>
                     {Math.round(validation.grounding_score * 100)}%
                   </span>
