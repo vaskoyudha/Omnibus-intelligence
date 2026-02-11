@@ -240,6 +240,21 @@ body {
   animation: star-movement-top linear infinite alternate;
 }
 
+/* Laser border flow — rotating conic-gradient for animated energy border */
+@keyframes border-flow {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+.animate-border-flow {
+  animation: border-flow 4s linear infinite;
+}
+
 /* Online pulse for status dot */
 @keyframes pulse-online {
 
