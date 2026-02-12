@@ -12,7 +12,7 @@ import time
 from contextlib import asynccontextmanager
 from typing import Any
 
-from fastapi import FastAPI, File, Form, HTTPException, Query, UploadFile
+from fastapi import APIRouter, FastAPI, File, Form, HTTPException, Query, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, StreamingResponse
 from pydantic import BaseModel, Field
@@ -258,6 +258,35 @@ async def lifespan(app: FastAPI):
 
 
 # =============================================================================
+# OpenAPI Tags Metadata
+# =============================================================================
+
+
+tags_metadata = [
+    {
+        "name": "System",
+        "description": "Health checks and system information endpoints.",
+    },
+    {
+        "name": "Q&A",
+        "description": "Legal question-answering with RAG-powered citations.",
+    },
+    {
+        "name": "Compliance",
+        "description": "Business compliance checking against Indonesian regulations.",
+    },
+    {
+        "name": "Guidance",
+        "description": "Step-by-step business formation guidance.",
+    },
+    {
+        "name": "Metadata",
+        "description": "Reference data such as document types.",
+    },
+]
+
+
+# =============================================================================
 # FastAPI Application
 # =============================================================================
 
@@ -265,22 +294,40 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title="Omnibus Legal Compass API",
     description="""
+    API for Indonesian legal document retrieval and analysis.
+
     API untuk sistem Q&A hukum Indonesia menggunakan RAG (Retrieval-Augmented Generation).
-    
+
     ## Fitur Utama
-    
+
     - **Tanya Jawab Hukum**: Ajukan pertanyaan tentang peraturan Indonesia dan dapatkan jawaban dengan sitasi
     - **Filter Dokumen**: Filter berdasarkan jenis dokumen (UU, PP, Perpres, dll)
     - **Percakapan Lanjutan**: Dukung pertanyaan lanjutan dengan konteks percakapan
-    
+    - **Pemeriksaan Kepatuhan**: Periksa kepatuhan bisnis terhadap peraturan
+    - **Panduan Pendirian Usaha**: Panduan langkah demi langkah pendirian badan usaha
+
     ## Teknologi
-    
+
     - NVIDIA NIM dengan Llama 3.1 8B Instruct
     - Qdrant Vector Database dengan Hybrid Search
     - HuggingFace Embeddings (paraphrase-multilingual-MiniLM-L12-v2)
+
+    ## API Versioning
+
+    All endpoints are available under both `/api/` (legacy) and `/api/v1/` (versioned).
+    New integrations should use the `/api/v1/` prefix.
     """,
     version="1.0.0",
     lifespan=lifespan,
+    contact={
+        "name": "Omnibus Legal Compass Team",
+        "url": "https://github.com/vaskoyudha/Regulatory-Harmonization-Engine",
+    },
+    license_info={
+        "name": "MIT",
+        "url": "https://opensource.org/licenses/MIT",
+    },
+    openapi_tags=tags_metadata,
     docs_url="/docs",
     redoc_url="/redoc",
 )
@@ -304,6 +351,9 @@ app.add_middleware(
 limiter = Limiter(key_func=get_remote_address)
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)  # pyright: ignore[reportArgumentType]
+
+# API router — handlers are registered here, then mounted at /api and /api/v1
+api_router = APIRouter()
 
 
 # =============================================================================
@@ -365,7 +415,7 @@ async def health_check():
     )
 
 
-@app.post("/api/ask", response_model=QuestionResponse, tags=["Q&A"])
+@api_router.post("/ask", response_model=QuestionResponse, tags=["Q&A"])
 @limiter.limit("20/minute")
 async def ask_question(request: Request, body: QuestionRequest):
     """
@@ -463,7 +513,7 @@ async def ask_question(request: Request, body: QuestionRequest):
         )
 
 
-@app.post("/api/ask/stream", tags=["Q&A"])
+@api_router.post("/ask/stream", tags=["Q&A"])
 @limiter.limit("20/minute")
 async def ask_question_stream(request: Request, body: QuestionRequest):
     """
@@ -541,7 +591,7 @@ async def ask_question_stream(request: Request, body: QuestionRequest):
     )
 
 
-@app.post("/api/ask/followup", response_model=QuestionResponse, tags=["Q&A"])
+@api_router.post("/ask/followup", response_model=QuestionResponse, tags=["Q&A"])
 @limiter.limit("20/minute")
 async def ask_followup(request: Request, body: FollowUpRequest):
     """
@@ -635,7 +685,7 @@ async def ask_followup(request: Request, body: FollowUpRequest):
         )
 
 
-@app.get("/api/document-types", tags=["Metadata"])
+@api_router.get("/document-types", tags=["Metadata"])
 async def get_document_types():
     """
     Daftar jenis dokumen yang tersedia untuk filter.
@@ -658,7 +708,7 @@ async def get_document_types():
     }
 
 
-@app.post("/api/compliance/check", response_model=ComplianceResponse, tags=["Compliance"])
+@api_router.post("/compliance/check", response_model=ComplianceResponse, tags=["Compliance"])
 @limiter.limit("10/minute")
 async def check_compliance(
     request: Request,
@@ -967,7 +1017,7 @@ def extract_permits(answer: str) -> list[str]:
     return list(set(permits))[:10]  # Limit to 10 unique permits
 
 
-@app.post("/api/guidance", response_model=GuidanceResponse, tags=["Guidance"])
+@api_router.post("/guidance", response_model=GuidanceResponse, tags=["Guidance"])
 @limiter.limit("20/minute")
 async def get_business_guidance(request: Request, body: GuidanceRequest):
     """
@@ -1088,6 +1138,14 @@ Gunakan format bernomor untuk setiap langkah."""
             status_code=500,
             detail=f"Gagal memproses permintaan panduan: {str(e)}",
         )
+
+
+# =============================================================================
+# Mount API Router at both /api (legacy) and /api/v1 (versioned)
+# =============================================================================
+
+app.include_router(api_router, prefix="/api")
+app.include_router(api_router, prefix="/api/v1")
 
 
 @app.get("/", tags=["System"])

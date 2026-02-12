@@ -62,7 +62,7 @@ export interface AskRequest {
 }
 
 export async function askQuestion(question: string, topK: number = 5): Promise<AskResponse> {
-  const response = await fetch(`${API_URL}/api/ask`, {
+  const response = await fetch(`${API_URL}/api/v1/ask`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ question, top_k: topK })
@@ -113,7 +113,7 @@ export async function checkCompliance(
     formData.append('business_description', businessDescription);
   }
 
-  const response = await fetch(`${API_URL}/api/compliance/check`, {
+  const response = await fetch(`${API_URL}/api/v1/compliance/check`, {
     method: 'POST',
     body: formData,
   });
@@ -163,7 +163,7 @@ export interface GuidanceResponse {
 }
 
 export async function getGuidance(request: GuidanceRequest): Promise<GuidanceResponse> {
-  const response = await fetch(`${API_URL}/api/guidance`, {
+  const response = await fetch(`${API_URL}/api/v1/guidance`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(request),
@@ -205,7 +205,7 @@ export async function askQuestionStream(
   callbacks: StreamCallbacks,
   topK: number = 5
 ): Promise<void> {
-  const response = await fetch(`${API_URL}/api/ask/stream`, {
+  const response = await fetch(`${API_URL}/api/v1/ask/stream`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ question, top_k: topK }),
