@@ -26,6 +26,7 @@ import io
 
 from rag_chain import LegalRAGChain, RAGResponse  # pyright: ignore[reportImplicitRelativeImport]
 from knowledge_graph.graph import LegalKnowledgeGraph  # pyright: ignore[reportImplicitRelativeImport]
+from chat.session import SessionManager  # pyright: ignore[reportImplicitRelativeImport]
 
 # Configure logging
 logging.basicConfig(
@@ -38,6 +39,8 @@ logger = logging.getLogger(__name__)
 rag_chain: LegalRAGChain | None = None
 # Global Knowledge Graph instance (loaded from JSON on startup)
 knowledge_graph: LegalKnowledgeGraph | None = None
+# Global chat session manager
+session_manager = SessionManager()
 
 
 # =============================================================================
@@ -65,6 +68,10 @@ class QuestionRequest(BaseModel):
         ge=1,
         le=20,
         description="Jumlah dokumen yang diambil untuk konteks",
+    )
+    session_id: str | None = Field(
+        default=None,
+        description="Chat session ID for multi-turn conversation. If provided, previous conversation context is used.",
     )
 
 
@@ -130,6 +137,10 @@ class QuestionResponse(BaseModel):
         default=None, description="Hasil validasi jawaban"
     )
     processing_time_ms: float = Field(description="Waktu pemrosesan dalam milidetik")
+    session_id: str | None = Field(
+        default=None,
+        description="Chat session ID. Returned when multi-turn chat is active.",
+    )
 
 
 class HealthResponse(BaseModel):
@@ -309,6 +320,10 @@ tags_metadata = [
         "name": "Metadata",
         "description": "Reference data such as document types.",
     },
+    {
+        "name": "Chat",
+        "description": "Multi-turn chat session management.",
+    },
 ]
 
 
@@ -480,14 +495,34 @@ async def ask_question(request: Request, body: QuestionRequest):
     start_time = time.perf_counter()
 
     try:
-        # Query RAG chain
-        response: RAGResponse = rag_chain.query(
-            question=body.question,
-            filter_jenis_dokumen=body.jenis_dokumen,
-            top_k=body.top_k,
-        )
+        # Resolve or create a chat session
+        sid = body.session_id
+        chat_history: list[dict[str, str]] = []
+        if sid is not None:
+            chat_history = session_manager.get_chat_history_for_rag(sid)
+        else:
+            sid = session_manager.create_session()
+
+        # Query RAG chain — use history-aware variant when history exists
+        if chat_history:
+            response: RAGResponse = rag_chain.query_with_history(
+                question=body.question,
+                chat_history=chat_history,
+                filter_jenis_dokumen=body.jenis_dokumen,
+                top_k=body.top_k,
+            )
+        else:
+            response = rag_chain.query(
+                question=body.question,
+                filter_jenis_dokumen=body.jenis_dokumen,
+                top_k=body.top_k,
+            )
 
         processing_time = (time.perf_counter() - start_time) * 1000
+
+        # Record the exchange in the session
+        session_manager.add_message(sid, "user", body.question)
+        session_manager.add_message(sid, "assistant", response.answer)
 
         # Convert citations to Pydantic models
         citations = [
@@ -529,6 +564,7 @@ async def ask_question(request: Request, body: QuestionRequest):
             confidence_score=confidence_score_info,
             validation=validation_info,
             processing_time_ms=round(processing_time, 2),
+            session_id=sid,
         )
 
     except Exception as e:
@@ -1164,6 +1200,54 @@ Gunakan format bernomor untuk setiap langkah."""
             status_code=500,
             detail=f"Gagal memproses permintaan panduan: {str(e)}",
         )
+
+
+# =============================================================================
+# Chat Session Endpoints
+# =============================================================================
+
+
+class ChatHistoryResponse(BaseModel):
+    """Response model for chat session history."""
+
+    session_id: str
+    messages: list[dict[str, str]] = Field(
+        description="List of messages with 'role' and 'content' keys"
+    )
+
+
+@api_router.get(
+    "/chat/sessions/{session_id}",
+    response_model=ChatHistoryResponse,
+    tags=["Chat"],
+)
+async def get_chat_session(session_id: str):
+    """
+    Ambil riwayat percakapan dari sesi chat.
+
+    Returns daftar pesan dalam sesi yang diberikan.
+    Sesi yang sudah kedaluwarsa (30 menit tidak aktif) akan dihapus otomatis.
+    """
+    messages = session_manager.get_history(session_id)
+    if not messages:
+        raise HTTPException(status_code=404, detail="Session not found or expired")
+    return ChatHistoryResponse(
+        session_id=session_id,
+        messages=[{"role": m.role, "content": m.content} for m in messages],
+    )
+
+
+@api_router.delete("/chat/sessions/{session_id}", tags=["Chat"])
+async def delete_chat_session(session_id: str):
+    """
+    Hapus sesi chat.
+
+    Menghapus seluruh riwayat percakapan dari sesi yang diberikan.
+    """
+    removed = session_manager.clear_session(session_id)
+    if not removed:
+        raise HTTPException(status_code=404, detail="Session not found or expired")
+    return {"detail": "Session deleted", "session_id": session_id}
 
 
 # =============================================================================
