@@ -20,7 +20,7 @@ ignore = ["E501"]
 
 [tool.coverage.run]
 source = ["backend"]
-omit = ["backend/scripts/*", "tests/*"]
+omit = ["backend/scripts/*", "tests/*", "backend/conftest.py", "conftest.py"]
 
 [tool.coverage.report]
 show_missing = true

@@ -24,7 +24,7 @@ from starlette.requests import Request
 from pypdf import PdfReader
 import io
 
-from rag_chain import LegalRAGChain, RAGResponse
+from rag_chain import LegalRAGChain, RAGResponse  # pyright: ignore[reportImplicitRelativeImport]
 
 # Configure logging
 logging.basicConfig(
@@ -303,7 +303,7 @@ app.add_middleware(
 # Rate limiting (in-memory, per IP)
 limiter = Limiter(key_func=get_remote_address)
 app.state.limiter = limiter
-app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)  # pyright: ignore[reportArgumentType]
 
 
 # =============================================================================
@@ -506,11 +506,13 @@ async def ask_question_stream(request: Request, body: QuestionRequest):
 
     import json
 
+    chain = rag_chain  # Capture after None-check for type narrowing in closure
+
     def event_generator():
         start_time = time.perf_counter()
         
         try:
-            for event_type, data in rag_chain.query_stream(
+            for event_type, data in chain.query_stream(
                 question=body.question,
                 filter_jenis_dokumen=body.jenis_dokumen,
                 top_k=body.top_k,
@@ -521,8 +523,9 @@ async def ask_question_stream(request: Request, body: QuestionRequest):
                     yield f"event: chunk\ndata: {json.dumps({'text': data})}\n\n"
                 elif event_type == "done":
                     processing_time = (time.perf_counter() - start_time) * 1000
-                    data["processing_time_ms"] = round(processing_time, 2)
-                    yield f"event: done\ndata: {json.dumps(data)}\n\n"
+                    done_data: dict[str, object] = dict(data) if isinstance(data, dict) else {}
+                    done_data["processing_time_ms"] = round(processing_time, 2)
+                    yield f"event: done\ndata: {json.dumps(done_data)}\n\n"
         except Exception as e:
             logger.error(f"Error in stream: {e}", exc_info=True)
             yield f"event: error\ndata: {json.dumps({'error': str(e)})}\n\n"
