@@ -1,85 +1,147 @@
-# Omnibus Legal Compass 🧭
+<div align="center">
 
-**Indonesian Legal RAG System** - Sistem Tanya Jawab Hukum Indonesia dengan AI
+# Omnibus Legal Compass
 
-A production-ready Retrieval-Augmented Generation (RAG) system for Indonesian legal documents, powered by NVIDIA NIM (Kimi K2 model) and Qdrant vector database.
+**AI-Powered Indonesian Legal Intelligence Platform**
 
-## ✨ Features
+[![CI](https://github.com/vaskoyudha/Regulatory-Harmonization-Engine/actions/workflows/ci.yml/badge.svg)](https://github.com/vaskoyudha/Regulatory-Harmonization-Engine/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.11+](https://img.shields.io/badge/Python-3.11+-3776AB?logo=python&logoColor=white)](https://python.org)
+[![Next.js 16](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688?logo=fastapi)](https://fastapi.tiangolo.com)
+[![Tests](https://img.shields.io/badge/Tests-294%20passing-brightgreen)](tests/)
 
-### 1. Legal Q&A with Citations (Tanya Jawab Hukum)
-Ask questions about Indonesian regulations and receive accurate answers with source citations.
+Navigate Indonesian regulations with confidence. Ask legal questions, check compliance, get business guidance — all backed by hybrid search, cross-encoder reranking, and source citations.
 
-### 2. Compliance Checker (Pemeriksaan Kepatuhan)
-Check if your business operations comply with Indonesian regulations. Supports both text input and PDF document analysis.
+[**Documentation**](https://vaskoyudha.github.io/Regulatory-Harmonization-Engine/) · [**Report Bug**](https://github.com/vaskoyudha/Regulatory-Harmonization-Engine/issues/new?template=bug_report.yml) · [**Request Feature**](https://github.com/vaskoyudha/Regulatory-Harmonization-Engine/issues/new?template=feature_request.yml)
 
-### 3. Business Formation Guidance (Panduan Pendirian Usaha)
-Get step-by-step guidance on establishing a business in Indonesia, including required permits and regulatory steps.
+</div>
 
 ---
 
-## 🏗️ Architecture
+## Why Omnibus Legal Compass?
+
+Most legal AI tools are **keyword matchers dressed up as AI**. Omnibus is different:
+
+- **Hybrid Search + Reranking** — BM25 sparse retrieval meets dense vector search, refined by CrossEncoder reranking. Not just "find similar words" — actual semantic understanding.
+- **Source Citations on Every Answer** — Every response links back to specific regulation articles. Verify, don't trust blindly.
+- **Indonesia-Deep, Not Indonesia-Shallow** — Purpose-built for Indonesian legal framework: UU, PP, Perpres, Perda. Not a generic chatbot with an Indonesian prompt.
+- **Knowledge Graph** — Regulations aren't isolated. Our graph maps cross-references, amendments, and hierarchies between legal documents.
+- **Production-Ready** — Rate limiting, API versioning, 294 passing tests, CI/CD, structured error handling. Not a weekend prototype.
+
+---
+
+## Features
+
+### Legal Q&A with Citations
+Ask any question about Indonesian regulations. Get accurate answers with direct citations to source documents (UU, PP, Perpres).
+
+### Compliance Checker
+Describe your business operations or upload a PDF — get a compliance assessment against current regulations with specific recommendations.
+
+### Business Formation Guidance
+Step-by-step guidance for establishing a business in Indonesia: required permits, regulatory steps, estimated timelines, and issuing authorities.
+
+### Multi-Turn Chat
+Conversational interface with session memory. Ask follow-up questions without repeating context. 10-message sliding window keeps conversations focused.
+
+### Knowledge Graph
+Visual tree-view of legal document relationships: hierarchies, cross-references, and amendments. Understand how regulations connect.
+
+### Compliance Dashboard
+Heat map and bar chart visualization of regulatory coverage across legal domains. See where your compliance gaps are.
+
+---
+
+## Screenshots
+
+> **Coming soon** — Screenshots of each page will be added once the application is deployed. To preview the UI locally, follow the [Quick Start](#quick-start) guide.
+
+<!-- Uncomment when screenshots are available:
+| Legal Q&A | Compliance Checker | Business Guidance |
+|:-:|:-:|:-:|
+| ![Q&A](docs/screenshots/qa-page.png) | ![Compliance](docs/screenshots/compliance-page.png) | ![Guidance](docs/screenshots/guidance-page.png) |
+
+| Multi-Turn Chat | Knowledge Graph | Dashboard |
+|:-:|:-:|:-:|
+| ![Chat](docs/screenshots/chat-page.png) | ![KG](docs/screenshots/knowledge-graph-page.png) | ![Dashboard](docs/screenshots/dashboard-page.png) |
+-->
+
+---
+
+## Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                        Next.js Frontend                         │
-│  ┌─────────────┐  ┌─────────────────┐  ┌──────────────────┐    │
-│  │   Q&A Page  │  │ Compliance Page │  │  Guidance Page   │    │
-│  └─────────────┘  └─────────────────┘  └──────────────────┘    │
-└───────────────────────────┬─────────────────────────────────────┘
-                            │ HTTP/REST
-┌───────────────────────────▼─────────────────────────────────────┐
-│                      FastAPI Backend                             │
-│  ┌─────────────┐  ┌─────────────────┐  ┌──────────────────┐    │
-│  │  /api/ask   │  │/api/compliance  │  │  /api/guidance   │    │
-│  └──────┬──────┘  └────────┬────────┘  └────────┬─────────┘    │
-│         └──────────────────┼────────────────────┘              │
-│                            ▼                                    │
-│  ┌─────────────────────────────────────────────────────────┐   │
-│  │                    RAG Chain                             │   │
-│  │  ┌────────────────┐    ┌─────────────────────────────┐  │   │
-│  │  │ Hybrid Search  │───▶│      NVIDIA NIM (Kimi K2)   │  │   │
-│  │  │ BM25 + Dense   │    │  moonshotai/kimi-k2-instruct│  │   │
-│  │  └───────┬────────┘    └─────────────────────────────┘  │   │
-│  └──────────┼──────────────────────────────────────────────┘   │
-└─────────────┼───────────────────────────────────────────────────┘
-              │
-┌─────────────▼───────────────────────────────────────────────────┐
-│                      Qdrant Vector DB                            │
-│  Collection: indonesian_legal_docs                               │
-│  Embeddings: paraphrase-multilingual-MiniLM-L12-v2 (384 dim)    │
-└─────────────────────────────────────────────────────────────────┘
++---------------------------------------------------------------+
+|                      Next.js Frontend                         |
+|  +----------+ +------------+ +----------+ +-------+ +------+ |
+|  | Q&A Page | | Compliance | | Guidance | |  Chat | | Dash | |
+|  +----------+ +------------+ +----------+ +-------+ +------+ |
++-----------------------------+---------------------------------+
+                              | HTTP / REST
++-----------------------------v---------------------------------+
+|                      FastAPI Backend                           |
+|  +-----------+ +-------------+ +----------+ +---------------+ |
+|  | /api/v1/* | | Rate Limit  | | Sessions | | Knowledge     | |
+|  | Endpoints | | (slowapi)   | | Manager  | | Graph Engine  | |
+|  +-----+-----+ +-------------+ +----------+ +---------------+ |
+|        |                                                       |
+|  +-----v-----------------------------------------------------+ |
+|  |                     RAG Chain                              | |
+|  |  +----------------+     +------------------------------+  | |
+|  |  | Hybrid Search  |---->| NVIDIA NIM (Kimi K2)        |  | |
+|  |  | BM25 + Dense   |     | moonshotai/kimi-k2-instruct |  | |
+|  |  +-------+--------+     +------------------------------+  | |
+|  |          |  CrossEncoder Reranking                         | |
+|  +----------+-------------------------------------------------+ |
++--------------+--------------------------------------------------+
+               |
++--------------v--------------------------------------------------+
+|                      Qdrant Vector DB                           |
+|  Collection: indonesian_legal_docs                              |
+|  Embeddings: paraphrase-multilingual-MiniLM-L12-v2 (384 dim)   |
++-----------------------------------------------------------------+
 ```
 
 ---
 
-## 📋 Prerequisites
+## Tech Stack
 
-- **Docker** (for Qdrant) - [Install Docker](https://docs.docker.com/get-docker/)
-- **Python 3.11+** - [Install Python](https://www.python.org/downloads/)
-- **Node.js 18+** - [Install Node.js](https://nodejs.org/)
-- **NVIDIA NIM API Key** (Free tier available) - [Get API Key](https://build.nvidia.com/)
+| Layer | Technology | Purpose |
+|-------|-----------|---------|
+| **LLM** | [NVIDIA NIM](https://build.nvidia.com/) (Kimi K2) | Legal reasoning & answer generation |
+| **Embeddings** | `paraphrase-multilingual-MiniLM-L12-v2` | Multilingual semantic search (384 dim) |
+| **Vector DB** | [Qdrant](https://qdrant.tech/) | Hybrid search (BM25 + dense vectors) |
+| **Reranker** | CrossEncoder | Result relevance refinement |
+| **Backend** | [FastAPI](https://fastapi.tiangolo.com/) + Python | API server, RAG pipeline, rate limiting |
+| **Frontend** | [Next.js 16](https://nextjs.org/) + React 19 | UI with Tailwind CSS + Framer Motion |
+| **Visualization** | [Recharts](https://recharts.org/) | Dashboard charts and heat maps |
+| **Graph** | [NetworkX](https://networkx.org/) | Knowledge graph storage & traversal |
+| **Testing** | pytest + Vitest | 294 backend + 23 frontend tests |
+| **CI/CD** | GitHub Actions | Automated testing & docs deployment |
+| **Docs** | [VitePress](https://vitepress.dev/) | Documentation site on GitHub Pages |
 
 ---
 
-## 🚀 Installation
+## Quick Start
 
-### 1. Clone the Repository
+### Prerequisites
+
+- **Docker** — [Install Docker](https://docs.docker.com/get-docker/)
+- **Python 3.11+** — [Install Python](https://www.python.org/downloads/)
+- **Node.js 18+** — [Install Node.js](https://nodejs.org/)
+- **NVIDIA NIM API Key** (free tier available) — [Get API Key](https://build.nvidia.com/)
+
+### 1. Clone & Configure
 
 ```bash
-git clone https://github.com/yourusername/regulatory-harmonization-engine.git
+git clone https://github.com/vaskoyudha/Regulatory-Harmonization-Engine.git
 cd "Regulatory Harmonization Engine"
+cp .env.example .env
+# Edit .env and add your NVIDIA_API_KEY
 ```
 
-### 2. Set Up Environment Variables
-
-Create a `.env` file in the project root:
-
-```env
-NVIDIA_API_KEY=your_nvidia_api_key_here
-QDRANT_URL=http://localhost:6333
-```
-
-### 3. Start Qdrant Database
+### 2. Start Qdrant
 
 ```bash
 docker run -d --name omnibus-qdrant \
@@ -88,335 +150,202 @@ docker run -d --name omnibus-qdrant \
   qdrant/qdrant:latest
 ```
 
-### 4. Set Up Python Backend
+### 3. Backend Setup
 
 ```bash
-# Create virtual environment
 python -m venv venv
-
-# Activate virtual environment
-# Windows:
-.\venv\Scripts\activate
-# Linux/macOS:
-source venv/bin/activate
-
-# Install dependencies
+# Windows: .\venv\Scripts\activate
+# Linux/macOS: source venv/bin/activate
 pip install -r requirements.txt
-```
 
-### 5. Ingest Legal Documents
-
-```bash
 cd backend
-python scripts/ingest.py
-```
-
-You should see: `✅ Successfully ingested 10 documents into Qdrant`
-
-### 6. Start Backend Server
-
-```bash
-# From project root
-cd backend
+python scripts/ingest.py   # Ingest legal documents
 uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-### 7. Set Up Frontend
+### 4. Frontend Setup
 
 ```bash
 # In a new terminal
 cd frontend
-
-# Install dependencies
 npm install
-
-# Create .env.local
 echo "NEXT_PUBLIC_API_URL=http://localhost:8000" > .env.local
-
-# Start development server
 npm run dev
 ```
 
-### 8. Access the Application
+### 5. Open
 
-Open your browser and navigate to:
-- **Main App**: http://localhost:3000
-- **API Docs**: http://localhost:8000/docs
+- **App**: [http://localhost:3000](http://localhost:3000)
+- **API Docs**: [http://localhost:8000/docs](http://localhost:8000/docs)
 
 ---
 
-## 📚 API Documentation
+## API Preview
 
-### Base URL
-```
-http://localhost:8000
-```
+All endpoints are versioned under `/api/v1/`. Full reference in [API Documentation](https://vaskoyudha.github.io/Regulatory-Harmonization-Engine/api-reference).
 
-### Endpoints
-
-#### 1. Legal Q&A - `POST /api/ask`
-
-Ask questions about Indonesian legal regulations.
-
-**Request:**
-```json
-{
-  "question": "Apa syarat pendirian PT?"
-}
-```
-
-**Response:**
-```json
-{
-  "answer": "Berdasarkan peraturan yang berlaku, syarat pendirian PT meliputi...",
-  "citations": [
-    {
-      "source": "UU 40/2007 tentang Perseroan Terbatas",
-      "excerpt": "Perseroan didirikan oleh 2 (dua) orang atau lebih...",
-      "relevance_score": 0.85
-    }
-  ],
-  "confidence": 0.92
-}
-```
-
-**cURL Example:**
 ```bash
-curl -X POST http://localhost:8000/api/ask \
+# Legal Q&A
+curl -X POST http://localhost:8000/api/v1/ask \
   -H "Content-Type: application/json" \
   -d '{"question": "Apa syarat pendirian PT?"}'
-```
 
----
-
-#### 2. Compliance Check - `POST /api/compliance/check`
-
-Check business compliance against Indonesian regulations.
-
-**Request (Text):**
-```json
-{
-  "business_description": "Perusahaan ekspor impor dengan NIB"
-}
-```
-
-**Request (PDF):**
-```
-Content-Type: multipart/form-data
-file: [PDF file]
-```
-
-**Response:**
-```json
-{
-  "compliance_status": "partially_compliant",
-  "issues": [
-    "Izin ekspor belum terdaftar"
-  ],
-  "recommendations": [
-    "Daftarkan izin ekspor melalui OSS"
-  ],
-  "citations": [
-    {
-      "source": "PP 5/2021",
-      "excerpt": "..."
-    }
-  ]
-}
-```
-
-**cURL Example:**
-```bash
-curl -X POST http://localhost:8000/api/compliance/check \
+# Compliance Check
+curl -X POST http://localhost:8000/api/v1/compliance/check \
   -H "Content-Type: application/json" \
-  -d '{"business_description": "Perusahaan perdagangan umum dengan SIUP"}'
-```
+  -d '{"business_description": "Perusahaan ekspor impor dengan NIB"}'
 
----
-
-#### 3. Business Guidance - `POST /api/guidance`
-
-Get step-by-step guidance for business formation.
-
-**Request:**
-```json
-{
-  "business_type": "PT",
-  "industry": "teknologi",
-  "location": "Jakarta"
-}
-```
-
-**Response:**
-```json
-{
-  "business_type": "PT",
-  "business_type_name": "Perseroan Terbatas",
-  "summary": "Panduan lengkap pendirian PT di bidang teknologi...",
-  "steps": [
-    {
-      "step_number": 1,
-      "title": "Pemesanan Nama PT",
-      "description": "Ajukan pemesanan nama melalui AHU Online...",
-      "estimated_time": "1-3 hari kerja",
-      "requirements": ["KTP pendiri", "NPWP"]
-    }
-  ],
-  "required_permits": [
-    {
-      "permit_name": "NIB",
-      "issuing_authority": "OSS",
-      "estimated_time": "1 hari"
-    }
-  ],
-  "citations": [...]
-}
-```
-
-**cURL Example:**
-```bash
-curl -X POST http://localhost:8000/api/guidance \
+# Business Guidance
+curl -X POST http://localhost:8000/api/v1/guidance \
   -H "Content-Type: application/json" \
-  -d '{"business_type": "CV", "industry": "perdagangan", "location": "Surabaya"}'
+  -d '{"business_type": "PT", "industry": "teknologi", "location": "Jakarta"}'
 ```
 
 ---
 
-## 🗂️ Project Structure
+## Competitive Comparison
+
+How does Omnibus Legal Compass compare to other legal AI projects?
+
+| Feature | Omnibus Legal Compass | LaWGPT (China) | Lawyer LLaMA (China) | Fuzi.Mingcha (China) | AI Legal Compliance (USA) |
+|---|:---:|:---:|:---:|:---:|:---:|
+| **Jurisdiction** | Indonesia | China | China | China | USA |
+| **Frontend UI** | Next.js 16 + Tailwind | None | None | Gradio | Streamlit |
+| **Hybrid Search** (BM25 + Dense) | Yes | No | No | No | No |
+| **CrossEncoder Reranking** | Yes | No | No | No | No |
+| **Knowledge Graph** | Yes | No | No | No | No |
+| **Multi-Turn Chat** | Yes (session memory) | No | No | No | No |
+| **Compliance Dashboard** | Yes (heat map + charts) | No | No | No | No |
+| **Source Citations** | Every response | No | No | Partial | Partial |
+| **Streaming Responses** | Yes | N/A | N/A | No | No |
+| **API Versioning** | `/api/v1/*` | No | No | No | No |
+| **Rate Limiting** | Yes (slowapi) | No | No | No | No |
+| **Test Coverage** | 294+ tests (91%) | Minimal | Minimal | None | None |
+| **CI/CD** | GitHub Actions | No | No | No | No |
+| **Documentation Site** | VitePress | Minimal | README only | README only | README only |
+
+> **Note**: Comparison based on publicly available repositories as of Feb 2025. Omnibus is the only Indonesian-focused legal AI with a full-stack production architecture.
+
+For detailed analysis, see [Competitive Comparison](https://vaskoyudha.github.io/Regulatory-Harmonization-Engine/comparison).
+
+---
+
+## Environment Variables
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `NVIDIA_API_KEY` | NVIDIA NIM API key | **Required** |
+| `QDRANT_URL` | Qdrant database URL | `http://localhost:6333` |
+| `NEXT_PUBLIC_API_URL` | Backend URL for frontend | `http://localhost:8000` |
+
+---
+
+## Project Structure
 
 ```
 Regulatory Harmonization Engine/
 ├── backend/
-│   ├── main.py              # FastAPI application & endpoints
-│   ├── rag_chain.py         # RAG chain with NVIDIA NIM
-│   ├── retriever.py         # Hybrid search (BM25 + dense)
-│   ├── scripts/
-│   │   └── ingest.py        # Document ingestion script
-│   └── __init__.py
+│   ├── main.py                    # FastAPI app, all routes, rate limiting
+│   ├── rag_chain.py               # RAG chain with NVIDIA NIM
+│   ├── retriever.py               # Hybrid search (BM25 + dense + reranking)
+│   ├── chat/
+│   │   └── session.py             # Multi-turn session manager
+│   ├── knowledge_graph/
+│   │   ├── schema.py              # Pydantic models (Law, Article, etc.)
+│   │   ├── graph.py               # NetworkX graph operations
+│   │   ├── ingest.py              # Document-to-graph ingestion
+│   │   └── persistence.py         # JSON serialization
+│   ├── dashboard/
+│   │   ├── coverage.py            # Coverage computation engine
+│   │   └── metrics.py             # Pydantic response models
+│   └── scripts/
+│       └── ingest.py              # Vector DB document ingestion
 ├── frontend/
-│   ├── src/
-│   │   ├── app/
-│   │   │   ├── page.tsx           # Q&A page
-│   │   │   ├── compliance/
-│   │   │   │   └── page.tsx       # Compliance checker
-│   │   │   ├── guidance/
-│   │   │   │   └── page.tsx       # Business guidance
-│   │   │   └── layout.tsx         # App layout with navigation
-│   │   ├── components/
-│   │   │   ├── ChatMessage.tsx
-│   │   │   ├── CitationCard.tsx
-│   │   │   ├── LoadingSpinner.tsx
-│   │   │   └── QuestionInput.tsx
-│   │   └── lib/
-│   │       └── api.ts             # API client
-│   ├── package.json
-│   └── .env.local
-├── data/
-│   └── peraturan/
-│       └── sample.json            # Sample legal documents
-├── tests/
-│   └── test_retriever.py
-├── .env                           # Environment variables
-├── requirements.txt
-├── .gitignore
-└── README.md
+│   └── src/
+│       ├── app/
+│       │   ├── page.tsx               # Legal Q&A
+│       │   ├── compliance/page.tsx    # Compliance checker
+│       │   ├── guidance/page.tsx      # Business guidance
+│       │   ├── chat/page.tsx          # Multi-turn chat
+│       │   ├── knowledge-graph/page.tsx # Knowledge graph tree
+│       │   └── dashboard/page.tsx     # Coverage dashboard
+│       ├── components/
+│       │   └── Navbar.tsx             # Navigation (6 pages)
+│       └── lib/
+│           └── api.ts                 # API client (all endpoints)
+├── tests/                         # 294 backend tests (91% coverage)
+├── docs/                          # VitePress documentation site
+├── .github/
+│   ├── workflows/ci.yml           # CI pipeline
+│   ├── workflows/docs.yml         # Docs deployment
+│   ├── ISSUE_TEMPLATE/            # Bug, feature, good first issue
+│   └── PULL_REQUEST_TEMPLATE.md
+├── .env.example
+├── .pre-commit-config.yaml        # Secret detection hooks
+├── LICENSE                        # MIT
+├── CODE_OF_CONDUCT.md
+├── SECURITY.md
+└── requirements.txt
 ```
 
 ---
 
-## 🔧 Configuration
+## Testing
 
-### Environment Variables
-
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `NVIDIA_API_KEY` | NVIDIA NIM API key | Required |
-| `QDRANT_URL` | Qdrant database URL | `http://localhost:6333` |
-| `NEXT_PUBLIC_API_URL` | Backend API URL (frontend) | `http://localhost:8000` |
-
-### Model Configuration
-
-| Component | Model/Value |
-|-----------|-------------|
-| LLM | `moonshotai/kimi-k2-instruct` via NVIDIA NIM |
-| Embeddings | `sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2` |
-| Embedding Dimension | 384 |
-| Vector DB Collection | `indonesian_legal_docs` |
-
----
-
-## 🧪 Testing
-
-### Run Backend Tests
 ```bash
-cd backend
-pytest tests/ -v
+# Run all backend tests (294 tests)
+python -m pytest tests/test_api.py tests/test_api_versioning.py \
+  tests/test_chat.py tests/test_rag_chain.py tests/test_retriever_unit.py \
+  tests/test_rate_limit.py tests/test_knowledge_graph.py \
+  tests/test_knowledge_graph_ingest.py tests/test_graph_api.py \
+  tests/test_dashboard.py -v --tb=short
+
+# Run with coverage
+python -m pytest tests/test_api.py tests/test_api_versioning.py \
+  tests/test_chat.py tests/test_rag_chain.py tests/test_retriever_unit.py \
+  tests/test_rate_limit.py tests/test_knowledge_graph.py \
+  tests/test_knowledge_graph_ingest.py tests/test_graph_api.py \
+  tests/test_dashboard.py --cov=backend --cov-report=term-missing
+
+# Run frontend tests
+cd frontend && npm test
 ```
 
-### Test API Endpoints
-```bash
-# Health check
-curl http://localhost:8000/
+---
 
-# Q&A test
-curl -X POST http://localhost:8000/api/ask \
-  -H "Content-Type: application/json" \
-  -d '{"question": "Apa itu NIB?"}'
-```
+## Contributing
+
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details on:
+
+- Development environment setup
+- Coding standards and commit conventions
+- Pull request process
+- Good first issues for new contributors
 
 ---
 
-## 📦 Dependencies
+## Security
 
-### Backend (Python)
-- `fastapi` - Web framework
-- `uvicorn` - ASGI server
-- `qdrant-client` - Vector database client
-- `sentence-transformers` - Embedding models
-- `rank-bm25` - BM25 sparse retrieval
-- `httpx` - Async HTTP client
-- `python-multipart` - File upload support
-- `PyPDF2` - PDF processing
-
-### Frontend (Node.js)
-- `next` - React framework
-- `react` - UI library
-- `tailwindcss` - CSS framework
-- `lucide-react` - Icons
+Found a vulnerability? Please report it responsibly. See [SECURITY.md](SECURITY.md) for our disclosure policy.
 
 ---
 
-## 🤝 Contributing
+## License
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
 
 ---
 
-## 📄 License
+## Legal Disclaimer
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## 🙏 Acknowledgments
-
-- **NVIDIA NIM** for providing free LLM inference
-- **Qdrant** for the vector database
-- **Hugging Face** for embedding models
-- **peraturan.go.id** for Indonesian legal document references
+Omnibus Legal Compass is an **AI-assisted research tool**. It does **not** constitute legal advice. Always consult a qualified legal professional for legal decisions. The developers assume no liability for actions taken based on this tool's output.
 
 ---
 
-## 📞 Support
+<div align="center">
 
-For issues and questions:
-- Open a GitHub Issue
-- Email: support@example.com
+**[Documentation](https://vaskoyudha.github.io/Regulatory-Harmonization-Engine/)** · **[Report Bug](https://github.com/vaskoyudha/Regulatory-Harmonization-Engine/issues/new?template=bug_report.yml)** · **[Request Feature](https://github.com/vaskoyudha/Regulatory-Harmonization-Engine/issues/new?template=feature_request.yml)**
 
----
+Built for Indonesian Legal Tech
 
-**Built with ❤️ for Indonesian Legal Tech**
+</div>

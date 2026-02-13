@@ -26,6 +26,7 @@ export default defineConfig({
         items: [
           { text: 'Features Overview', link: '/features' },
           { text: 'Knowledge Graph', link: '/knowledge-graph' },
+          { text: 'Competitive Comparison', link: '/comparison' },
         ],
       },
       {
