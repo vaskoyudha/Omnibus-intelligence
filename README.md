@@ -57,9 +57,6 @@ Heat map and bar chart visualization of regulatory coverage across legal domains
 
 ## Screenshots
 
-> **Coming soon** — Screenshots of each page will be added once the application is deployed. To preview the UI locally, follow the [Quick Start](#quick-start) guide.
-
-<!-- Uncomment when screenshots are available:
 | Legal Q&A | Compliance Checker | Business Guidance |
 |:-:|:-:|:-:|
 | ![Q&A](docs/screenshots/qa-page.png) | ![Compliance](docs/screenshots/compliance-page.png) | ![Guidance](docs/screenshots/guidance-page.png) |
@@ -67,7 +64,6 @@ Heat map and bar chart visualization of regulatory coverage across legal domains
 | Multi-Turn Chat | Knowledge Graph | Dashboard |
 |:-:|:-:|:-:|
 | ![Chat](docs/screenshots/chat-page.png) | ![KG](docs/screenshots/knowledge-graph-page.png) | ![Dashboard](docs/screenshots/dashboard-page.png) |
--->
 
 ---
 

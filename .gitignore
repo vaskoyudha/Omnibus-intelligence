@@ -56,6 +56,7 @@ _replacements.txt
 *.png
 !frontend/public/logo.png
 !docs/public/logo.png
+!docs/screenshots/*.png
 
 # agent planning files
 .sisyphus/
